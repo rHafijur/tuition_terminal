@@ -15,6 +15,8 @@ class CreateFrontUsersTable extends Migration
     {
         Schema::create('front_users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('first_name');
+            $table->string('last_name')->nullable();
             $table->timestamps();
         });
     }

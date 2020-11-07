@@ -14,8 +14,10 @@ class CreateDayTutorTable extends Migration
     public function up()
     {
         Schema::create('day_tutor', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->unsignedBigInteger('day_id');
+            $table->unsignedBigInteger('tutor_id');
+            $table->foreign('day_id')->references('id')->on('days')->onDelete('cascade');
+            $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
         });
     }
 

@@ -14,8 +14,10 @@ class CreateTeachingTypeTutorTable extends Migration
     public function up()
     {
         Schema::create('teaching_type_tutor', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->unsignedBigInteger('tutor_id');
+            $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
+            $table->unsignedBigInteger('teaching_type_id');
+            $table->foreign('teaching_type_id')->references('id')->on('teaching_types')->onDelete('cascade');
         });
     }
 

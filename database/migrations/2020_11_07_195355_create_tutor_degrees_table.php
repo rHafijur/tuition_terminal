@@ -15,6 +15,12 @@ class CreateTutorDegreesTable extends Migration
     {
         Schema::create('tutor_degrees', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('tutor_id');
+            $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
+            $table->unsignedBigInteger('institute_id');
+            $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
+            $table->unsignedBigInteger('curriculum_id');
+            $table->foreign('curriculum_id')->references('id')->on('curricula')->onDelete('cascade');
             $table->timestamps();
         });
     }

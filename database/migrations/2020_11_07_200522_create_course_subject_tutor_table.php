@@ -14,8 +14,10 @@ class CreateCourseSubjectTutorTable extends Migration
     public function up()
     {
         Schema::create('course_subject_tutor', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->unsignedBigInteger('tutor_id');
+            $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
+            $table->unsignedBigInteger('course_subject_id');
+            $table->foreign('course_subject_id')->references('id')->on('course_subjects')->onDelete('cascade');
         });
     }
 

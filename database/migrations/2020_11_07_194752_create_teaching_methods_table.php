@@ -15,6 +15,7 @@ class CreateTeachingMethodsTable extends Migration
     {
         Schema::create('teaching_methods', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('title');
             $table->timestamps();
         });
     }
