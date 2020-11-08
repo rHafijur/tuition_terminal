@@ -19,7 +19,7 @@ class CreateCourseSubjectsTable extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

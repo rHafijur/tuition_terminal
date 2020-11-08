@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFrontUsersTable extends Migration
+class CreateReligionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateFrontUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('front_users', function (Blueprint $table) {
+        Schema::create('religions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('first_name');
-            $table->string('last_name')->nullable();
-            $table->timestamps();
+            $table->string("title");
         });
     }
 
@@ -28,6 +26,6 @@ class CreateFrontUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('front_users');
+        Schema::dropIfExists('religions');
     }
 }

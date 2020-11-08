@@ -16,7 +16,7 @@ class CreateInstitutesTable extends Migration
         Schema::create('institutes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

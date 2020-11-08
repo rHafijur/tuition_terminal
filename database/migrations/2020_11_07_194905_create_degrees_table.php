@@ -16,7 +16,7 @@ class CreateDegreesTable extends Migration
         Schema::create('degrees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

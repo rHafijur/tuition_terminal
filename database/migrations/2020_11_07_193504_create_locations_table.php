@@ -18,7 +18,7 @@ class CreateLocationsTable extends Migration
             $table->unsignedBigInteger('city_id');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->string('name');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 
