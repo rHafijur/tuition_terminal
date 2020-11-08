@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeachingType extends Model
 {
-    //
+    public $timestamps = false;
+    
+    protected $fillable=[
+        'title',
+    ];
 }

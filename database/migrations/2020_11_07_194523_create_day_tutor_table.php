@@ -15,8 +15,8 @@ class CreateDayTutorTable extends Migration
     {
         Schema::create('day_tutor', function (Blueprint $table) {
             $table->unsignedBigInteger('day_id');
-            $table->unsignedBigInteger('tutor_id');
             $table->foreign('day_id')->references('id')->on('days')->onDelete('cascade');
+            $table->unsignedBigInteger('tutor_id');
             $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
         });
     }

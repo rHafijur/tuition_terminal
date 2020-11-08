@@ -28,7 +28,7 @@ class CreateTutorDegreesTable extends Migration
             $table->integer('group')->nullable();
             $table->integer('passing_year')->nullable();
             $table->boolean('currently_studying')->default(0);
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

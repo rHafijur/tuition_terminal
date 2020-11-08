@@ -20,6 +20,7 @@ class CreateNotificationsTable extends Migration
             $table->string('subject');
             $table->text('link')->nullable();
             $table->text('details')->nullable();
+            $table->boolean('is_seen')->default(0);
             $table->timestamps();
         });
     }
