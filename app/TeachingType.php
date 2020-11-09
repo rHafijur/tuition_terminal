@@ -11,4 +11,8 @@ class TeachingType extends Model
     protected $fillable=[
         'title',
     ];
+
+    public function tutors(){
+        return $this->belongsToMany("App\Tutor",'teaching_type_tutor','teaching_type_id','tutor_id');
+    }
 }

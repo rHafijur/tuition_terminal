@@ -18,4 +18,48 @@ class Tutor extends Model
         'is_premium',
         'premium_started_at',
     ];
+
+    public function user(){
+        return $this->belongsTo("App\User",'user_id');
+    }
+    public function tutor_personal_information(){
+        return $this->hasOne("App\TutorPersonalInformation",'tutor_id');
+    }
+    public function city(){
+        return $this->belongsTo("App\City",'city_id');
+    }
+    public function location(){
+        return $this->belongsTo("App\Location",'location_id');
+    }
+    public function categories(){
+        return $this->belongsToMany("App\Category",'category_tutor','tutor_id','category_id');
+    }
+    public function course_subjects(){
+        return $this->belongsToMany("App\CoureseSubject",'course_subject_tutor','tutor_id','course_subject_id');
+    }
+    public function days(){
+        return $this->belongsToMany("App\Day",'day_tutor','tutor_id','day_id');
+    }
+    public function teaching_methods(){
+        return $this->belongsToMany("App\TeachingMethod",'teaching_method_tutor','tutor_id','teaching_method_id');
+    }
+    public function teaching_types(){
+        return $this->belongsToMany("App\TeachingType",'teaching_type_tutor','tutor_id','teaching_type_id');
+    }
+    public function tutor_degree(){
+        return $this->hasMany("App\TutorDegree",'tutor_id');
+    }
+    public function tutor_rating(){
+        return $this->hasMany("App\TutorRating",'tutor_id');
+    }
+    public function featured_tutor_requests(){
+        return $this->hasMany("App\FeaturedTutorRequest",'tutor_id');
+    }
+    public function verified_tutor_requests(){
+        return $this->hasMany("App\VerifiedTutorRequest",'tutor_id');
+    }
+    public function premium_membership_requests(){
+        return $this->hasMany("App\PremiumMembershipRequest",'tutor_id');
+    }
+    
 }

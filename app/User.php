@@ -37,4 +37,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
+
+    public function notificatons(){
+        return $this->hasMany("App\Notificaton",'user_id');
+    }
+    public function payments(){
+        return $this->hasMany("App\Payment",'user_id');
+    }
+    public function tutor(){
+        return $this->hasOne("App\Tutor",'user_id');
+    }
 }

@@ -15,4 +15,8 @@ class Payment extends Model
         'amount',
         'note',
     ];
+
+    public function user(){
+        return $this->belongsTo("App\User",'user_id');
+    }
 }

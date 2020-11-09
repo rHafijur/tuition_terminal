@@ -11,4 +11,8 @@ class Day extends Model
     protected $fillable=[
         'title',
     ];
+
+    public function tutors(){
+        return $this->belongsToMany("App\Tutor",'day_tutor','day_id','tutor_id');
+    }
 }

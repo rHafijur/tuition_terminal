@@ -12,4 +12,8 @@ class Country extends Model
         'name',
         'flag',
     ];
+
+    public function country(){
+        return $this->belongsTo("App\country",'country_id');
+    }
 }

@@ -30,4 +30,14 @@ class TutorPersonalInformation extends Model
         'reasones_to_get_hired',
         'overview',
     ];
+
+    public function tutor(){
+        return $this->belongsTo("App\Tutor",'tutor_id');
+    }
+    public function city(){
+        return $this->belongsTo("App\City",'city_id');
+    }
+    public function location(){
+        return $this->belongsTo("App\Location",'location_id');
+    }
 }

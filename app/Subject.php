@@ -12,4 +12,11 @@ class Subject extends Model
         'course_id',
         'title',
     ];
+
+    public function course_subjects(){
+        return $this->hasMany("App\CourseSubject",'subject_id');
+    }
+    public function course(){
+        return $this->belongsTo("App\Course",'course_id');
+    }
 }
