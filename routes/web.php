@@ -19,9 +19,10 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::prefix('admin')->group(function () {
+Route::prefix('tutor')->group(function () {
     Route::view('/registration','tutor.registration')->name('tutor_registration');
     Route::post('/registration','TutorController@create')->name('create_tutor');
+    Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
 });
 
 Auth::routes();

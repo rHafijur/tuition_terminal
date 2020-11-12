@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Tutor;
 use App\TutorPersonalInformation;
+use App\Category;
+use App\Course;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\SubjectResource;
+use App\Http\Resources\CourseResource;
 
 class TutorController extends Controller
 {
@@ -40,5 +45,12 @@ class TutorController extends Controller
             'password' => $request->password,
         ]);
         return view('auth.verify');
+    }
+    public function dashboard(){
+        $categories=Category::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection(Course::all());
+        // return $courses_collection;
+        return view('tutor.dashboard',\compact('categories','categories_collection','courses_collection'));
     }
 }
