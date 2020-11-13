@@ -14,7 +14,7 @@ class Course extends Model
     ];
 
     public function subjects(){
-        return $this->belongsToMany("App\Subject",'course_subjects','course_id','subject_id');
+        return $this->belongsToMany("App\Subject",'course_subjects','course_id','subject_id')->withPivot('id');
     }
     public function category(){
         return $this->belongsTo("App\Category",'category_id');

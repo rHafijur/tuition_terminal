@@ -17,6 +17,8 @@ class Tutor extends Model
         'is_featured',
         'is_premium',
         'premium_started_at',
+        'available_to',
+        'available_from',
     ];
 
     public function user(){
@@ -30,6 +32,9 @@ class Tutor extends Model
     }
     public function location(){
         return $this->belongsTo("App\Location",'location_id');
+    }
+    public function prefered_locations(){
+        return $this->belongsToMany("App\Location",'prefered_location','tutor_id','location_id');
     }
     public function categories(){
         return $this->belongsToMany("App\Category",'category_tutor','tutor_id','category_id');

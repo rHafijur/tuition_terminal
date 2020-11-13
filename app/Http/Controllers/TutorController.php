@@ -9,9 +9,11 @@ use App\Tutor;
 use App\TutorPersonalInformation;
 use App\Category;
 use App\Course;
+use App\City;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\CityResource;
 
 class TutorController extends Controller
 {
@@ -50,7 +52,8 @@ class TutorController extends Controller
         $categories=Category::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection(Course::all());
-        // return $courses_collection;
-        return view('tutor.dashboard',\compact('categories','categories_collection','courses_collection'));
+        $city_collection=CityResource::collection(City::all());
+        // return $city_collection;
+        return view('tutor.dashboard',\compact('categories','categories_collection','courses_collection','city_collection'));
     }
 }

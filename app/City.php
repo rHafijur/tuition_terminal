@@ -12,4 +12,7 @@ class City extends Model
         'country_id',
         'name',
     ];
+    public function locations(){
+        return $this->hasMany('App\Location');
+    }
 }

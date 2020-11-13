@@ -12,7 +12,7 @@
       <form action="">
         <div class="form-group">
             <label>Category</label>
-            <select onchange="categoryChanged(this.value)" value="1" id="select2cat"  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select onchange="categoryChanged(this)" id="select2cat"  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach ($categories as $category)
               <option value="{{$category->id}}" data-select2-id="{{$category->id}}">{{$category->title}}</option>
               @endforeach
@@ -21,19 +21,116 @@
           </div>
         <div  class="form-group">
             <label>Courses</label>
-            <select id="select2cour" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select id="select2cour" onchange="courseChanged(this)" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach ($categories as $category)
               @php
                   $categoryTitle=$category->title;
               @endphp
-                <optgroup label="{{$categoryTitle}}">
-                    @foreach ($category->courses as $course)
-                    <option style="display: none" value="{{$course->id}}" data-select2-id="{{$course->id}}">{{$course->title}}</option>
-                    @endforeach
-                </optgroup>
+                @if ($category->courses->count()>0)
+                    <optgroup label="{{$categoryTitle}}">
+                        @foreach ($category->courses as $course)
+                        <option  value="{{$course->id}}" data-select2-id="{{$course->id}}">{{$course->title}}</option>
+                        @endforeach
+                    </optgroup>
+                @endif
               @endforeach
 
             </select>
+          </div>
+        <div  class="form-group">
+            <label>Subject</label>
+            <select id="select2sub" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+              @foreach ($categories as $category)
+                @foreach ($category->courses as $course)
+                    @php
+                        $subjects=$course->subjects;
+                    @endphp
+                    @if ($subjects->count()>0)
+                    <optgroup label="{{$category->title}} - {{$course->title}}">
+                        @foreach ($subjects as $subject)
+                                <option  value="{{$subject->pivot->id}}" data-select2-id="{{$subject->pivot->id}}">{{$subject->title}}</option>
+                        @endforeach
+                    </optgroup>
+                    @endif
+                @endforeach
+              @endforeach
+            </select>
+          </div>
+          <div class="form-row">
+              <div class="col">
+                <div  class="form-group">
+                    <label>City</label>
+                    <select id="ti_city" onchange="cityChangedFromTutorInfo(this)" class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      @foreach (App\City::OrderBy('name','asc')->get() as $city)
+                        <option  value="{{$city->id}}" data-select2-id="{{$city->id}}">{{$city->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+              </div>
+              <div class="col">
+                <div  class="form-group">
+                    <label>Location</label>
+                    <select id="ti_location" class="select2 select2-hidden-accessible"  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      
+                    </select>
+                  </div>
+              </div>
+          </div>
+          <div  class="form-group">
+            <label>Prefered Location</label>
+            <select id="prefered_location" class="select2 select2-hidden-accessible" multiple=""  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+              
+            </select>
+          </div>
+
+          <div  class="form-group">
+            <label>Tutoring Experience</label>
+            <textarea name="" class="form-control" cols="30" rows="2"></textarea>
+          </div>
+          <div  class="form-group">
+            <label>Tutoring Experience In Detail</label>
+            <textarea name="" class="form-control" cols="30" rows="5"></textarea>
+          </div>
+          
+          <div  class="form-group">
+            <label>Availablity</label>
+            <select  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+              @foreach (App\Day::all() as $day)
+                <option  value="{{$day->id}}" data-select2-id="{{$day->id}}">{{$day->title}}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-row">
+              <div class="col">
+                <div  class="form-group">
+                    <label>Available From</label>
+                    <input type="time" class="form-control">
+                </div>
+              </div>
+              <div class="col">
+                <div  class="form-group">
+                    <label>Available From</label>
+                    <input type="time" class="form-control">
+                </div>
+              </div>
+          </div>
+          <div class="form-row">
+              <div class="col">
+                <div  class="form-group">
+                    <label>Expected Salary</label>
+                    <input type="number" class="form-control">
+                </div>
+              </div>
+              <div class="col">
+                <div  class="form-group">
+                    <label>Prefered Teaching Method</label>
+                    <select class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      @foreach (App\TeachingMethod::all() as $method)
+                        <option  value="{{$method->id}}" data-select2-id="{{$method->id}}">{{$method->title}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+              </div>
           </div>
       </form>
     </div>
@@ -45,6 +142,7 @@
   <script>
       const resource=JSON.parse(`{!!json_encode($categories_collection)!!}`);
       const courses_resource=JSON.parse(`{!!json_encode($courses_collection)!!}`);
+      const city_resource=JSON.parse(`{!!json_encode($city_collection)!!}`);
       function  getCategory(id){
         for(var cat of resource){
             if(cat.id==id){
@@ -61,15 +159,32 @@
         }
         return null;
       }
+      function  getCity(id){
+        for(var cit of city_resource){
+            if(cit.id==id){
+                return cit;
+            }
+        }
+        return null;
+      }
       function generateCourses(ids){
         var  html='';
+        var selectedIds=$("#select2cour").val();
+        // console.log(selectedIds);
+        var selected="";
         for(var id of ids){
             var category = getCategory(id);
             if(category!=null){
                 if(category.courses.length>0){
                     var chtml=`<optgroup label="`+category.title+`">`;
                     for(var c of category.courses){
-                        chtml+=`<option  value="`+c.id+`" data-select2-id="`+c.id+`">`+c.title+`</option>`;
+                        if(selectedIds.includes(String(c.id))){
+                            selected="selected";
+                            // console.log(true);
+                        }else{
+                            selected="";
+                        }
+                        chtml+=`<option `+selected+`  value="`+c.id+`" data-select2-id="`+c.id+`">`+c.title+`</option>`;
                     }
                     chtml+=`</optgroup>`;
                     html+=chtml;
@@ -80,13 +195,20 @@
       }
       function generateSubjects(ids){
         var  html='';
+        var selectedIds=$("#select2sub").val();
+        var selected="";
         for(var id of ids){
             var course = getCourse(id);
             if(course!=null){
                 if(course.subjects.length>0){
                     var shtml=`<optgroup label="`+getCategory(course.category_id).title+` - `+course.title+`">`;
                     for(var s of course.subjects){
-                        shtml+=`<option  value="`+s.id+`" data-select2-id="`+s.id+`">`+s.title+`</option>`;
+                        if(selectedIds.includes(String(s.pivot.id))){
+                            selected="selected";
+                        }else{
+                            selected="";
+                        }
+                        shtml+=`<option `+selected+` value="`+s.pivot.id+`" data-select2-id="`+s.pivot.id+`">`+s.title+`</option>`;
                     }
                     shtml+=`</optgroup>`;
                     html+=shtml;
@@ -95,4 +217,44 @@
         }
         return html;
       }
+      function categoryChanged(obj){
+          var ids=$(obj).val();
+        //   console.log(ids);
+        //   console.log(generateCourses(ids));
+        $("#select2cour").html(generateCourses(ids));
+        $("#select2cour").select2();
+        courseChanged(document.getElementById("select2cour"));
+      }
+
+      function courseChanged(obj){
+          var ids=$(obj).val();
+        //   console.log(ids);
+        //   console.log(generateCourses(ids));
+        $("#select2sub").html(generateSubjects(ids));
+        $("#select2sub").select2();
+      }
+
+      function cityChangedFromTutorInfo(obj){
+          var city=getCity($(obj).val());
+          console.log(city);
+          var html="";
+          for(var loc of city.locations){
+            html+=`<option value="`+loc.id+`" data-select2-id="`+loc.id+`">`+loc.name+`</option>`;
+          }
+          console.log(html);
+          $("#prefered_location").html(html);
+          $("#prefered_location").select2();
+          $("#ti_location").html(html);
+          
+          $("#ti_location").select2();
+
+      }
+      
   </script>
+  @push('js')
+    <script>
+        $(function(){
+            cityChangedFromTutorInfo(document.getElementById('ti_city'));
+        });
+    </script>
+  @endpush
