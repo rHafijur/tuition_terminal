@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->cb_roles_id==3){
+            return \redirect()->route('tutor_dashboard');
+        }
         return view('home');
     }
 }

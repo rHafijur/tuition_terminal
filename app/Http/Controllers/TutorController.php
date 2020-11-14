@@ -49,12 +49,14 @@ class TutorController extends Controller
         return view('auth.verify');
     }
     public function dashboard(){
+        $tutor=auth()->user()->tutor;
         $categories=Category::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection(Course::all());
         $city_collection=CityResource::collection(City::all());
         // return $city_collection;
-        return view('tutor.dashboard',\compact('categories','categories_collection','courses_collection','city_collection'));
+        // dd($tutor->course_subjects[0]);
+        return view('tutor.dashboard',\compact('tutor','categories','categories_collection','courses_collection','city_collection'));
     }
     public function update_ti(Request $request){
         $tutor = auth()->user()->tutor;
@@ -62,7 +64,7 @@ class TutorController extends Controller
         $tutor->location_id=$request->locations;
         $tutor->expected_salary=$request->expected_salary;
         $tutor->tutoring_experience=$request->tutoring_experience;
-        $tutor->tutoring_experience_details=$request->tutoring_experience_detail;
+        $tutor->tutoring_experience_details=$request->tutoring_experience_details;
         $tutor->available_from=$request->available_from;
         $tutor->available_to=$request->available_to;
         $tutor->save();
