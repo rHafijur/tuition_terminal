@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePreferdLocationTable extends Migration
+class CreateTutorCourseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePreferdLocationTable extends Migration
      */
     public function up()
     {
-        Schema::create('preferd_location', function (Blueprint $table) {
+        Schema::create('tutor_course', function (Blueprint $table) {
             $table->unsignedBigInteger('tutor_id');
             $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
-            $table->unsignedBigInteger('location_id');
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
+            $table->unsignedBigInteger('course_id');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ class CreatePreferdLocationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('preferd_location');
+        Schema::dropIfExists('tutor_course');
     }
 }

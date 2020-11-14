@@ -9,10 +9,11 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-      <form action="">
+      <form method="POST" action="{{route('update_tutoring_info')}}">
+        @csrf
         <div class="form-group">
             <label>Category</label>
-            <select onchange="categoryChanged(this)" id="select2cat"  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select name="categories[]" onchange="categoryChanged(this)" id="select2cat"  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach ($categories as $category)
               <option value="{{$category->id}}" data-select2-id="{{$category->id}}">{{$category->title}}</option>
               @endforeach
@@ -21,7 +22,7 @@
           </div>
         <div  class="form-group">
             <label>Courses</label>
-            <select id="select2cour" onchange="courseChanged(this)" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select name="courses[]"  id="select2cour" onchange="courseChanged(this)" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach ($categories as $category)
               @php
                   $categoryTitle=$category->title;
@@ -39,7 +40,7 @@
           </div>
         <div  class="form-group">
             <label>Subject</label>
-            <select id="select2sub" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select name="subjects[]" id="select2sub" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach ($categories as $category)
                 @foreach ($category->courses as $course)
                     @php
@@ -60,7 +61,7 @@
               <div class="col">
                 <div  class="form-group">
                     <label>City</label>
-                    <select id="ti_city" onchange="cityChangedFromTutorInfo(this)" class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select name="city" id="ti_city" onchange="cityChangedFromTutorInfo(this)" class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                       @foreach (App\City::OrderBy('name','asc')->get() as $city)
                         <option  value="{{$city->id}}" data-select2-id="{{$city->id}}">{{$city->name}}</option>
                       @endforeach
@@ -70,7 +71,7 @@
               <div class="col">
                 <div  class="form-group">
                     <label>Location</label>
-                    <select id="ti_location" class="select2 select2-hidden-accessible"  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select name="locations" id="ti_location" class="select2 select2-hidden-accessible"  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                       
                     </select>
                   </div>
@@ -78,23 +79,23 @@
           </div>
           <div  class="form-group">
             <label>Prefered Location</label>
-            <select id="prefered_location" class="select2 select2-hidden-accessible" multiple=""  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select name="prefered_locations[]" id="prefered_location" class="select2 select2-hidden-accessible" multiple=""  data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               
             </select>
           </div>
 
           <div  class="form-group">
             <label>Tutoring Experience</label>
-            <textarea name="" class="form-control" cols="30" rows="2"></textarea>
+            <textarea name="tutoring_experience" class="form-control" cols="30" rows="2"></textarea>
           </div>
           <div  class="form-group">
             <label>Tutoring Experience In Detail</label>
-            <textarea name="" class="form-control" cols="30" rows="5"></textarea>
+            <textarea name="tutoring_experience_detail" class="form-control" cols="30" rows="5"></textarea>
           </div>
           
           <div  class="form-group">
             <label>Availablity</label>
-            <select  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+            <select name="days[]"  class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
               @foreach (App\Day::all() as $day)
                 <option  value="{{$day->id}}" data-select2-id="{{$day->id}}">{{$day->title}}</option>
               @endforeach
@@ -104,13 +105,13 @@
               <div class="col">
                 <div  class="form-group">
                     <label>Available From</label>
-                    <input type="time" class="form-control">
+                    <input name="available_from" type="time" class="form-control">
                 </div>
               </div>
               <div class="col">
                 <div  class="form-group">
                     <label>Available From</label>
-                    <input type="time" class="form-control">
+                    <input name="available_to" type="time" class="form-control">
                 </div>
               </div>
           </div>
@@ -118,13 +119,13 @@
               <div class="col">
                 <div  class="form-group">
                     <label>Expected Salary</label>
-                    <input type="number" class="form-control">
+                    <input name="expected_salary" type="number" class="form-control">
                 </div>
               </div>
               <div class="col">
                 <div  class="form-group">
                     <label>Prefered Teaching Method</label>
-                    <select class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select name="teaching_methods[]" class="select2 select2-hidden-accessible" multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                       @foreach (App\TeachingMethod::all() as $method)
                         <option  value="{{$method->id}}" data-select2-id="{{$method->id}}">{{$method->title}}</option>
                       @endforeach
@@ -132,6 +133,7 @@
                   </div>
               </div>
           </div>
+          <button class="btn btn-success">Update Change</button>
       </form>
     </div>
     <!-- /.card-body -->

@@ -39,8 +39,11 @@ class Tutor extends Model
     public function categories(){
         return $this->belongsToMany("App\Category",'category_tutor','tutor_id','category_id');
     }
+    public function courses(){
+        return $this->belongsToMany("App\Course",'tutor_course','tutor_id','course_id');
+    }
     public function course_subjects(){
-        return $this->belongsToMany("App\CoureseSubject",'course_subject_tutor','tutor_id','course_subject_id');
+        return $this->belongsToMany("App\CourseSubject",'course_subject_tutor','tutor_id','course_subject_id');
     }
     public function days(){
         return $this->belongsToMany("App\Day",'day_tutor','tutor_id','day_id');

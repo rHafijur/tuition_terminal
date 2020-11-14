@@ -56,4 +56,22 @@ class TutorController extends Controller
         // return $city_collection;
         return view('tutor.dashboard',\compact('categories','categories_collection','courses_collection','city_collection'));
     }
+    public function update_ti(Request $request){
+        $tutor = auth()->user()->tutor;
+        $tutor->city_id=$request->city;
+        $tutor->location_id=$request->locations;
+        $tutor->expected_salary=$request->expected_salary;
+        $tutor->tutoring_experience=$request->tutoring_experience;
+        $tutor->tutoring_experience_details=$request->tutoring_experience_detail;
+        $tutor->available_from=$request->available_from;
+        $tutor->available_to=$request->available_to;
+        $tutor->save();
+        $tutor->categories()->sync($request->categories);
+        $tutor->courses()->sync($request->courses);
+        $tutor->course_subjects()->sync($request->subjects);
+        $tutor->days()->sync($request->days);
+        $tutor->prefered_locations()->sync($request->prefered_locations);
+        $tutor->teaching_methods()->sync($request->teaching_methods);
+        return redirect()->back();
+    }
 }

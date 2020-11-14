@@ -22,7 +22,10 @@ Route::get('/login', function () {
 Route::prefix('tutor')->group(function () {
     Route::view('/registration','tutor.registration')->name('tutor_registration');
     Route::post('/registration','TutorController@create')->name('create_tutor');
+});
+Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
+    Route::post('/update_tutoring_info','TutorController@update_ti')->name('update_tutoring_info');
 });
 
 Auth::routes();
