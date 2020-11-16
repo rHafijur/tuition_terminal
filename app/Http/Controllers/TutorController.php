@@ -76,4 +76,26 @@ class TutorController extends Controller
         $tutor->teaching_methods()->sync($request->teaching_methods);
         return redirect()->back();
     }
+    public function update_ei(Request $request){
+        // dd($request);
+        $tutor = auth()->user()->tutor;
+        $degree_data=[
+            "degree_id" => $request->degree,
+            "degree_title" => $request->degree_title,
+            "institute_id" => $request->institute,
+            "id_no" => $request->id_no,
+            "curriculum_id" => $request->curriculum,
+            "group_or_major" => $request->group_or_major,
+            "passing_year" => $request->passing_year,
+            "gpa" => $request->gpa,
+            "education_board" => $request->education_board,
+            "currently_studying" => $request->currently_studing,
+        ];
+        if($tutor->tutor_degree==null){
+            $tutor->tutor_degree()->create($degree_data);
+        }else{
+            $tutor->tutor_degree()->update($degree_data);
+        }
+        return redirect()->back();
+    }
 }

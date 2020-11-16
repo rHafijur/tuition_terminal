@@ -15,9 +15,12 @@ class TutorDegree extends Model
         'degree_id',
         'gpa',
         'education_board',
-        'group',
+        'group_or_major',
         'passing_year',
         'currently_studying',
+        'id_no',
+        'degree_title',
+        'degree_title',
     ];
 
     public function tutor(){

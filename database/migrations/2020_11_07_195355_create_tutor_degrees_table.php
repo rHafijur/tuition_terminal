@@ -25,7 +25,7 @@ class CreateTutorDegreesTable extends Migration
             $table->foreign('degree_id')->references('id')->on('degrees')->onDelete('cascade');
             $table->float('gpa')->nullable();
             $table->integer('education_board')->nullable();
-            $table->integer('group')->nullable();
+            $table->string('group_or_major')->nullable();
             $table->integer('passing_year')->nullable();
             $table->boolean('currently_studying')->default(0);
             // $table->timestamps();

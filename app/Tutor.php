@@ -55,6 +55,9 @@ class Tutor extends Model
         return $this->belongsToMany("App\TeachingType",'teaching_type_tutor','tutor_id','teaching_type_id');
     }
     public function tutor_degree(){
+        return $this->hasOne("App\TutorDegree",'tutor_id');
+    }
+    public function tutor_degrees(){
         return $this->hasMany("App\TutorDegree",'tutor_id');
     }
     public function tutor_rating(){

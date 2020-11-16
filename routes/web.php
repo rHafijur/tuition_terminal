@@ -26,6 +26,7 @@ Route::prefix('tutor')->group(function () {
 Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
     Route::post('/update_tutoring_info','TutorController@update_ti')->name('update_tutoring_info');
+    Route::post('/update_educational_info','TutorController@update_ei')->name('update_educational_info');
 });
 
 Auth::routes();
