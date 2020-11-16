@@ -74,7 +74,8 @@ class TutorController extends Controller
         $tutor->days()->sync($request->days);
         $tutor->prefered_locations()->sync($request->prefered_locations);
         $tutor->teaching_methods()->sync($request->teaching_methods);
-        return redirect()->back();
+
+        return redirect(route('tutor_dashboard')."?tab=ti");
     }
     public function update_ei(Request $request){
         // dd($request);
@@ -96,6 +97,33 @@ class TutorController extends Controller
         }else{
             $tutor->tutor_degree()->update($degree_data);
         }
-        return redirect()->back();
+        return redirect(route('tutor_dashboard')."?tab=ei");
+    }
+    public function update_pi(Request $request){
+        // dd($request);
+        $tutor = auth()->user()->tutor;
+        $tutor->tutor_personal_information()->update([
+        'city_id' => $request->city,
+        'location_id' => $request->location,
+        'gender' => $request->gender,
+        'additional_phone' => $request->additional_phone,
+        'full_address' => $request->full_address,
+        'id_number' => $request->id_number,
+        'nationality' => $request->nationality,
+        'facebook_profile' => $request->facebook_profile,
+        'blood_group' => $request->blood_group,
+        'date_of_birth' => $request->date_of_birth,
+        'fathers_name' => $request->fathers_name,
+        'mothers_name' => $request->mothers_name,
+        'fathers_phone' => $request->fathers_phone,
+        'mothers_phone' => $request->mothers_phone,
+        'emergency_name' => $request->emergency_name,
+        'emergency_phone' => $request->emergency_phone,
+        'short_description' => $request->short_description,
+        'reasones_to_get_hired' => $request->reasones_to_get_hired,
+        'overview' => $request->overview,
+        ]);
+
+        return redirect(route('tutor_dashboard')."?tab=pi");
     }
 }
