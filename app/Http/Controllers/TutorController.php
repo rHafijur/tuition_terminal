@@ -126,4 +126,8 @@ class TutorController extends Controller
 
         return redirect(route('tutor_dashboard')."?tab=pi");
     }
+    public function view_info(){
+        $tutor = auth()->user()->tutor;
+        return view("tutor.view_info",\compact('tutor'));
+    }
 }
