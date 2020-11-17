@@ -26,6 +26,11 @@ Route::prefix('tutor')->group(function () {
 Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
     Route::get('/view_info','TutorController@view_info')->name('tutor_view_info');
+    Route::get('/payments','PaymentController@all')->name('tutor_payments');
+    Route::get('/invoice/{id}','PaymentController@invoice')->name('tutor_invoice');
+    Route::get('/verify_request','VerifiedTutorRequestController@create')->name('tutor_verify_request');
+    Route::post('/verify_request','VerifiedTutorRequestController@create_payment')->name('post_tutor_verify_request');
+
     Route::post('/update_tutoring_info','TutorController@update_ti')->name('update_tutoring_info');
     Route::post('/update_educational_info','TutorController@update_ei')->name('update_educational_info');
     Route::post('/update_personal_info','TutorController@update_pi')->name('update_personal_info');

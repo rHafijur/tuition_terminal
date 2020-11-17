@@ -18,8 +18,8 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('method');
-            $table->string('sent_from');
-            $table->string('sent_to');
+            $table->string('sent_from')->nullable();
+            $table->string('sent_to')->nullable();
             $table->string('transaction_id');
             $table->string('amount');
             $table->string('note')->nullable();
