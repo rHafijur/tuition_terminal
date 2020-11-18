@@ -18,6 +18,8 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
+Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 
 Route::prefix('tutor')->group(function () {
     Route::view('/registration','tutor.registration')->name('tutor_registration');
