@@ -15,8 +15,8 @@ class CreateCertificatesTable extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('tutor_degree_id');
-            $table->foreign('tutor_degree_id')->references('id')->on('tutor_degrees')->onDelete('cascade');
+            $table->unsignedBigInteger('tutor_id');
+            $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
             $table->string('file_path');
             // $table->timestamps();
         });

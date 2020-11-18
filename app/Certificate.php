@@ -9,7 +9,8 @@ class Certificate extends Model
     public $timestamps = false;
     
     protected $fillable=[
-        'tutor_degree_id',
+        'tutor_id',
+        'type',
         'file_path',
     ];
 }

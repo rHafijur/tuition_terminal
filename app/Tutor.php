@@ -72,5 +72,8 @@ class Tutor extends Model
     public function premium_membership_requests(){
         return $this->hasMany("App\PremiumMembershipRequest",'tutor_id');
     }
+    public function certificates(){
+        return $this->hasMany("App\Certificate",'tutor_id');
+    }
     
 }

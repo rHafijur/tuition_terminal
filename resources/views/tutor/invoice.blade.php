@@ -1,4 +1,4 @@
-@extends('tutor.layouts.master')
+@extends('tutor.layouts.master',['title'=>'Invoice - '.$payment->id])
 
 @section('content')
 @push('css')

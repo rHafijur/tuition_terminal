@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Tuition Terminal</title>
+  <title>{{$title}} - Tuition Terminal</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{asset('admin_lte/plugins/fontawesome-free/css/all.min.css')}}">
@@ -141,7 +141,21 @@ to get the desired effect
                   <p>View Info</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_upload_certificate_form')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Upload Certificate</p>
+                </a>
+              </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('tutor_payments')}}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Payments
+              </p>
+            </a>
           </li>
         </ul>
 
@@ -163,17 +177,21 @@ to get the desired effect
                   <p>Verify Request</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('tutor_featured_request') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Featured Request</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('tutor_premium_request') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Premium Membership Request</p>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
-        <li class="nav-item">
-          <a href="{{route('tutor_payments')}}" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
-            <p>
-              Payments
-            </p>
-          </a>
-        </li>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -186,6 +204,12 @@ to get the desired effect
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('tutor_change_password') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Change Password</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -211,13 +235,13 @@ to get the desired effect
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">{{$title}}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            {{-- <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
+            </ol> --}}
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -267,5 +291,15 @@ to get the desired effect
 <script src="{{asset('admin_lte/dist/js/demo.js')}}"></script>
 {{-- <script src="{{asset('admin_lte/dist/js/pages/dashboard3.js')}}"></script> --}}
 @stack('js')
+@if (session('success'))
+<script>
+  $(document).Toasts('create', {
+        class: 'bg-success', 
+        title: 'Success',
+        subtitle: '',
+        body: '{{session("success")}}'
+      })
+</script>
+@endif
 </body>
 </html>

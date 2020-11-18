@@ -1,4 +1,4 @@
-@extends('tutor.layouts.master')
+@extends('tutor.layouts.master',['title'=>'Edit Tutor Information'])
 
 @section('content')
 <div class="row">
@@ -13,28 +13,28 @@
 
           <h3 class="profile-username text-center">{{$tutor->user->name}}</h3>
 
-          <p class="text-muted text-center">Software Engineer</p>
+          {{-- <p class="text-muted text-center">Software Engineer</p> --}}
 
           <ul class="list-group list-group-unbordered mb-3">
             <li class="list-group-item">
-              <b>Followers</b> <a class="float-right">1,322</a>
+              <b>Verified</b> <a class="float-right">{{$tutor->is_verified==0?"No":"Yes"}}</a>
             </li>
             <li class="list-group-item">
-              <b>Following</b> <a class="float-right">543</a>
+              <b>Featured</b> <a class="float-right">{{$tutor->is_featured==0?"No":"Yes"}}</a>
             </li>
             <li class="list-group-item">
-              <b>Friends</b> <a class="float-right">13,287</a>
+              <b>Premium Member</b> <a class="float-right">{{$tutor->is_premium==0?"No":"Yes"}}</a>
             </li>
           </ul>
 
-          <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+          {{-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> --}}
         </div>
         <!-- /.card-body -->
       </div>
       <!-- /.card -->
 
       <!-- About Me Box -->
-      <div class="card card-primary">
+      {{-- <div class="card card-primary">
         <div class="card-header">
           <h3 class="card-title">About Me</h3>
         </div>
@@ -71,7 +71,7 @@
           <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
         </div>
         <!-- /.card-body -->
-      </div>
+      </div> --}}
       <!-- /.card -->
     </div>
     <!-- /.col -->

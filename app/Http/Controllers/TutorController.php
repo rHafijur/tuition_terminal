@@ -14,6 +14,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CityResource;
+use App\Certificate;
 
 class TutorController extends Controller
 {
@@ -75,7 +76,7 @@ class TutorController extends Controller
         $tutor->prefered_locations()->sync($request->prefered_locations);
         $tutor->teaching_methods()->sync($request->teaching_methods);
 
-        return redirect(route('tutor_dashboard')."?tab=ti");
+        return redirect(route('tutor_dashboard')."?tab=ti")->with('success','Information Updated Successfully');
     }
     public function update_ei(Request $request){
         // dd($request);
@@ -97,7 +98,7 @@ class TutorController extends Controller
         }else{
             $tutor->tutor_degree()->update($degree_data);
         }
-        return redirect(route('tutor_dashboard')."?tab=ei");
+        return redirect(route('tutor_dashboard')."?tab=ei")->with('success','Information Updated Successfully');
     }
     public function update_pi(Request $request){
         // dd($request);
@@ -124,10 +125,31 @@ class TutorController extends Controller
         'overview' => $request->overview,
         ]);
 
-        return redirect(route('tutor_dashboard')."?tab=pi");
+        return redirect(route('tutor_dashboard')."?tab=pi")->with('success','Information Updated Successfully');
     }
     public function view_info(){
         $tutor = auth()->user()->tutor;
         return view("tutor.view_info",\compact('tutor'));
+    }
+    public function change_password(){
+        return view('tutor.change_password');
+    }
+    public function update_password(Request $request){
+        $request->validate([
+            'password' => 'required|confirmed|max:100|min:6',
+        ]);
+        $user = auth()->user();
+        $user->password= Hash::make($request->password);
+        $user->save();
+        return redirect()->back()->with('success','Password Successfully Changed');
+    }
+    public function upload_certificate(Request $request){
+        $path = $request->file('certificate')->store('certificates');
+        // dd($request);
+        auth()->user()->tutor->certificates()->create([
+            'type' => $request->type,
+            'file_path'=>$path
+        ]);
+        return redirect()->back()->with('success','File uploaded successfully');
     }
 }

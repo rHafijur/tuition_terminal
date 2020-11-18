@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
     public function all(){
         $payments=auth()->user()->payments;
-        return view('tutor.payments');
+        return view('tutor.payments',compact('payments'));
     }
     public function invoice($id){
         $payment=Payment::findOrFail($id);

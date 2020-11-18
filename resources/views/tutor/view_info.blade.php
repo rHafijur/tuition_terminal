@@ -1,4 +1,4 @@
-@extends('tutor.layouts.master')
+@extends('tutor.layouts.master',['title'=>'Tutor Information'])
 
 @section('content')
 <div class="row">
@@ -15,6 +15,17 @@
 
           <p class="text-muted text-center">{{$tutor->user->phone}}</p>
           <p class="text-muted text-center">{{$tutor->user->email}}</p>
+          <ul class="list-group list-group-unbordered mb-3">
+            <li class="list-group-item">
+              <b>Verified</b> <a class="float-right">{{$tutor->is_verified==0?"No":"Yes"}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Featured</b> <a class="float-right">{{$tutor->is_featured==0?"No":"Yes"}}</a>
+            </li>
+            <li class="list-group-item">
+              <b>Premium Member</b> <a class="float-right">{{$tutor->is_premium==0?"No":"Yes"}}</a>
+            </li>
+          </ul>
         </div>
         <!-- /.card-body -->
       </div>

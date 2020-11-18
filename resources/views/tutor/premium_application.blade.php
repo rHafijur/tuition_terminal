@@ -1,15 +1,15 @@
-@extends('tutor.layouts.master',['title'=>'Verify Tutor Request'])
+@extends('tutor.layouts.master',['title'=>'Premium Membership Request'])
 
 @section('content')
 <div class="row">
     <div class="col-md-12">
 
         <div class="card-header">
-            <h3 class="card-title">Payment Information for Verify Request</h3>
+            <h3 class="card-title">Payment Information for Premium Membership Request</h3>
         </div>
       <div class="card card-primary card-outline">
         <div class="card-body box-profile">
-          <form action="{{route('post_tutor_verify_request')}}" method="POST">
+          <form action="{{route('post_tutor_premium_request')}}" method="POST">
             @csrf
             <div class="form-group">
                 <label>Transaction Method</label>
