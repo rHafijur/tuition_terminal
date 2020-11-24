@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notification;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -57,5 +58,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function tutor(){
         return $this->hasOne("App\Tutor",'user_id');
+    }
+    public function sendNotification($subject,$details,$link){
+        Notification::create([
+            'user_id' => $this->id,
+            'subject' => $subject,
+            'details' => $details,
+            'link' => $link,
+        ]);
     }
 }

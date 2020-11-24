@@ -35,11 +35,12 @@ class TutorController extends Controller
             'cb_roles_id' => 3,
             'password' => Hash::make($request->password),
         ]);
-        $tutor_id=Tutor::create([
+        $tutor=Tutor::create([
             'user_id'  => $user->id
-        ])->id;
+        ]);
+        $tutor->save_tutor_id();
         TutorPersonalInformation::create([
-            'tutor_id'  => $tutor_id
+            'tutor_id'  => $tutor->id
             // 'tutor_id'  => 1
         ]);
         $user->sendEmailVerificationNotification();
