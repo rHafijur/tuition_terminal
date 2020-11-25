@@ -2,8 +2,6 @@
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
-use App\Tutor;
-
 class AdminTutorsController extends CBController {
 
 
@@ -13,7 +11,9 @@ class AdminTutorsController extends CBController {
         $this->setPermalink("tutors");
         $this->setPageTitle("Tutors");
 
-        $this->addText("Expected Salary","expected_salary")->strLimit(150)->maxLength(255);
+        $this->addSelectTable("City","city_id",["table"=>"cities","value_option"=>"name","display_option"=>"name","sql_condition"=>""])->filterable(true);
+		$this->addSelectTable("Location","location_id",["table"=>"locations","value_option"=>"id","display_option"=>"name","sql_condition"=>""])->filterable(true);
+		$this->addText("Expected Salary","expected_salary")->filterable(true)->strLimit(150)->maxLength(255);
 		$this->addText("Tutoring Experience","tutoring_experience")->strLimit(150)->maxLength(255);
 		$this->addWysiwyg("Tutoring Experience Detail","tutoring_experience_details")->strLimit(150);
 		$this->addText("Is Verified","is_verified")->strLimit(150)->maxLength(255);
