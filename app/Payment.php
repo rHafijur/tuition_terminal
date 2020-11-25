@@ -14,6 +14,7 @@ class Payment extends Model
         'transaction_id',
         'amount',
         'note',
+        'confirmed',
     ];
 
     public function user(){
