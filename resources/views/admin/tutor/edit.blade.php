@@ -5,7 +5,7 @@
         </p>
     <div class="box box-default">
         <div class="box-header with-border">
-            <h1 class="box-title"><i class="fa fa-eye"></i> New tutor</h1>
+            <h1 class="box-title"><i class="fa fa-eye"></i> Edit tutor</h1>
             @if (session('success'))
                 <div class="alert alert-info">
                     {{ session('success') }}
@@ -15,11 +15,12 @@
         <div class="box-body"> 
             <div class="row d-flex justify-content-center">
                <div class="col-md-6">
-                <form action="{{ action('AdminTutorsController@postNew') }}" method="post">
+                <form action="{{ action('AdminTutorsController@postEdit') }}" method="post">
                     @csrf
+                    <input type="hidden" name="id" value="{{$tutor->id}}">
                     <div class="form-group mb-3">
                         <label>Full name</label>
-                        <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Full name">
+                        <input type="text" name="name" value="{{ $tutor->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Full name">
                         @error('name')
                         <div class="invalid-feedback">
                             {{$message}}
@@ -28,7 +29,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email">
+                        <input type="email" name="email" value="{{ $tutor->email }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email">
                         @error('email')
                         <div class="invalid-feedback">
                             {{$message}}
@@ -37,21 +38,17 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Phone</label>
-                        <input type="phone" name="phone" value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" placeholder="phone">
+                        <input type="phone" name="phone" value="{{ $tutor->phone }}" class="form-control @error('phone') is-invalid @enderror" placeholder="phone">
                         @error('phone')
                         <div class="invalid-feedback">
                             {{$message}}
                             </div>
                         @enderror
                     </div>
-                    <div class="form-group mb-3">
-                        <label>Password</label>
-                        <input type="text" disabled  class="form-control" value="Tuition123#" placeholder="Password">
-                    </div>
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-4">
-                        <button id="submit" type="submit" class="btn btn-primary btn-block">Save Tutor</button>
+                        <button id="submit" type="submit" class="btn btn-primary btn-block">Update Tutor</button>
                         </div>
                         <!-- /.col -->
                     </div>
