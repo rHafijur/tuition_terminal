@@ -59,6 +59,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tutor(){
         return $this->hasOne("App\Tutor",'user_id');
     }
+    public function parents(){
+        return $this->hasOne("App\Parents",'user_id');
+    }
     public function sendNotification($subject,$details,$link){
         Notification::create([
             'user_id' => $this->id,
