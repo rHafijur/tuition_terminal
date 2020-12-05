@@ -58,7 +58,7 @@ class TutorController extends Controller
             'tutor_id'  => $tutor->id
             // 'tutor_id'  => 1
         ]);
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
         auth()->attempt([
             'email' => $request->email,
             'password' => $request->password,
