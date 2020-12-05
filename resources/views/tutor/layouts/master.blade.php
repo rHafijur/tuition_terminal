@@ -111,7 +111,7 @@ to get the desired effect
           {{-- <img src="#" class="img-circle elevation-2" alt="User Image"> --}}
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{auth()->user()->name}}</a>
+          <a href="#" class="d-block">{{auth()->user()->name}} {!!auth()->user()->tutor->getStatusIcon()!!}</a>
         </div>
       </div>
 

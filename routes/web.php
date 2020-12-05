@@ -15,9 +15,15 @@ Auth::routes(['verify' => true]);
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/prof', function () {
+    auth()->user()->tutor->getProfileComplete();
+});
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+Route::get('/otp','Auth\OtpVerificationController@index')->name('otp');
+Route::post('/otp/verify','Auth\OtpVerificationController@verify')->name('otp.verify');
+Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.resend');
 Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 

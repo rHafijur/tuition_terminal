@@ -58,6 +58,9 @@
           </div>
         </div>
         <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="addon-wrapping">+88</span>
+          </div>
           <input type="phone" name="phone" value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" placeholder="phone">
           <div class="input-group-append">
             <div class="input-group-text">

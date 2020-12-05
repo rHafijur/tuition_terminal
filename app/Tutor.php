@@ -22,6 +22,114 @@ class Tutor extends Model
         'available_from',
     ];
 
+    public function getProfileComplete(){
+        $count=0;
+        $info=$this->tutor_personal_information;
+        if($this->city_id!=null){
+            $count++;
+        }
+        if($this->location_id!=null){
+            $count++;
+        }
+        if($this->expected_salary!=null){
+            $count+=2;
+        }
+        if($this->tutoring_experience!=null){
+            $count+=3;
+        }
+        if($this->tutoring_experience_details!=null){
+            $count+=5;
+        }
+        if($this->available_to!=null){
+            $count++;
+        }
+        if($this->available_from!=null){
+            $count++;
+        }
+        if($info->city_id!=null){
+            $count++;
+        }
+        if($info->location_id!=null){
+            $count++;
+        }
+        if($info->gender!=null){
+            $count+=2;
+        }
+        if($info->additional_phone!=null){
+            $count++;
+        }
+        if($info->full_address!=null){
+            $count+=2;
+        }
+        if($info->id_number!=null){
+            $count+=5;
+        }
+        if($info->nationality!=null){
+            $count++;
+        }
+        if($info->facebook_profile!=null){
+            $count+=2;
+        }
+        if($info->blood_group!=null){
+            $count++;
+        }
+        if($info->date_of_birth!=null){
+            $count++;
+        }
+        if($info->fathers_name!=null){
+            $count++;
+        }
+        if($info->mothers_name!=null){
+            $count++;
+        }
+        if($info->fathers_phone!=null){
+            $count++;
+        }
+        if($info->mothers_phone!=null){
+            $count++;
+        }
+        if($info->emergency_name!=null){
+            $count++;
+        }
+        if($info->emergency_phone!=null){
+            $count++;
+        }
+        if($info->reasones_to_get_hired!=null){
+            $count+=5;
+        }
+        if($info->overview!=null){
+            $count+=5;
+        }
+        if($this->tutor_degree!=null){
+            $count+=20;
+        }
+        if(count($this->prefered_locations)>0){
+            $count+=5;
+        }
+        if(count($this->categories)>0){
+            $count+=5;
+        }
+        if(count($this->courses)>0){
+            $count+=5;
+        }
+        if(count($this->course_subjects)>0){
+            $count+=5;
+        }
+        if(count($this->teaching_methods)>0){
+            $count++;
+        }
+        if(count($this->days)>0){
+            $count+=2;
+        }
+        if(count($this->certificates)>0){
+            $count+=10;
+        }
+        $pre=10;
+        $count= ($count / 100) * 90;
+        $total= $pre+$count;
+        return $total;
+    }
+
     public function user(){
         return $this->belongsTo("App\User",'user_id');
     }
@@ -77,7 +185,20 @@ class Tutor extends Model
         return $this->hasMany("App\Certificate",'tutor_id');
     }
 
-
+    public function getStatusIcon(){
+        $tutor=$this;
+        // dd($tutor->is_premium);
+        if($tutor->is_premium==1){
+            return '<i style="color:#D9B351" class="fas fa-star"></i>';
+        }
+        if($tutor->is_featured==1){
+            return '<i style="color:#86f780" class="fas fa-asterisk"></i>';
+        }
+        if($tutor->is_verified==1){
+            return '<i style="color:#007BFF" class="far fa-check-circle"></i>';
+        }
+        return "";
+    }
     public function save_tutor_id(){
         $id=$this->id;
         $mod= $id % 1000000;

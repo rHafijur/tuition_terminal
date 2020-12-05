@@ -23,7 +23,7 @@ class TutorController extends Controller
         $request->validate([
             'name' => 'required|max:100|min:3',
             'email' => 'required|unique:users|max:255',
-            'phone' => 'required|unique:users|max:13|min:11',
+            'phone' => 'required|unique:users|max:11|min:11',
             'password' => 'required|confirmed|max:100|min:6',
         ]);
         // dd($request);
@@ -31,7 +31,7 @@ class TutorController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'sms_otp' => rand(99999,999999),
+            // 'sms_otp' => rand(99999,999999),
             'cb_roles_id' => 3,
             'password' => Hash::make($request->password),
         ]);

@@ -62,6 +62,29 @@ class User extends Authenticatable implements MustVerifyEmail
     public function parents(){
         return $this->hasOne("App\Parents",'user_id');
     }
+    public function sendOtpSms(){
+        $user=$this;
+        $phone=(int) $user->phone;
+        // dd($phone);
+        $user->sms_otp = rand(99999,999999);
+        $user->save();
+        $otp=$user->sms_otp;
+        $response = file_get_contents('http://easybulksmsbd.com/sms/api/v1',
+            false, stream_context_create([
+            'http' => [
+            'method' => 'POST',
+            'header' => 'Content-type: application/x-www-form-urlencoded',
+            'content' => http_build_query([
+            'mobile' => $phone, //use without +880
+            'text' => $otp." is your OTP.\n Tuition Terminal",
+            'email' => 'tuitionterminal24@gmail.com',
+            'api' =>
+            'ROracr8HxWAQvRisAoB3GZVJbvF20pJummI29g7jC6NEQCgH0wKXNngjdFrr'
+            ])
+            ]
+            ]));
+            return $response; //response data type is json
+    }
     public function sendNotification($subject,$details,$link){
         Notification::create([
             'user_id' => $this->id,
