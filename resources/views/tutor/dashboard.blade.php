@@ -11,7 +11,13 @@
             {{-- <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> --}}
           </div>
 
-          <h3 class="profile-username text-center">{{$tutor->user->name}}</h3>
+          <h3 class="profile-username text-center">{{$tutor->user->name}} {!!auth()->user()->tutor->getStatusIcon()!!}</h3>
+          <div class="progress">
+            @php
+                $progress=$tutor->getProfileComplete();
+            @endphp
+            <div class="progress-bar" role="progressbar" style="width: {{$progress}}%;" aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100">{{$progress}}%</div>
+          </div>
 
           {{-- <p class="text-muted text-center">Software Engineer</p> --}}
 
