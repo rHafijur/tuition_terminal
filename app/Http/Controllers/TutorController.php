@@ -18,6 +18,21 @@ use App\Certificate;
 
 class TutorController extends Controller
 {
+    public function registration(){
+        $tutor=null;
+        $categories=null;
+        $categories_collection=null;
+        $courses_collection=null;
+        $city_collection=null;
+        if(auth()->check()){
+            $tutor=auth()->user()->tutor;
+            $categories=Category::all();
+            $categories_collection=CategoryResource::collection($categories);
+            $courses_collection=CourseResource::collection(Course::all());
+            $city_collection=CityResource::collection(City::all());
+        }
+        return view('tutor.registration',compact('tutor','categories','categories_collection','courses_collection','city_collection'));
+    }
     public function create(Request $request){
         // dd($request);
         $request->validate([
@@ -31,7 +46,7 @@ class TutorController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            // 'sms_otp' => rand(99999,999999),
+            'sms_otp' => rand(99999,999999),
             'cb_roles_id' => 3,
             'password' => Hash::make($request->password),
         ]);
@@ -48,7 +63,8 @@ class TutorController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ]);
-        return view('auth.verify');
+        // return view('auth.verify');
+        return redirect(route('tutor_registration')."?tab=pi")->with('success','Tutor Account Created Successfully. Please Complete your profile');
     }
     public function dashboard(){
         $tutor=auth()->user()->tutor;
@@ -127,6 +143,75 @@ class TutorController extends Controller
         ]);
 
         return redirect(route('tutor_dashboard')."?tab=pi")->with('success','Information Updated Successfully');
+    }
+
+    public function ti(Request $request){
+        $tutor = auth()->user()->tutor;
+        $tutor->city_id=$request->city;
+        $tutor->location_id=$request->locations;
+        $tutor->expected_salary=$request->expected_salary;
+        $tutor->tutoring_experience=$request->tutoring_experience;
+        $tutor->tutoring_experience_details=$request->tutoring_experience_details;
+        $tutor->available_from=$request->available_from;
+        $tutor->available_to=$request->available_to;
+        $tutor->save();
+        $tutor->categories()->sync($request->categories);
+        $tutor->courses()->sync($request->courses);
+        $tutor->course_subjects()->sync($request->subjects);
+        $tutor->days()->sync($request->days);
+        $tutor->prefered_locations()->sync($request->prefered_locations);
+        $tutor->teaching_methods()->sync($request->teaching_methods);
+
+        return redirect(route('verifyEmailPage'))->with('success','Information Updated Successfully');
+    }
+    public function ei(Request $request){
+        // dd($request);
+        $tutor = auth()->user()->tutor;
+        $degree_data=[
+            "degree_id" => $request->degree,
+            "degree_title" => $request->degree_title,
+            "institute_id" => $request->institute,
+            "id_no" => $request->id_no,
+            "curriculum_id" => $request->curriculum,
+            "group_or_major" => $request->group_or_major,
+            "passing_year" => $request->passing_year,
+            "gpa" => $request->gpa,
+            "education_board" => $request->education_board,
+            "currently_studying" => $request->currently_studing,
+        ];
+        if($tutor->tutor_degree==null){
+            $tutor->tutor_degree()->create($degree_data);
+        }else{
+            $tutor->tutor_degree()->update($degree_data);
+        }
+        return redirect(route('tutor_registration')."?tab=ti")->with('success','Education Information Saved Successfully');
+    }
+    public function pi(Request $request){
+        // dd($request);
+        $tutor = auth()->user()->tutor;
+        $tutor->tutor_personal_information()->update([
+        'city_id' => $request->city,
+        'location_id' => $request->location,
+        'gender' => $request->gender,
+        'additional_phone' => $request->additional_phone,
+        'full_address' => $request->full_address,
+        'id_number' => $request->id_number,
+        'nationality' => $request->nationality,
+        'facebook_profile' => $request->facebook_profile,
+        'blood_group' => $request->blood_group,
+        'date_of_birth' => $request->date_of_birth,
+        'fathers_name' => $request->fathers_name,
+        'mothers_name' => $request->mothers_name,
+        'fathers_phone' => $request->fathers_phone,
+        'mothers_phone' => $request->mothers_phone,
+        'emergency_name' => $request->emergency_name,
+        'emergency_phone' => $request->emergency_phone,
+        'short_description' => $request->short_description,
+        'reasones_to_get_hired' => $request->reasones_to_get_hired,
+        'overview' => $request->overview,
+        ]);
+
+        return redirect(route('tutor_registration')."?tab=ei")->with('success','Parsonal Information Saved Successfully');
     }
     public function view_info(){
         $tutor = auth()->user()->tutor;

@@ -59,16 +59,19 @@ to get the desired effect
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      @php
+          $notification_count=auth()->user()->notifications()->where('is_seen',0)->get()->count();
+      @endphp
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge">{{$notification_count}}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">{{$notification_count}} Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          {{-- <a href="#" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> 4 new messages
             <span class="float-right text-muted text-sm">3 mins</span>
           </a>
@@ -81,13 +84,13 @@ to get the desired effect
           <a href="#" class="dropdown-item">
             <i class="fas fa-file mr-2"></i> 3 new reports
             <span class="float-right text-muted text-sm">2 days</span>
-          </a>
+          </a> --}}
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <a href="{{route('tutor.notification')}}" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
+        <a class="nav-link" data-widget="control-sidebar" href="#" role="button"><i
             class="fas fa-th-large"></i></a>
       </li>
     </ul>

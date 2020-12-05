@@ -15,12 +15,12 @@ Auth::routes(['verify' => true]);
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/prof', function () {
-    auth()->user()->tutor->getProfileComplete();
-});
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+
+Route::get('/verify_email','Auth\VerificationController@verifyEmailPage')->name('verifyEmailPage');
+
 Route::get('/otp','Auth\OtpVerificationController@index')->name('otp');
 Route::post('/otp/verify','Auth\OtpVerificationController@verify')->name('otp.verify');
 Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.resend');
@@ -28,10 +28,16 @@ Route::get('/login/google','Auth\LoginController@google_login')->name('google_lo
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 
 Route::prefix('tutor')->group(function () {
-    Route::view('/registration','tutor.registration')->name('tutor_registration');
+    Route::get('/registration','TutorController@registration')->name('tutor_registration');
     Route::post('/registration','TutorController@create')->name('create_tutor');
+
+    Route::post('/tutoring_info','TutorController@ti')->name('tutoring_info');
+    Route::post('/educational_info','TutorController@ei')->name('educational_info');
+    Route::post('/personal_info','TutorController@pi')->name('personal_info');
 });
 Route::middleware(['tutor'])->prefix('tutor')->group(function () {
+    Route::get('/notification','NotificationController@tutorIndex')->name('tutor.notification');
+    
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
     Route::get('/view_info','TutorController@view_info')->name('tutor_view_info');
 

@@ -50,8 +50,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone_verified_at' => 'datetime',
     ];
 
-    public function notificatons(){
-        return $this->hasMany("App\Notificaton",'user_id');
+    public function notifications(){
+        return $this->hasMany("App\Notification",'user_id');
     }
     public function payments(){
         return $this->hasMany("App\Payment",'user_id');

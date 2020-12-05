@@ -13,4 +13,8 @@ class Notification extends Model
         'details',
         'is_seen',
     ];
+    public function seen(){
+        $this->is_seen=1;
+        $this->save();
+    }
 }
