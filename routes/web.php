@@ -27,6 +27,13 @@ Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.re
 Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 
+Route::prefix('parent')->group(function () {
+    // Route::get('/registration','TutorController@registration')->name('tutor_registration');
+    // Route::post('/registration','TutorController@create')->name('create_tutor');
+    Route::get('/dashboard','ParentController@dashboard')->name('parent.dashboard');
+    Route::get('/offer/create','JobOfferController@create_offer_form')->name('parent.create_offer_form');
+    Route::post('/offer/create','JobOfferController@create')->name('parent.create_offer');
+});
 Route::prefix('tutor')->group(function () {
     Route::get('/registration','TutorController@registration')->name('tutor_registration');
     Route::post('/registration','TutorController@create')->name('create_tutor');
