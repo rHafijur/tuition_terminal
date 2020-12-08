@@ -31,7 +31,8 @@
                             <td>{{$offer->getStatus()}}</td>
                             <td>{{$offer->isActive()}}</td>
                             <td>
-                                <a href="{{route('parent.edit_offer',['id'=>$offer->id])}}"><button class="btn btn-info">Edit</button></a>
+                                <a href="{{route('parent.edit_offer',['id'=>$offer->id])}}"><button class="btn btn-primary">Edit</button></a>
+                                <a href="{{route('parent.view_offer',['id'=>$offer->id])}}"><button class="btn btn-info">View</button></a>
                             </td>
                         </tr>
                     @endforeach

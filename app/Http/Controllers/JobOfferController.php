@@ -57,6 +57,13 @@ class JobOfferController extends Controller
         // $jobOffer->teaching_methods()->sync($request->teaching_method_ids);
         return redirect()->back()->with('success','Job offer has been created successfully');
     }
+    public function view($id){
+        $offer=auth()->user()->parents->job_offers()->where('id',$id)->first();
+        if($offer==null){
+            \abort(500);
+        }
+        return view('parent.view_offer',compact('offer'));
+    }
     public function edit($id){
         $offer=auth()->user()->parents->job_offers()->where('id',$id)->first();
         if($offer==null){
@@ -91,6 +98,7 @@ class JobOfferController extends Controller
         $offer->requirements = $request->requirements;
         $offer->hiring_from = $request->hiring_from;
         $offer->save();
+        $offer->course_subjects()->sync($request->course_subject_ids);
         return redirect()->back()->with('success','Job offer has been updated successfully');
     }
 }

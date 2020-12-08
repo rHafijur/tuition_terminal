@@ -144,27 +144,7 @@ to get the desired effect
                   <p>Create Job Offer</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{route('tutor_view_info')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>View Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('tutor_upload_certificate_form')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Upload Certificate</p>
-                </a>
-              </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('tutor_payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Payments
-              </p>
-            </a>
           </li>
         </ul>
 
@@ -175,32 +155,27 @@ to get the desired effect
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-setting-alt"></i>
               <p>
-                Special Application
+                Profile
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('tutor_verify_request') }}" class="nav-link">
+                <a href="{{ route('parent_profile') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Verify Request</p>
+                  <p>View Profile</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('tutor_featured_request') }}" class="nav-link">
+                <a href="{{ route('parent_edit_profile') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Featured Request</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('tutor_premium_request') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Premium Membership Request</p>
+                  <p>Edit Profile</p>
                 </a>
               </li>
             </ul>
           </li>
         </ul>
+
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -214,7 +189,7 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('tutor_change_password') }}" class="nav-link">
+                <a href="{{ route('parent_change_password') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Change Password</p>
                 </a>

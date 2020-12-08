@@ -34,8 +34,14 @@ Route::prefix('parent')->group(function () {
     Route::get('/offer/all','JobOfferController@all')->name('parent.all_offer');
     Route::get('/offer/create','JobOfferController@create_offer_form')->name('parent.create_offer_form');
     Route::post('/offer/create','JobOfferController@create')->name('parent.create_offer');
+    Route::get('/offer/view/{id}','JobOfferController@view')->name('parent.view_offer');
     Route::get('/offer/edit/{id}','JobOfferController@edit')->name('parent.edit_offer');
     Route::post('/offer/update/','JobOfferController@update')->name('parent.update_offer');
+    Route::get('/change_password','ParentController@change_password')->name('parent_change_password');
+    Route::post('/change_password','ParentController@update_password')->name('parent_update_password');
+    Route::get('/profile','ParentController@profile')->name('parent_profile');
+    Route::get('/edit_profile','ParentController@edit_profile')->name('parent_edit_profile');
+    Route::post('/edit_profile','ParentController@update_profile')->name('parent_update_profile');
 });
 Route::prefix('tutor')->group(function () {
     Route::get('/registration','TutorController@registration')->name('tutor_registration');
