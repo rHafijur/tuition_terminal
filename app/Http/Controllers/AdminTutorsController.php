@@ -36,7 +36,7 @@ class AdminTutorsController extends CBController {
 	}
 	public function postDelete(){
 		if(!module()->canDelete()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
-		Tutor::find(request()->id)->delete();
+		Tutor::find(request()->id)->user->delete();
 		return redirect()->back()->with('success',"Tuter deleted successfully");
 	}
 	public function getSms($id){
@@ -57,7 +57,7 @@ class AdminTutorsController extends CBController {
 		$user->email=$request->email;
 		$user->phone=$request->phone;
 		$user->save();
-		return redirect()->back()->with('success',"Tuter's data Updated successfully");
+		return redirect()->back()->with('success',"Tutor's data Updated successfully");
 	}
 	public function postBulkSms(){
 		$request=request();
