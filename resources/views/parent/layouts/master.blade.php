@@ -133,6 +133,12 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{route('parent.all_offer')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>All Job Offers</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{route('parent.create_offer_form')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create Job Offer</p>

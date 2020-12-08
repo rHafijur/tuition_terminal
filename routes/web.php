@@ -31,8 +31,11 @@ Route::prefix('parent')->group(function () {
     // Route::get('/registration','TutorController@registration')->name('tutor_registration');
     // Route::post('/registration','TutorController@create')->name('create_tutor');
     Route::get('/dashboard','ParentController@dashboard')->name('parent.dashboard');
+    Route::get('/offer/all','JobOfferController@all')->name('parent.all_offer');
     Route::get('/offer/create','JobOfferController@create_offer_form')->name('parent.create_offer_form');
     Route::post('/offer/create','JobOfferController@create')->name('parent.create_offer');
+    Route::get('/offer/edit/{id}','JobOfferController@edit')->name('parent.edit_offer');
+    Route::post('/offer/update/','JobOfferController@update')->name('parent.update_offer');
 });
 Route::prefix('tutor')->group(function () {
     Route::get('/registration','TutorController@registration')->name('tutor_registration');

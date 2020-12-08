@@ -15,6 +15,10 @@ use App\Http\Resources\CityResource;
 
 class JobOfferController extends Controller
 {
+    public function all(){
+        $offers=auth()->user()->parents->job_offers()->paginate('10');
+        return view('parent.all_offer',compact('offers'));
+    }
     public function create_offer_form(){
         $categories=Category::all();
         $courses=Course::all();
@@ -52,5 +56,41 @@ class JobOfferController extends Controller
         $jobOffer->course_subjects()->sync($request->course_subject_ids);
         // $jobOffer->teaching_methods()->sync($request->teaching_method_ids);
         return redirect()->back()->with('success','Job offer has been created successfully');
+    }
+    public function edit($id){
+        $offer=auth()->user()->parents->job_offers()->where('id',$id)->first();
+        if($offer==null){
+            \abort(500);
+        }
+        $categories=Category::all();
+        $courses=Course::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+        return view('parent.edit_offer',compact('offer','courses','categories','categories_collection','courses_collection','city_collection'));
+    }
+    public function update(Request $request){
+        $offer=auth()->user()->parents->job_offers()->where('id',$request->id)->first();
+        $offer->parent_id = auth()->user()->parents->id;
+        $offer->category_id = $request->category_id;
+        $offer->course_id = $request->course_id;
+        $offer->city_id = $request->city_id;
+        $offer->location_id = $request->location_id;
+        $offer->teaching_method_id = $request->teaching_method_id;
+        $offer->name = $request->name;
+        $offer->phone = $request->phone;
+        $offer->address = $request->address;
+        $offer->days_in_week = $request->days_in_week;
+        $offer->time = $request->time;
+        $offer->min_salary = $request->min_salary;
+        $offer->max_salary = $request->max_salary;
+        $offer->student_gender = $request->student_gender;
+        $offer->tutor_gender = $request->tutor_gender;
+        $offer->name_of_institute = $request->name_of_institute;
+        $offer->number_of_students = $request->number_of_students;
+        $offer->requirements = $request->requirements;
+        $offer->hiring_from = $request->hiring_from;
+        $offer->save();
+        return redirect()->back()->with('success','Job offer has been updated successfully');
     }
 }

@@ -53,4 +53,18 @@ class JobOffer extends Model
     public function teaching_method(){
         return $this->belongsTo("App\TeachingMethod",'teaching_method_id');
     }
+    public function isActive(){
+        if($this->is_active==1){
+            return 'Yes';
+        }
+        return 'No';
+    }
+    public function getStatus(){
+        if($this->status== -1){
+            return 'Pending';
+        }else if($this->status== 0){
+            return 'Canceled';
+        }
+        return 'Approved';
+    }
 }
