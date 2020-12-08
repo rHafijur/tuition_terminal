@@ -36,6 +36,7 @@ Route::prefix('parent')->group(function () {
     Route::post('/offer/create','JobOfferController@create')->name('parent.create_offer');
     Route::get('/offer/view/{id}','JobOfferController@view')->name('parent.view_offer');
     Route::get('/offer/edit/{id}','JobOfferController@edit')->name('parent.edit_offer');
+    Route::get('/offer/matched_tutors/{id}','JobOfferController@matched_tutors')->name('parent.matched_tutors');
     Route::post('/offer/update/','JobOfferController@update')->name('parent.update_offer');
     Route::get('/change_password','ParentController@change_password')->name('parent_change_password');
     Route::post('/change_password','ParentController@update_password')->name('parent_update_password');

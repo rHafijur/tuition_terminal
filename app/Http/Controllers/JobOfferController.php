@@ -8,10 +8,13 @@ use App\JobOffer;
 use App\Category;
 use App\Course;
 use App\City;
+use App\Tutor;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CityResource;
+
+use DB as DB;
 
 class JobOfferController extends Controller
 {
@@ -100,5 +103,36 @@ class JobOfferController extends Controller
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
         return redirect()->back()->with('success','Job offer has been updated successfully');
+    }
+    public function matched_tutors($id){
+        $offer=auth()->user()->parents->job_offers()->where('id',$id)->first();
+        if($offer==null){
+            \abort(500);
+        }
+        $tutors = Tutor::where('city_id',$offer->city_id)
+        ->whereBetween('expected_salary',[$offer->min_salary,$offer->max_salary])
+        ->whereHas('categories',function ($q) use($offer){
+            $q->where('id',$offer->category_id);
+        })
+        ->whereHas('courses',function ($q) use($offer){
+            $q->where('id',$offer->course_id);
+        })
+        ->whereHas('course_subjects',function ($q) use($offer){
+            $ids=[];
+            foreach($offer->course_subjects as $cs){
+                $ids[]=$cs->id;
+            }
+            $q->whereIn('id',$ids);
+        })
+        ->whereHas('teaching_methods',function ($q) use($offer){
+            $q->where('id',$offer->teaching_method_id);
+        })
+        ->whereHas('tutor_personal_information',function ($q) use($offer){
+            $q->where('gender',$offer->tutor_gender);
+        });
+        
+        // dd($tutors->get());
+        $tutors= $tutors->get();
+        return view('parent.matched_tutors',compact('tutors'));
     }
 }
