@@ -20,7 +20,10 @@ class TutorDegree extends Model
         'currently_studying',
         'id_no',
         'degree_title',
-        'degree_title',
+        'study_type_id',
+        'department',
+        'university_type',
+        'year_or_semester',
     ];
 
     public function tutor(){
@@ -34,6 +37,9 @@ class TutorDegree extends Model
     }
     public function degree(){
         return $this->belongsTo("App\Degree",'degree_id');
+    }
+    public function study_type(){
+        return $this->belongsTo("App\StudyType",'study_type_id');
     }
     public function certificates(){
         return $this->hasMany("App\Certificate",'tutor_degree_id');
