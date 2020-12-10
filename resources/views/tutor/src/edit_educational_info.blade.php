@@ -23,7 +23,7 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Institute</label>
-                        <select name="institute[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -42,7 +42,7 @@
                   <div class="col">
                     <div  class="form-group">
                       <label>Curriculum</label>
-                      <select name="curriculum[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="curriculum[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         <option value="">Select Curriculum</option>
                         @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
                         @php
@@ -63,7 +63,7 @@
                   <div class="col">
                     <div class="form-group">
                         <label>Board </label>
-                        <select name="education_board[6]" class="form-control">
+                        <select required name="education_board[6]" class="form-control">
                           <option value="">Select Board</option>
                           <option @if($ssc!=null && $ssc->education_board=="Barisal") selected @endif value="Barisal">Barisal</option>
                           <option @if($ssc!=null && $ssc->education_board=="Chittagong") selected @endif value="Chittagong">Chittagong</option>
@@ -82,7 +82,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Group </label>
-                      <select name="group_or_major[6]" class="form-control">
+                      <select required name="group_or_major[6]" class="form-control">
                         <option value="">Select Group</option>
                         <option @if($ssc!=null && $ssc->group_or_major=="Arts") selected @endif value="Arts">Arts</option>
                         <option @if($ssc!=null && $ssc->group_or_major=="Commerce") selected @endif value="Commerce">Commerce</option>
@@ -95,13 +95,13 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Passing Year </label>
-                        <input type="text" value="{{$ssc!=null?$ssc->passing_year:''}}"  class="form-control" name="passing_year[6]">
+                        <input required type="text" value="{{$ssc!=null?$ssc->passing_year:''}}"  class="form-control" name="passing_year[6]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Result</label>
-                        <input value="{{$ssc!=null?$ssc->gpa:''}}" type="text"  class="form-control" name="gpa[6]">
+                        <input required value="{{$ssc!=null?$ssc->gpa:''}}" type="text"  class="form-control" name="gpa[6]">
                       </div>
                   </div>
                 </div>
@@ -120,7 +120,7 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Institute</label>
-                        <select name="institute[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -139,7 +139,7 @@
                   <div class="col">
                     <div  class="form-group">
                       <label>Curriculum</label>
-                      <select name="curriculum[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="curriculum[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         <option value="">Select Curriculum</option>
                         @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
                         @php
@@ -160,7 +160,7 @@
                   <div class="col">
                     <div class="form-group">
                         <label>Board </label>
-                        <select name="education_board[5]" class="form-control">
+                        <select required name="education_board[5]" class="form-control">
                           <option value="">Select Board</option>
                           <option @if($hsc!=null && $hsc->education_board=="Barisal") selected @endif value="Barisal">Barisal</option>
                           <option @if($hsc!=null && $hsc->education_board=="Chittagong") selected @endif value="Chittagong">Chittagong</option>
@@ -179,7 +179,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Group </label>
-                      <select name="group_or_major[5]" class="form-control">
+                      <select required name="group_or_major[5]" class="form-control">
                         <option value="">Select Group</option>
                         <option @if($hsc!=null && $hsc->group_or_major=="Arts") selected @endif value="Arts">Arts</option>
                         <option @if($hsc!=null && $hsc->group_or_major=="Commerce") selected @endif value="Commerce">Commerce</option>
@@ -192,13 +192,13 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Passing Year </label>
-                        <input type="text" value="{{$hsc!=null?$hsc->passing_year:''}}"  class="form-control" name="passing_year[5]">
+                        <input required type="text" value="{{$hsc!=null?$hsc->passing_year:''}}"  class="form-control" name="passing_year[5]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Result</label>
-                        <input value="{{$hsc!=null?$hsc->gpa:''}}" type="text"  class="form-control" name="gpa[5]">
+                        <input required value="{{$hsc!=null?$hsc->gpa:''}}" type="text"  class="form-control" name="gpa[5]">
                       </div>
                   </div>
                 </div>
@@ -218,7 +218,7 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Institute</label>
-                        <select name="institute[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -237,7 +237,7 @@
                   <div class="col">
                     <div  class="form-group">
                       <label>University Type</label>
-                      <select name="university_type[4]"  class="form-control">
+                      <select required name="university_type[4]"  class="form-control">
                         <option value="">Select University Type</option>
                         <option @if($bachelors!=null && $bachelors->university_type=="National University") selected @endif value="National University">National University</option>
                         <option @if($bachelors!=null && $bachelors->university_type=="Private University") selected @endif value="Private University">Private University</option>
@@ -250,7 +250,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Study Type</label>
-                      <select name="study_type_id[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="study_type_id[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         <option value="">Select Study Type</option>
                         @foreach (App\StudyType::OrderBy('title','asc')->get() as $study_type)
                         @php
@@ -269,7 +269,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Department</label>
-                      <input type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control">
+                      <input required type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control">
                     </div>
                   </div>
                 </div>
@@ -277,13 +277,13 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>CGPA / Current CGPA</label>
-                        <input value="{{$bachelors!=null?$bachelors->gpa:''}}" type="text"  class="form-control" name="gpa[4]">
+                        <input required value="{{$bachelors!=null?$bachelors->gpa:''}}" type="text"  class="form-control" name="gpa[4]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Semester / Year</label>
-                        <input type="text" value="{{$bachelors!=null?$bachelors->year_or_semester:''}}"  class="form-control" name="year_or_semester[4]">
+                        <input required type="text" value="{{$bachelors!=null?$bachelors->year_or_semester:''}}"  class="form-control" name="year_or_semester[4]">
                       </div>
                   </div>
                 </div>
@@ -310,7 +310,7 @@
                 @endphp
                 <div class="card-tools">
                   <div class="custom-control custom-checkbox checkbox-lg align-middle">
-                    <input @if($masters!=null) checked @endif onchange="hasMasterChanged()" type="checkbox" value="1" class="custom-control-input" id="has_masters">
+                    <input @if($masters!=null) checked @endif onchange="hasMasterChanged()" type="checkbox" value="1" class="custom-control-input" name="has_masters" id="has_masters">
                     <label class="custom-control-label" for="has_masters">If Applicable</label>
                   </div>
                 </div>
@@ -320,7 +320,7 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>Institute</label>
-                        <select name="institute[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -339,7 +339,7 @@
                   <div class="col">
                     <div  class="form-group">
                       <label>University Type</label>
-                      <select name="university_type[3]"  class="form-control">
+                      <select required name="university_type[3]"  class="form-control">
                         <option value="">Select University Type</option>
                         <option @if($masters!=null && $masters->university_type=="National University") selected @endif value="National University">National University</option>
                         <option @if($masters!=null && $masters->university_type=="Private University") selected @endif value="Private University">Private University</option>
@@ -352,7 +352,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Study Type</label>
-                      <select name="study_type_id[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="study_type_id[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         <option value="">Select Study Type</option>
                         @foreach (App\StudyType::OrderBy('title','asc')->get() as $study_type)
                         @php
@@ -371,7 +371,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Department</label>
-                      <input type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control">
+                      <input required type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control">
                     </div>
                   </div>
                 </div>
@@ -379,13 +379,13 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>CGPA / Current CGPA</label>
-                        <input value="{{$masters!=null?$masters->gpa:''}}" type="text"  class="form-control" name="gpa[3]">
+                        <input required value="{{$masters!=null?$masters->gpa:''}}" type="text"  class="form-control" name="gpa[3]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Semester / Year</label>
-                        <input type="text" value="{{$masters!=null?$masters->year_or_semester:''}}"  class="form-control" name="year_or_semester[3]">
+                        <input required type="text" value="{{$masters!=null?$masters->year_or_semester:''}}"  class="form-control" name="year_or_semester[3]">
                       </div>
                   </div>
                 </div>

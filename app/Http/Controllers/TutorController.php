@@ -130,16 +130,18 @@ class TutorController extends Controller
             'university_type' => $request->university_type[4],
             'year_or_semester' => $request->year_or_semester[4],
         ];
-        $masters_data=[
-            "degree_id" => 3,
-            "institute_id" => $request->institute[3],
-            "gpa" => $request->gpa[3],
-            "currently_studying" => $request->currently_studing[3],
-            'study_type_id' => $request->study_type_id[3],
-            'department' => $request->department[3],
-            'university_type' => $request->university_type[3],
-            'year_or_semester' => $request->year_or_semester[3],
-        ];
+        if($request->has_masters==1){
+            $masters_data=[
+                "degree_id" => 3,
+                "institute_id" => $request->institute[3],
+                "gpa" => $request->gpa[3],
+                "currently_studying" => $request->currently_studing[3],
+                'study_type_id' => $request->study_type_id[3],
+                'department' => $request->department[3],
+                'university_type' => $request->university_type[3],
+                'year_or_semester' => $request->year_or_semester[3],
+            ];
+        }
         if($ssc!=null){
             $ssc->update($ssc_data);
         }else{
@@ -148,7 +150,7 @@ class TutorController extends Controller
         if($hsc!=null){
             $hsc->update($hsc_data);
         }else{
-            $tutor->tutor_degrees()->create($ssc_data);
+            $tutor->tutor_degrees()->create($hsc_data);
         }
         if($bachelors!=null){
             $bachelors->update($bachelors_data);
@@ -156,16 +158,16 @@ class TutorController extends Controller
             $tutor->tutor_degrees()->create($bachelors_data);
         }
         if($masters!=null){
-            $masters->update($masters_data);
+            if($request->has_masters==null){
+                $masters->delete();
+            }else{
+                $masters->update($masters_data);
+            }
         }else{
-            $tutor->tutor_degrees()->create($masters_data);
+            if($request->has_masters==1){
+                $tutor->tutor_degrees()->create($masters_data);
+            }
         }
-        // dd($bachelors_data);
-        // if($tutor->tutor_degree==null){
-        //     $tutor->tutor_degree()->create($degree_data);
-        // }else{
-        //     $tutor->tutor_degree()->update($degree_data);
-        // }
         return redirect(route('tutor_dashboard')."?tab=ei")->with('success','Information Updated Successfully');
     }
     public function update_pi(Request $request){
@@ -218,23 +220,77 @@ class TutorController extends Controller
     public function ei(Request $request){
         // dd($request);
         $tutor = auth()->user()->tutor;
-        $degree_data=[
-            "degree_id" => $request->degree,
-            "degree_title" => $request->degree_title,
-            "institute_id" => $request->institute,
-            "id_no" => $request->id_no,
-            "curriculum_id" => $request->curriculum,
-            "group_or_major" => $request->group_or_major,
-            "passing_year" => $request->passing_year,
-            "gpa" => $request->gpa,
-            "education_board" => $request->education_board,
-            "currently_studying" => $request->currently_studing,
+        $ssc=$tutor->tutor_degrees()->where('degree_id',6)->first();
+        $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
+        $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
+        $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+        $ssc_data=[
+            "degree_id" => 6,
+            "institute_id" => $request->institute[6],
+            "curriculum_id" => $request->curriculum[6],
+            "group_or_major" => $request->group_or_major[6],
+            "passing_year" => $request->passing_year[6],
+            "gpa" => $request->gpa[6],
+            "education_board" => $request->education_board[6],
         ];
-        if($tutor->tutor_degree==null){
-            $tutor->tutor_degree()->create($degree_data);
-        }else{
-            $tutor->tutor_degree()->update($degree_data);
+        $hsc_data=[
+            "degree_id" => 5,
+            "institute_id" => $request->institute[5],
+            "curriculum_id" => $request->curriculum[5],
+            "group_or_major" => $request->group_or_major[5],
+            "passing_year" => $request->passing_year[5],
+            "gpa" => $request->gpa[5],
+            "education_board" => $request->education_board[5],
+        ];
+        $bachelors_data=[
+            "degree_id" => 4,
+            "institute_id" => $request->institute[4],
+            "gpa" => $request->gpa[4],
+            "currently_studying" => $request->currently_studing[4],
+            'study_type_id' => $request->study_type_id[4],
+            'department' => $request->department[4],
+            'university_type' => $request->university_type[4],
+            'year_or_semester' => $request->year_or_semester[4],
+        ];
+        if($request->has_masters==1){
+            $masters_data=[
+                "degree_id" => 3,
+                "institute_id" => $request->institute[3],
+                "gpa" => $request->gpa[3],
+                "currently_studying" => $request->currently_studing[3],
+                'study_type_id' => $request->study_type_id[3],
+                'department' => $request->department[3],
+                'university_type' => $request->university_type[3],
+                'year_or_semester' => $request->year_or_semester[3],
+            ];
         }
+        if($ssc!=null){
+            $ssc->update($ssc_data);
+        }else{
+            $tutor->tutor_degrees()->create($ssc_data);
+        }
+        if($hsc!=null){
+            $hsc->update($hsc_data);
+        }else{
+            $tutor->tutor_degrees()->create($hsc_data);
+        }
+        if($bachelors!=null){
+            $bachelors->update($bachelors_data);
+        }else{
+            $tutor->tutor_degrees()->create($bachelors_data);
+        }
+        if($masters!=null){
+            if($request->has_masters==null){
+                $masters->delete();
+            }else{
+                $masters->update($masters_data);
+            }
+        }else{
+            if($request->has_masters==1){
+                $tutor->tutor_degrees()->create($masters_data);
+            }
+        }
+
         return redirect(route('tutor_registration')."?tab=ti")->with('success','Education Information Saved Successfully');
     }
     public function pi(Request $request){
