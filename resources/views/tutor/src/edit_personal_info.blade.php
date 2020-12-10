@@ -28,7 +28,17 @@
                 <div class="col">
                   <div  class="form-group">
                       <label>Blood Group</label>
-                      <input name="blood_group" type="text" value="{{$personal_info->blood_group}}" class="form-control">
+                      <select name="blood_group" class="form-control">
+                        <option value="">Select Blood Group</option>
+                        <option @if($personal_info->blood_group=="A+") selected @endif value="A+">A+</option>
+                        <option @if($personal_info->blood_group=="A-") selected @endif value="A-">A-</option>
+                        <option @if($personal_info->blood_group=="B+") selected @endif value="B+">B+</option>
+                        <option @if($personal_info->blood_group=="B-") selected @endif value="B-">B-</option>
+                        <option @if($personal_info->blood_group=="O+") selected @endif value="O+">O+</option>
+                        <option @if($personal_info->blood_group=="O-") selected @endif value="O-">O-</option>
+                        <option @if($personal_info->blood_group=="AB+") selected @endif value="AB+">AB+</option>
+                        <option @if($personal_info->blood_group=="AB-") selected @endif value="AB-">AB-</option>
+                      </select>
                     </div>
                 </div>
             </div>
