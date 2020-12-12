@@ -52,7 +52,46 @@
       </div>
       <!-- /.tab-pane -->
       <div class="@if(request()->tab=='profile') active @endif tab-pane" id="profile">
-        {{-- @include('tutor.src.edit_personal_info') --}}
+        <form action="{{route('tutor_update_profile')}}" method="post">
+          @csrf
+          @php
+              $user= auth()->user();
+          @endphp
+        <div class="input-group mb-3">
+          <input type="text" name="name" value="{{ $user->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Full name">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          @error('name')
+            <div class="invalid-feedback">
+                {{$message}}
+              </div>
+            @enderror
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="addon-wrapping">+88</span>
+          </div>
+          <input type="phone" name="phone" value="{{ $user->phone }}" class="form-control @error('phone') is-invalid @enderror" placeholder="phone">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-phone"></span>
+            </div>
+          </div>
+          @error('phone')
+          <div class="invalid-feedback">
+              {{$message}}
+            </div>
+          @enderror
+        </div>
+          <div class="col-4">
+            <button id="submit" type="submit" class="btn btn-primary">Update</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
       </div>
       <!-- /.tab-pane -->
 

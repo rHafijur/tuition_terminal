@@ -62,7 +62,10 @@ Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::post('/tutor_upload_certificate','TutorController@upload_certificate')->name('tutor_upload_certificate');
     
     Route::get('/edit_profile','TutorController@edit_profile')->name('tutor_edit_profile');
+    Route::post('/update_profile','TutorController@update_profile')->name('tutor_update_profile');
     Route::post('/change_password','TutorController@update_password')->name('tutor_update_password');
+    Route::get('/change_profile_picture','TutorController@change_profile_picture')->name('tutor_change_profile_picture');
+    Route::post('/update_profile_picture','TutorController@update_profile_picture')->name('tutor_update_profile_picture');
 
     Route::get('/payments','PaymentController@all')->name('tutor_payments');
     Route::get('/payment_type','PaymentController@types')->name('tutor_payment_type');

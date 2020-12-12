@@ -8,7 +8,10 @@
       <div class="card card-primary card-outline">
         <div class="card-body box-profile">
           <div class="text-center">
-            {{-- <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> --}}
+            @php
+                $user=auth()->user();
+            @endphp
+            <img class="profile-user-img img-fluid img-circle" src="@if($user->photo!=null){{url($user->photo)}}@else {{url("/img/profile.png")}} @endif" alt="User profile picture">
           </div>
 
           <h3 class="profile-username text-center">{{$tutor->user->name}} {!!auth()->user()->tutor->getStatusIcon()!!}</h3>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 use App\User;
 use App\Tutor;
 use App\TutorPersonalInformation;
@@ -339,6 +342,21 @@ class TutorController extends Controller
         }
         return redirect()->back()->with('incorrect_password','Incorrect Password');
     }
+    public function update_profile(Request $request){
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:100|min:3',
+            'phone' => 'required|max:11|min:11',
+        ]);
+        if ($validator->fails()) {
+            return redirect(route('tutor_edit_profile')."?tab=profile")
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $user = auth()->user();
+        $user->name=$request->name;
+        $user->phone=$request->phone;
+        return redirect(route('tutor_edit_profile')."?tab=profile")->with('success','Profile Updated Successfully');
+    }
     public function upload_certificate(Request $request){
         $path = $request->file('certificate')->store('certificates');
         // dd($request);
@@ -347,5 +365,24 @@ class TutorController extends Controller
             'file_path'=>$path
         ]);
         return redirect()->back()->with('success','File uploaded successfully');
+    }
+    public function change_profile_picture(){
+        return view('tutor.upload_profile_picture');
+    }
+    public function update_profile_picture(Request $request){
+        $base64_str = substr($request->image, strpos($request->image, ",")+1);
+        $file =base64_decode($base64_str);
+        $folderName = 'public/uploads/';
+        $safeName = Str::random(20).'.'.'png';
+        $destinationPath = public_path() . $folderName;
+        $success = file_put_contents(public_path().'/uploads/'.$safeName, $file);
+        if($success){
+            $user=auth()->user();
+            $user->photo="uploads/".$safeName;
+            $user->save();
+            return redirect()->back()->with('success','Profile Picture Updated successfully');
+        }else{
+            return redirect()->back()->with('error','Profile Picture could not be Updated');
+        }
     }
 }

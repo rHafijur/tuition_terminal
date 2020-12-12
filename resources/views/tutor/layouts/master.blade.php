@@ -112,7 +112,10 @@ to get the desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          {{-- <img src="#" class="img-circle elevation-2" alt="User Image"> --}}
+          @php
+              $user=auth()->user();
+          @endphp
+          <img src="@if($user->photo!=null){{url($user->photo)}}@else {{url("/img/profile.png")}} @endif" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{auth()->user()->name}} {!!auth()->user()->tutor->getStatusIcon()!!}</a>
@@ -232,6 +235,12 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ route('tutor_change_profile_picture') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Change Profile Picture</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ route('tutor_edit_profile') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Edit Profile</p>
@@ -325,6 +334,16 @@ to get the desired effect
         title: 'Success',
         subtitle: '',
         body: '{{session("success")}}'
+      })
+</script>
+@endif
+@if (session('error'))
+<script>
+  $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: 'Error',
+        subtitle: '',
+        body: '{{session("error")}}'
       })
 </script>
 @endif
