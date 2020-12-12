@@ -232,9 +232,9 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('tutor_change_password') }}" class="nav-link">
+                <a href="{{ route('tutor_edit_profile') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Change Password</p>
+                  <p>Edit Profile</p>
                 </a>
               </li>
               <li class="nav-item">

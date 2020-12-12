@@ -324,17 +324,20 @@ class TutorController extends Controller
         $tutor = auth()->user()->tutor;
         return view("tutor.view_info",\compact('tutor'));
     }
-    public function change_password(){
-        return view('tutor.change_password');
+    public function edit_profile(){
+        return view('tutor.edit_profile');
     }
     public function update_password(Request $request){
         $request->validate([
             'password' => 'required|confirmed|max:100|min:6',
         ]);
         $user = auth()->user();
-        $user->password= Hash::make($request->password);
-        $user->save();
-        return redirect()->back()->with('success','Password Successfully Changed');
+        if(Hash::check($request->current_password, $user->password)){
+            $user->password= Hash::make($request->password);
+            $user->save();
+            return redirect()->back()->with('success','Password Successfully Changed');
+        }
+        return redirect()->back()->with('incorrect_password','Incorrect Password');
     }
     public function upload_certificate(Request $request){
         $path = $request->file('certificate')->store('certificates');
