@@ -65,6 +65,8 @@ Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::post('/change_password','TutorController@update_password')->name('tutor_update_password');
 
     Route::get('/payments','PaymentController@all')->name('tutor_payments');
+    Route::get('/payment_type','PaymentController@types')->name('tutor_payment_type');
+
     Route::get('/invoice/{id}','PaymentController@invoice')->name('tutor_invoice');
     Route::get('/verify_request','VerifiedTutorRequestController@create')->name('tutor_verify_request');
     Route::post('/verify_request','VerifiedTutorRequestController@create_payment')->name('post_tutor_verify_request');

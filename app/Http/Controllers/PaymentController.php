@@ -15,4 +15,7 @@ class PaymentController extends Controller
         $payment=Payment::findOrFail($id);
         return view('tutor.invoice',compact('payment'));
     }
+    public function types(){
+        return view('tutor.payment_type');
+    }
 }

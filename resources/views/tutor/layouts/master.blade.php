@@ -153,16 +153,39 @@ to get the desired effect
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{route('tutor_payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Payments
-              </p>
-            </a>
-          </li>
         </ul>
 
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-setting-alt"></i>
+              <p>
+                Payments
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('tutor_payment_type')}}" class="nav-link">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Payment Type
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_payments')}}" class="nav-link">
+                  <i class="nav-icon fas fa-history"></i>
+                  <p>
+                    Payment History
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
