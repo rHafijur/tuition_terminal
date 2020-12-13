@@ -233,7 +233,7 @@
                     <tbody>
                         <tr>
                             <td class="no">01</td>
-                            <td>{{$payment->payment_for()}}</td>
+                            <td>{{$payment->payment_for}}</td>
                             <td class="total">৳{{$payment->amount}}</td>
                         </tr>
                     </tbody>
@@ -246,6 +246,13 @@
                             <td colspan="2">GRAND TOTAL</td>
                             <td>৳{{$payment->amount}}</td>
                         </tr>
+                        @if ($payment->confirmed==1)
+                        <tr>
+                            <td colspan="3">
+                                <img height="200px" width="200px" src="{{asset('img/paid.png')}}" alt="paid seal">
+                            </td>
+                        </tr>
+                        @endif
                     </tfoot>
                 </table>
                 <div class="thanks">Thank you!</div>

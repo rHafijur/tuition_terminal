@@ -1,18 +1,26 @@
-@extends('tutor.layouts.master',['title'=>'Verify Tutor Request'])
+@extends('tutor.layouts.master',['title'=>'Make Payment'])
 
 @section('content')
 <div class="row">
     <div class="col-md-12">
 
         <div class="card-header">
-            <h3 class="card-title">Apply for Verification</h3>
+            <h3 class="card-title">Make Payment</h3>
         </div>
       <div class="card card-primary card-outline">
         <div class="card-body box-profile">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima dicta labore dolorum officia. Adipisci ad reiciendis dolorum maiores error optio quidem eum. Natus dicta quidem animi incidunt cupiditate sed dolor?
-          <form action="{{route('post_tutor_verify_request')}}" method="POST">
+          <form action="{{route('tutor_save_payment')}}" method="POST">
             @csrf
-            {{-- <div class="form-group">
+            <div class="form-group">
+                <label>Payment For</label>
+                <select name="payment_for" class="form-control" required>
+                    <option value="">Select Payment For</option>
+                    <option value="Tuition Matching">Tuition Matching</option>
+                    <option value="Verification">Verification</option>
+                    <option value="Premium Membership">Premium Membership</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Transaction Method</label>
                 <select name="method" class="form-control" required>
                     <option value="">Select Payment Method</option>
@@ -39,12 +47,8 @@
             <div class="form-group">
                 <label>Note <small>Optional</small></label>
                 <input class="form-control" type="text" name="note">
-            </div> --}}
-            @if (auth()->user()->tutor->verified_tutor_requests->count()>0)
-            <button disabled class="btn btn-success disabled">Already Applied</button>
-            @else
-            <button class="btn btn-success">Apply for Verification</button>
-            @endif
+            </div>
+            <button class="btn btn-success">Send Verify Request</button>
           </form>
         </div>
         <!-- /.card-body -->

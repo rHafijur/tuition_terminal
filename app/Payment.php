@@ -15,6 +15,7 @@ class Payment extends Model
         'amount',
         'note',
         'confirmed',
+        'payment_for',
     ];
 
     public function user(){
@@ -29,15 +30,15 @@ class Payment extends Model
     public function premium_tutor_request(){
         return $this->hasOne('App\PremiumMembershipRequest');
     }
-    public function payment_for(){
-        if($this->verified_tutor_request!==null){
-            return "Verified Tutor";
-        }elseif($this->featured_tutor_request!==null){
-            return "Featured Tutor";
-        }elseif($this->premium_tutor_request!==null){
-            return "Premium Tutor";
-        }else{
-            return "Unknown";
-        }
-    }
+    // public function payment_for(){
+    //     if($this->verified_tutor_request!==null){
+    //         return "Verified Tutor";
+    //     }elseif($this->featured_tutor_request!==null){
+    //         return "Featured Tutor";
+    //     }elseif($this->premium_tutor_request!==null){
+    //         return "Premium Tutor";
+    //     }else{
+    //         return "Unknown";
+    //     }
+    // }
 }

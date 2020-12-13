@@ -385,4 +385,7 @@ class TutorController extends Controller
             return redirect()->back()->with('error','Profile Picture could not be Updated');
         }
     }
+    public function my_status(){
+        return view('tutor.my_status');
+    }
 }

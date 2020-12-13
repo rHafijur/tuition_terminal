@@ -143,6 +143,12 @@ to get the desired effect
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('tutor_my_status')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Status</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{route('tutor_view_info')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Info</p>
@@ -179,10 +185,26 @@ to get the desired effect
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('tutor_make_payment')}}" class="nav-link">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Make Payment
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{route('tutor_payments')}}" class="nav-link">
                   <i class="nav-icon fas fa-history"></i>
                   <p>
                     Payment History
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_payment_invoices')}}" class="nav-link">
+                  <i class="nav-icon fas fa-history"></i>
+                  <p>
+                    Invoices
                   </p>
                 </a>
               </li>
@@ -207,12 +229,12 @@ to get the desired effect
                   <p>Verify Request</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{ route('tutor_featured_request') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Featured Request</p>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                 <a href="{{ route('tutor_premium_request') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

@@ -29,7 +29,7 @@
                         <td>{{$payment->id}}</td>
                         <td>৳{{$payment->amount}}</td>
                         <td>{{$payment->method}}</td>
-                        <td>{{$payment->payment_for()}}</td>
+                        <td>{{$payment->payment_for}}</td>
                         <td>{{$payment->transaction_id}}</td>
                         <td>{{$payment->sent_from}}</td>
                         <td>{{$payment->sent_to}}</td>
