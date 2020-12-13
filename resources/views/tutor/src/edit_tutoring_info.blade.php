@@ -157,8 +157,8 @@
           </div>
 
           <div  class="form-group">
-            <label>Tutoring Experience</label>
-            <textarea name="tutoring_experience" class="form-control" cols="30" rows="2">{{$tutor->tutoring_experience}}</textarea>
+            <label>Total years of Tutoring Experience</label>
+            <input name="tutoring_experience" type="number" class="form-control" value="{{$tutor->tutoring_experience}}">
           </div>
           <div  class="form-group">
             <label>Tutoring Experience In Detail</label>

@@ -68,8 +68,11 @@ class ParentController extends Controller
             'password' => 'required|confirmed|max:100|min:6',
         ]);
         $user = auth()->user();
-        $user->password= Hash::make($request->password);
-        $user->save();
-        return redirect()->back()->with('success','Password Successfully Changed');
+        if(Hash::check($request->current_password, $user->password)){
+            $user->password= Hash::make($request->password);
+            $user->save();
+            return redirect()->back()->with('success','Password Successfully Changed');
+        }
+        return redirect()->back()->with('incorrect_password','Incorrect Password');
     }
 }

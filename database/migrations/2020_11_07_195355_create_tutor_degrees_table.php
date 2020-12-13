@@ -19,7 +19,7 @@ class CreateTutorDegreesTable extends Migration
             $table->foreign('tutor_id')->references('id')->on('tutors')->onDelete('cascade');
             $table->unsignedBigInteger('institute_id');
             $table->foreign('institute_id')->references('id')->on('institutes')->onDelete('cascade');
-            $table->unsignedBigInteger('curriculum_id');
+            $table->unsignedBigInteger('curriculum_id')->nullable();
             $table->foreign('curriculum_id')->references('id')->on('curricula')->onDelete('cascade');
             $table->unsignedBigInteger('degree_id');
             $table->foreign('degree_id')->references('id')->on('degrees')->onDelete('cascade');

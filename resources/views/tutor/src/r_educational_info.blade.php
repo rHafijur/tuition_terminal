@@ -10,42 +10,25 @@
     <!-- /.card-header -->
     <div class="card-body">
         <form action="{{route('educational_info')}}" method="post">
-            @csrf
-            <div class="form-row">
-                <div class="col">
-                  <div  class="form-group">
-                      <label>Education Level</label>
-                      <select name="degree"  class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                        @foreach (App\Degree::OrderBy('title','asc')->get() as $degree)
-                            @php
-                                $selected="";
-                                if($tutor->tutor_degree!=null && $tutor->tutor_degree->degree_id==$degree->id){
-                                    $selected="selected";
-                                }else{
-                                    $selected="";
-                                }
-                            @endphp
-                          <option {{$selected}} data-select2-id="{{$degree->id}}" value="{{$degree->id}}">{{$degree->title}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                </div>
-                <div class="col">
-                  <div  class="form-group">
-                      <label>Degree Title</label>
-                      <input value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->degree_title:''}}" type="text"  class="form-control" name="degree_title">
-                    </div>
-                </div>
+          @csrf
+          <div class="card border-primary">
+            <div class="card-header bg-success">
+              {{App\Degree::find(6)->title}}
+              @php
+                  $ssc=$tutor->tutor_degrees()->where('degree_id',6)->first();
+              @endphp
             </div>
-            <div class="form-row">
+            <div class="card-body">
+              <div class="form-row">
                 <div class="col">
                   <div  class="form-group">
                       <label>Institute</label>
-                      <select name="institute"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="institute[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Institute</option>
                         @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                         @php
                             $selected="";
-                            if($tutor->tutor_degree!=null && $tutor->tutor_degree->institute_id==$institute->id){
+                            if($ssc!=null && $ssc->institute_id==$institute->id){
                                 $selected="selected";
                             }else{
                                 $selected="";
@@ -58,79 +41,376 @@
                 </div>
                 <div class="col">
                   <div  class="form-group">
-                      <label>Student ID <small>Optional</small></label>
-                      <input value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->id_no:''}}" type="text"  class="form-control" name="id_no">
-                    </div>
+                    <label>Curriculum</label>
+                    <select required name="curriculum[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <option value="">Select Curriculum</option>
+                      @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
+                      @php
+                          $selected="";
+                          if($ssc!=null && $ssc->curriculum_id==$curriculum->id){
+                              $selected="selected";
+                          }else{
+                              $selected="";
+                          }
+                      @endphp 
+                        <option {{$selected}} value="{{$curriculum->id}}" data-select2-id="{{$curriculum->id}}">{{$curriculum->title}}</option>
+                      @endforeach
+                    </select>
+                  </div>
                 </div>
-            </div>
-            <div class="form-row">
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                      <label>Board </label>
+                      <select required name="education_board[6]" class="form-control">
+                        <option value="">Select Board</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Barisal") selected @endif value="Barisal">Barisal</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Chittagong") selected @endif value="Chittagong">Chittagong</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Comilla") selected @endif value="Comilla">Comilla</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Dhaka") selected @endif value="Dhaka">Dhaka</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Jessore") selected @endif value="Jessore">Jessore</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Mymensingh") selected @endif value="Mymensingh">Mymensingh</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Rajshahi") selected @endif value="Rajshahi">Rajshahi</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Sylhet") selected @endif value="Sylhet">Sylhet</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Dinajpur") selected @endif value="Dinajpur">Dinajpur</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Technical") selected @endif value="Technical">Technical</option>
+                        <option @if($ssc!=null && $ssc->education_board=="Madrasah") selected @endif value="Madrasah">Madrasah</option>
+                      </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Group </label>
+                    <select required name="group_or_major[6]" class="form-control">
+                      <option value="">Select Group</option>
+                      <option @if($ssc!=null && $ssc->group_or_major=="Arts") selected @endif value="Arts">Arts</option>
+                      <option @if($ssc!=null && $ssc->group_or_major=="Commerce") selected @endif value="Commerce">Commerce</option>
+                      <option @if($ssc!=null && $ssc->group_or_major=="Science") selected @endif value="Science">Science</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
                 <div class="col">
                   <div  class="form-group">
-                      <label>Curriculum</label>
-                      <select name="curriculum"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                        @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
+                      <label>Passing Year </label>
+                      <input required type="text" value="{{$ssc!=null?$ssc->passing_year:''}}"  class="form-control" name="passing_year[6]">
+                    </div>
+                </div>
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Result</label>
+                      <input required value="{{$ssc!=null?$ssc->gpa:''}}" type="text"  class="form-control" name="gpa[6]">
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card border-primary">
+            <div class="card-header bg-success">
+              {{App\Degree::find(5)->title}}
+              @php
+                  $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
+              @endphp
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Institute</label>
+                      <select required name="institute[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Institute</option>
+                        @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                         @php
                             $selected="";
-                            if($tutor->tutor_degree!=null && $tutor->tutor_degree->curriculum_id==$curriculum->id){
+                            if($hsc!=null && $hsc->institute_id==$institute->id){
                                 $selected="selected";
                             }else{
                                 $selected="";
                             }
-                        @endphp 
-                          <option {{$selected}} value="{{$curriculum->id}}" data-select2-id="{{$curriculum->id}}">{{$curriculum->title}}</option>
+                        @endphp  
+                        <option {{$selected}} value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
                         @endforeach
                       </select>
                     </div>
                 </div>
                 <div class="col">
                   <div  class="form-group">
-                      <label>Group or Major</label>
-                      <input type="text" value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->group_or_major:''}}"  class="form-control" name="group_or_major">
+                    <label>Curriculum</label>
+                    <select required name="curriculum[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <option value="">Select Curriculum</option>
+                      @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
+                      @php
+                          $selected="";
+                          if($hsc!=null && $hsc->curriculum_id==$curriculum->id){
+                              $selected="selected";
+                          }else{
+                              $selected="";
+                          }
+                      @endphp 
+                        <option {{$selected}} value="{{$curriculum->id}}" data-select2-id="{{$curriculum->id}}">{{$curriculum->title}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                      <label>Board </label>
+                      <select required name="education_board[5]" class="form-control">
+                        <option value="">Select Board</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Barisal") selected @endif value="Barisal">Barisal</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Chittagong") selected @endif value="Chittagong">Chittagong</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Comilla") selected @endif value="Comilla">Comilla</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Dhaka") selected @endif value="Dhaka">Dhaka</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Jessore") selected @endif value="Jessore">Jessore</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Mymensingh") selected @endif value="Mymensingh">Mymensingh</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Rajshahi") selected @endif value="Rajshahi">Rajshahi</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Sylhet") selected @endif value="Sylhet">Sylhet</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Dinajpur") selected @endif value="Dinajpur">Dinajpur</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Technical") selected @endif value="Technical">Technical</option>
+                        <option @if($hsc!=null && $hsc->education_board=="Madrasah") selected @endif value="Madrasah">Madrasah</option>
+                      </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Group </label>
+                    <select required name="group_or_major[5]" class="form-control">
+                      <option value="">Select Group</option>
+                      <option @if($hsc!=null && $hsc->group_or_major=="Arts") selected @endif value="Arts">Arts</option>
+                      <option @if($hsc!=null && $hsc->group_or_major=="Commerce") selected @endif value="Commerce">Commerce</option>
+                      <option @if($hsc!=null && $hsc->group_or_major=="Science") selected @endif value="Science">Science</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Passing Year </label>
+                      <input required type="text" value="{{$hsc!=null?$hsc->passing_year:''}}"  class="form-control" name="passing_year[5]">
                     </div>
                 </div>
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Result</label>
+                      <input required value="{{$hsc!=null?$hsc->gpa:''}}" type="text"  class="form-control" name="gpa[5]">
+                    </div>
+                </div>
+              </div>
             </div>
-            <div class="form-row">
-                <div class="col">
-                  <div  class="form-group">
-                      <label>Passing Year / Expected Passing Year </label>
-                      <input type="text" value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->passing_year:''}}"  class="form-control" name="passing_year">
-                    </div>
-                </div>
-                <div class="col">
-                  <div  class="form-group">
-                      <label>GPA/CGPA</label>
-                      <input value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->gpa:''}}" type="text"  class="form-control" name="gpa">
-                    </div>
-                </div>
+          </div>
+
+
+          <div class="card border-primary">
+            <div class="card-header bg-success">
+              {{App\Degree::find(4)->title}}
+              @php
+                  $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
+              @endphp
             </div>
-            <div class="form-row">
+            <div class="card-body">
+              <div class="form-row">
                 <div class="col">
                   <div  class="form-group">
-                      <label>Education Board <small>If applicable</small></label>
-                      <input value="{{$tutor->tutor_degree!=null?$tutor->tutor_degree->education_board:''}}" type="text"  class="form-control" name="education_board">
+                      <label>Institute</label>
+                      <select required name="institute[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Institute</option>
+                        @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
+                        @php
+                            $selected="";
+                            if($bachelors!=null && $bachelors->institute_id==$institute->id){
+                                $selected="selected";
+                            }else{
+                                $selected="";
+                            }
+                        @endphp  
+                        <option {{$selected}} value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
+                        @endforeach
+                      </select>
                     </div>
                 </div>
+                <div class="col">
+                  <div  class="form-group">
+                    <label>University Type</label>
+                    <select required name="university_type[4]"  class="form-control">
+                      <option value="">Select University Type</option>
+                      <option @if($bachelors!=null && $bachelors->university_type=="National University") selected @endif value="National University">National University</option>
+                      <option @if($bachelors!=null && $bachelors->university_type=="Private University") selected @endif value="Private University">Private University</option>
+                      <option @if($bachelors!=null && $bachelors->university_type=="Public University") selected @endif value="Public University">Public University</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="form-group form-check">
-                    @php
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Study Type</label>
+                    <select required name="study_type_id[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <option value="">Select Study Type</option>
+                      @foreach (App\StudyType::OrderBy('title','asc')->get() as $study_type)
+                      @php
+                          $selected="";
+                          if($bachelors!=null && $bachelors->study_type_id==$study_type->id){
+                              $selected="selected";
+                          }else{
+                              $selected="";
+                          }
+                      @endphp 
+                        <option {{$selected}} value="{{$study_type->id}}" data-select2-id="{{$study_type->id}}">{{$study_type->title}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Department</label>
+                    <input required type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div  class="form-group">
+                      <label>CGPA / Current CGPA</label>
+                      <input required value="{{$bachelors!=null?$bachelors->gpa:''}}" type="text"  class="form-control" name="gpa[4]">
+                    </div>
+                </div>
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Semester / Year</label>
+                      <input required type="text" value="{{$bachelors!=null?$bachelors->year_or_semester:''}}"  class="form-control" name="year_or_semester[4]">
+                    </div>
+                </div>
+              </div>
+              <div class="form-group form-check">
+                @php
+                    $checked="";
+                    if($bachelors!=null && $bachelors->currently_studying==1){
+                        $checked="checked";
+                    }else{
                         $checked="";
-                        if($tutor->tutor_degree!=null && $tutor->tutor_degree->currently_studying==1){
-                            $checked="checked";
-                        }else{
-                            $checked="";
-                        }
-                    @endphp 
-                    <input {{$checked}} type="checkbox" name="currently_studing" value="1" class="form-check-input" id="currently_studing">
-                    <label class="form-check-label" for="currently_studing">I'm currently studying here</label>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <a href="{{route('tutor_registration').'?tab=pi'}}">
-                        <button type="button" class="btn btn-secondary">Back</button>
-                      </a>
-                      <button type="submit" class="btn btn-primary float-right">Update Changes & Next</button>
+                    }
+                @endphp 
+                <input {{$checked}} type="checkbox" name="currently_studing[4]" value="1" class="form-check-input" id="currently_studing">
+                <label class="form-check-label" for="currently_studing">I'm currently studying here</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card border-primary">
+            <div class="card-header bg-success">
+              {{App\Degree::find(3)->title}}
+              @php
+                  $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+              @endphp
+              <div class="card-tools">
+                <div class="custom-control custom-checkbox checkbox-lg align-middle">
+                  <input @if($masters!=null) checked @endif onchange="hasMasterChanged()" type="checkbox" value="1" class="custom-control-input" name="has_masters" id="has_masters">
+                  <label class="custom-control-label" for="has_masters">If Applicable</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" id="masters">
+              <div class="form-row">
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Institute</label>
+                      <select required name="institute[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Institute</option>
+                        @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
+                        @php
+                            $selected="";
+                            if($masters!=null && $masters->institute_id==$institute->id){
+                                $selected="selected";
+                            }else{
+                                $selected="";
+                            }
+                        @endphp  
+                        <option {{$selected}} value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
+                        @endforeach
+                      </select>
                     </div>
+                </div>
+                <div class="col">
+                  <div  class="form-group">
+                    <label>University Type</label>
+                    <select required name="university_type[3]"  class="form-control">
+                      <option value="">Select University Type</option>
+                      <option @if($masters!=null && $masters->university_type=="National University") selected @endif value="National University">National University</option>
+                      <option @if($masters!=null && $masters->university_type=="Private University") selected @endif value="Private University">Private University</option>
+                      <option @if($masters!=null && $masters->university_type=="Public University") selected @endif value="Public University">Public University</option>
+                    </select>
                   </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Study Type</label>
+                    <select required name="study_type_id[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <option value="">Select Study Type</option>
+                      @foreach (App\StudyType::OrderBy('title','asc')->get() as $study_type)
+                      @php
+                          $selected="";
+                          if($masters!=null && $masters->study_type_id==$study_type->id){
+                              $selected="selected";
+                          }else{
+                              $selected="";
+                          }
+                      @endphp 
+                        <option {{$selected}} value="{{$study_type->id}}" data-select2-id="{{$study_type->id}}">{{$study_type->title}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Department</label>
+                    <input required type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div  class="form-group">
+                      <label>CGPA / Current CGPA</label>
+                      <input required value="{{$masters!=null?$masters->gpa:''}}" type="text"  class="form-control" name="gpa[3]">
+                    </div>
+                </div>
+                <div class="col">
+                  <div  class="form-group">
+                      <label>Semester / Year</label>
+                      <input required type="text" value="{{$masters!=null?$masters->year_or_semester:''}}"  class="form-control" name="year_or_semester[3]">
+                    </div>
+                </div>
+              </div>
+              <div class="form-group form-check">
+                @php
+                    $checked="";
+                    if($masters!=null && $masters->currently_studying==1){
+                        $checked="checked";
+                    }else{
+                        $checked="";
+                    }
+                @endphp 
+                <input {{$checked}} type="checkbox" name="currently_studing[3]" value="1" class="form-check-input" id="currently_studing_3">
+                <label class="form-check-label" for="currently_studing">I'm currently studying here</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <a href="{{route('tutor_registration').'?tab=pi'}}">
+                <button type="button" class="btn btn-secondary">Back</button>
+              </a>
+              <button type="submit" class="btn btn-primary float-right">Update Changes & Next</button>
+            </div>
+          </div>
         </form>
     </div>
     <!-- /.card-body -->
@@ -138,3 +418,22 @@
       
     </div>
   </div>
+  @push('js')
+      
+  <script>
+    var masters_html="";
+    $(function(){
+      masters_html=$("#masters").html();
+      hasMasterChanged();
+    });
+    function hasMasterChanged(){
+      if(document.getElementById('has_masters').checked){
+        $("#masters").html(masters_html);
+        $(".select2_masters").select2();
+        $(".select2_masters").select2();
+      }else{
+        $("#masters").empty();
+      }
+    }
+  </script>
+  @endpush

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 use App\User;
 use App\Tutor;
 use App\TutorPersonalInformation;
@@ -98,22 +101,75 @@ class TutorController extends Controller
     public function update_ei(Request $request){
         // dd($request);
         $tutor = auth()->user()->tutor;
-        $degree_data=[
-            "degree_id" => $request->degree,
-            "degree_title" => $request->degree_title,
-            "institute_id" => $request->institute,
-            "id_no" => $request->id_no,
-            "curriculum_id" => $request->curriculum,
-            "group_or_major" => $request->group_or_major,
-            "passing_year" => $request->passing_year,
-            "gpa" => $request->gpa,
-            "education_board" => $request->education_board,
-            "currently_studying" => $request->currently_studing,
+        $ssc=$tutor->tutor_degrees()->where('degree_id',6)->first();
+        $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
+        $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
+        $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+        $ssc_data=[
+            "degree_id" => 6,
+            "institute_id" => $request->institute[6],
+            "curriculum_id" => $request->curriculum[6],
+            "group_or_major" => $request->group_or_major[6],
+            "passing_year" => $request->passing_year[6],
+            "gpa" => $request->gpa[6],
+            "education_board" => $request->education_board[6],
         ];
-        if($tutor->tutor_degree==null){
-            $tutor->tutor_degree()->create($degree_data);
+        $hsc_data=[
+            "degree_id" => 5,
+            "institute_id" => $request->institute[5],
+            "curriculum_id" => $request->curriculum[5],
+            "group_or_major" => $request->group_or_major[5],
+            "passing_year" => $request->passing_year[5],
+            "gpa" => $request->gpa[5],
+            "education_board" => $request->education_board[5],
+        ];
+        $bachelors_data=[
+            "degree_id" => 4,
+            "institute_id" => $request->institute[4],
+            "gpa" => $request->gpa[4],
+            "currently_studying" => $request->currently_studing[4],
+            'study_type_id' => $request->study_type_id[4],
+            'department' => $request->department[4],
+            'university_type' => $request->university_type[4],
+            'year_or_semester' => $request->year_or_semester[4],
+        ];
+        if($request->has_masters==1){
+            $masters_data=[
+                "degree_id" => 3,
+                "institute_id" => $request->institute[3],
+                "gpa" => $request->gpa[3],
+                "currently_studying" => $request->currently_studing[3],
+                'study_type_id' => $request->study_type_id[3],
+                'department' => $request->department[3],
+                'university_type' => $request->university_type[3],
+                'year_or_semester' => $request->year_or_semester[3],
+            ];
+        }
+        if($ssc!=null){
+            $ssc->update($ssc_data);
         }else{
-            $tutor->tutor_degree()->update($degree_data);
+            $tutor->tutor_degrees()->create($ssc_data);
+        }
+        if($hsc!=null){
+            $hsc->update($hsc_data);
+        }else{
+            $tutor->tutor_degrees()->create($hsc_data);
+        }
+        if($bachelors!=null){
+            $bachelors->update($bachelors_data);
+        }else{
+            $tutor->tutor_degrees()->create($bachelors_data);
+        }
+        if($masters!=null){
+            if($request->has_masters==null){
+                $masters->delete();
+            }else{
+                $masters->update($masters_data);
+            }
+        }else{
+            if($request->has_masters==1){
+                $tutor->tutor_degrees()->create($masters_data);
+            }
         }
         return redirect(route('tutor_dashboard')."?tab=ei")->with('success','Information Updated Successfully');
     }
@@ -167,23 +223,77 @@ class TutorController extends Controller
     public function ei(Request $request){
         // dd($request);
         $tutor = auth()->user()->tutor;
-        $degree_data=[
-            "degree_id" => $request->degree,
-            "degree_title" => $request->degree_title,
-            "institute_id" => $request->institute,
-            "id_no" => $request->id_no,
-            "curriculum_id" => $request->curriculum,
-            "group_or_major" => $request->group_or_major,
-            "passing_year" => $request->passing_year,
-            "gpa" => $request->gpa,
-            "education_board" => $request->education_board,
-            "currently_studying" => $request->currently_studing,
+        $ssc=$tutor->tutor_degrees()->where('degree_id',6)->first();
+        $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
+        $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
+        $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+        $ssc_data=[
+            "degree_id" => 6,
+            "institute_id" => $request->institute[6],
+            "curriculum_id" => $request->curriculum[6],
+            "group_or_major" => $request->group_or_major[6],
+            "passing_year" => $request->passing_year[6],
+            "gpa" => $request->gpa[6],
+            "education_board" => $request->education_board[6],
         ];
-        if($tutor->tutor_degree==null){
-            $tutor->tutor_degree()->create($degree_data);
-        }else{
-            $tutor->tutor_degree()->update($degree_data);
+        $hsc_data=[
+            "degree_id" => 5,
+            "institute_id" => $request->institute[5],
+            "curriculum_id" => $request->curriculum[5],
+            "group_or_major" => $request->group_or_major[5],
+            "passing_year" => $request->passing_year[5],
+            "gpa" => $request->gpa[5],
+            "education_board" => $request->education_board[5],
+        ];
+        $bachelors_data=[
+            "degree_id" => 4,
+            "institute_id" => $request->institute[4],
+            "gpa" => $request->gpa[4],
+            "currently_studying" => $request->currently_studing[4],
+            'study_type_id' => $request->study_type_id[4],
+            'department' => $request->department[4],
+            'university_type' => $request->university_type[4],
+            'year_or_semester' => $request->year_or_semester[4],
+        ];
+        if($request->has_masters==1){
+            $masters_data=[
+                "degree_id" => 3,
+                "institute_id" => $request->institute[3],
+                "gpa" => $request->gpa[3],
+                "currently_studying" => $request->currently_studing[3],
+                'study_type_id' => $request->study_type_id[3],
+                'department' => $request->department[3],
+                'university_type' => $request->university_type[3],
+                'year_or_semester' => $request->year_or_semester[3],
+            ];
         }
+        if($ssc!=null){
+            $ssc->update($ssc_data);
+        }else{
+            $tutor->tutor_degrees()->create($ssc_data);
+        }
+        if($hsc!=null){
+            $hsc->update($hsc_data);
+        }else{
+            $tutor->tutor_degrees()->create($hsc_data);
+        }
+        if($bachelors!=null){
+            $bachelors->update($bachelors_data);
+        }else{
+            $tutor->tutor_degrees()->create($bachelors_data);
+        }
+        if($masters!=null){
+            if($request->has_masters==null){
+                $masters->delete();
+            }else{
+                $masters->update($masters_data);
+            }
+        }else{
+            if($request->has_masters==1){
+                $tutor->tutor_degrees()->create($masters_data);
+            }
+        }
+
         return redirect(route('tutor_registration')."?tab=ti")->with('success','Education Information Saved Successfully');
     }
     public function pi(Request $request){
@@ -217,17 +327,35 @@ class TutorController extends Controller
         $tutor = auth()->user()->tutor;
         return view("tutor.view_info",\compact('tutor'));
     }
-    public function change_password(){
-        return view('tutor.change_password');
+    public function edit_profile(){
+        return view('tutor.edit_profile');
     }
     public function update_password(Request $request){
         $request->validate([
             'password' => 'required|confirmed|max:100|min:6',
         ]);
         $user = auth()->user();
-        $user->password= Hash::make($request->password);
-        $user->save();
-        return redirect()->back()->with('success','Password Successfully Changed');
+        if(Hash::check($request->current_password, $user->password)){
+            $user->password= Hash::make($request->password);
+            $user->save();
+            return redirect()->back()->with('success','Password Successfully Changed');
+        }
+        return redirect()->back()->with('incorrect_password','Incorrect Password');
+    }
+    public function update_profile(Request $request){
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:100|min:3',
+            'phone' => 'required|max:11|min:11',
+        ]);
+        if ($validator->fails()) {
+            return redirect(route('tutor_edit_profile')."?tab=profile")
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $user = auth()->user();
+        $user->name=$request->name;
+        $user->phone=$request->phone;
+        return redirect(route('tutor_edit_profile')."?tab=profile")->with('success','Profile Updated Successfully');
     }
     public function upload_certificate(Request $request){
         $path = $request->file('certificate')->store('certificates');
@@ -237,5 +365,27 @@ class TutorController extends Controller
             'file_path'=>$path
         ]);
         return redirect()->back()->with('success','File uploaded successfully');
+    }
+    public function change_profile_picture(){
+        return view('tutor.upload_profile_picture');
+    }
+    public function update_profile_picture(Request $request){
+        $base64_str = substr($request->image, strpos($request->image, ",")+1);
+        $file =base64_decode($base64_str);
+        $folderName = 'public/uploads/';
+        $safeName = Str::random(20).'.'.'png';
+        $destinationPath = public_path() . $folderName;
+        $success = file_put_contents(public_path().'/uploads/'.$safeName, $file);
+        if($success){
+            $user=auth()->user();
+            $user->photo="uploads/".$safeName;
+            $user->save();
+            return redirect()->back()->with('success','Profile Picture Updated successfully');
+        }else{
+            return redirect()->back()->with('error','Profile Picture could not be Updated');
+        }
+    }
+    public function my_status(){
+        return view('tutor.my_status');
     }
 }

@@ -15,6 +15,7 @@
   <!-- Theme style -->
   @stack('css')
   <link rel="stylesheet" href="{{asset('admin_lte/dist/css/adminlte.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/style.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -111,7 +112,10 @@ to get the desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          {{-- <img src="#" class="img-circle elevation-2" alt="User Image"> --}}
+          @php
+              $user=auth()->user();
+          @endphp
+          <img src="@if($user->photo!=null){{url($user->photo)}}@else {{url("/img/profile.png")}} @endif" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{auth()->user()->name}} {!!auth()->user()->tutor->getStatusIcon()!!}</a>
@@ -139,6 +143,12 @@ to get the desired effect
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('tutor_my_status')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Status</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{route('tutor_view_info')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Info</p>
@@ -152,16 +162,55 @@ to get the desired effect
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{route('tutor_payments')}}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Payments
-              </p>
-            </a>
-          </li>
         </ul>
 
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-setting-alt"></i>
+              <p>
+                Payments
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('tutor_payment_type')}}" class="nav-link">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Payment Type
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_make_payment')}}" class="nav-link">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Make Payment
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_payments')}}" class="nav-link">
+                  <i class="nav-icon fas fa-history"></i>
+                  <p>
+                    Payment History
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_payment_invoices')}}" class="nav-link">
+                  <i class="nav-icon fas fa-history"></i>
+                  <p>
+                    Invoices
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -180,12 +229,12 @@ to get the desired effect
                   <p>Verify Request</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{ route('tutor_featured_request') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Featured Request</p>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                 <a href="{{ route('tutor_premium_request') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -208,9 +257,15 @@ to get the desired effect
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('tutor_change_password') }}" class="nav-link">
+                <a href="{{ route('tutor_change_profile_picture') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Change Password</p>
+                  <p>Change Profile Picture</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('tutor_edit_profile') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Edit Profile</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -301,6 +356,16 @@ to get the desired effect
         title: 'Success',
         subtitle: '',
         body: '{{session("success")}}'
+      })
+</script>
+@endif
+@if (session('error'))
+<script>
+  $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: 'Error',
+        subtitle: '',
+        body: '{{session("error")}}'
       })
 </script>
 @endif

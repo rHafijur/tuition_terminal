@@ -12,6 +12,7 @@ class AdminInstitutesController extends CBController {
         $this->setPageTitle("Institutes");
 
         $this->addText("Title","title")->strLimit(150)->maxLength(255);
+		$this->addSelectOption("Institute Type","type")->options(['school'=>'School','school and college'=>'School and College','college'=>'College','university'=>'University']);
 		
 
     }
