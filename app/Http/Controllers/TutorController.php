@@ -13,6 +13,7 @@ use App\TutorPersonalInformation;
 use App\Category;
 use App\Course;
 use App\City;
+use App\Institute;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
@@ -20,7 +21,20 @@ use App\Http\Resources\CityResource;
 use App\Certificate;
 
 class TutorController extends Controller
-{
+{   
+    protected function institute_id($institute){
+        if(is_numeric($institute)){
+            return $institute;
+        }
+        $ins=Institute::where('title',$institute)->first();
+        if($ins != null){
+            return $ins->id;
+        }
+        return Institute::create([
+            'title' => $institute,
+            'type' => 'school'
+        ])->id;
+    }
     public function registration(){
         $tutor=null;
         $categories=null;
@@ -107,7 +121,7 @@ class TutorController extends Controller
         $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
         $ssc_data=[
             "degree_id" => 6,
-            "institute_id" => $request->institute[6],
+            "institute_id" => $this->institute_id($request->institute[6]),
             "curriculum_id" => $request->curriculum[6],
             "group_or_major" => $request->group_or_major[6],
             "passing_year" => $request->passing_year[6],
@@ -116,7 +130,7 @@ class TutorController extends Controller
         ];
         $hsc_data=[
             "degree_id" => 5,
-            "institute_id" => $request->institute[5],
+            "institute_id" => $this->institute_id($request->institute[5]),
             "curriculum_id" => $request->curriculum[5],
             "group_or_major" => $request->group_or_major[5],
             "passing_year" => $request->passing_year[5],
@@ -125,7 +139,7 @@ class TutorController extends Controller
         ];
         $bachelors_data=[
             "degree_id" => 4,
-            "institute_id" => $request->institute[4],
+            "institute_id" => $this->institute_id($request->institute[4]),
             "gpa" => $request->gpa[4],
             "currently_studying" => $request->currently_studing[4],
             'study_type_id' => $request->study_type_id[4],
@@ -136,7 +150,7 @@ class TutorController extends Controller
         if($request->has_masters==1){
             $masters_data=[
                 "degree_id" => 3,
-                "institute_id" => $request->institute[3],
+                "institute_id" => $this->institute_id($request->institute[3]),
                 "gpa" => $request->gpa[3],
                 "currently_studying" => $request->currently_studing[3],
                 'study_type_id' => $request->study_type_id[3],

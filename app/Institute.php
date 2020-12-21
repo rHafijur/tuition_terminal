@@ -9,6 +9,6 @@ class Institute extends Model
     public $timestamps = false;
     
     protected $fillable=[
-        'title',
+        'title','type'
     ];
 }
