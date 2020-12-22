@@ -37,6 +37,7 @@
   @push('js')
       <script>
         var masters_html="";
+        var hsc_html="";
         function otherClicked(obj,num){
           var el=$($(".ins_"+num)[0]);
           el.html(`
@@ -75,18 +76,31 @@
             $("#masters").empty();
           }
         }
+        function isDiplomaChanged(){
+          if(document.getElementById('has_diploma').checked==false){
+            $("#hsc").html(hsc_html);
+            $(".select2hsc").select2();
+            $(".select2hsc").select2();
+            insSelect2(5);
+            insSelect2(5);
+          }else{
+            $("#hsc").empty();
+          }
+        }
           $(function(){
               //Initialize Select2 Elements
                 $('.select2').select2();
                 $('.select2').select2();
-                var arr=[6,5,4];
+                var arr=[6,4];
                 for(var n of arr){
                   insSelect2(n);
                   insSelect2(n);
                 }
 
                 masters_html=$("#masters").html();
+                hsc_html=$("#hsc").html();
                 hasMasterChanged();
+                isDiplomaChanged();
                 
 
                 //Initialize Select2 Elements

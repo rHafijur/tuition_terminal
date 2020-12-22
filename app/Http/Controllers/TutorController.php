@@ -119,6 +119,11 @@ class TutorController extends Controller
         $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
         $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
         $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+        $isDiploma=$request->is_diploma_student;
+        $parsonalData=$tutor->tutor_personal_information;
+        if($isDiploma==null){
+            $isDiploma=0;
+        }
         $ssc_data=[
             "degree_id" => 6,
             "institute_id" => $this->institute_id($request->institute[6]),
@@ -128,15 +133,17 @@ class TutorController extends Controller
             "gpa" => $request->gpa[6],
             "education_board" => $request->education_board[6],
         ];
-        $hsc_data=[
-            "degree_id" => 5,
-            "institute_id" => $this->institute_id($request->institute[5]),
-            "curriculum_id" => $request->curriculum[5],
-            "group_or_major" => $request->group_or_major[5],
-            "passing_year" => $request->passing_year[5],
-            "gpa" => $request->gpa[5],
-            "education_board" => $request->education_board[5],
-        ];
+        if($isDiploma==0){
+            $hsc_data=[
+                "degree_id" => 5,
+                "institute_id" => $this->institute_id($request->institute[5]),
+                "curriculum_id" => $request->curriculum[5],
+                "group_or_major" => $request->group_or_major[5],
+                "passing_year" => $request->passing_year[5],
+                "gpa" => $request->gpa[5],
+                "education_board" => $request->education_board[5],
+            ];
+        }
         $bachelors_data=[
             "degree_id" => 4,
             "institute_id" => $this->institute_id($request->institute[4]),
@@ -164,10 +171,20 @@ class TutorController extends Controller
         }else{
             $tutor->tutor_degrees()->create($ssc_data);
         }
-        if($hsc!=null){
-            $hsc->update($hsc_data);
+        if($isDiploma==0){
+            $parsonalData->is_diploma_student=0;
+            $parsonalData->save();
+            if($hsc!=null){
+                $hsc->update($hsc_data);
+            }else{
+                $tutor->tutor_degrees()->create($hsc_data);
+            }
         }else{
-            $tutor->tutor_degrees()->create($hsc_data);
+            $parsonalData->is_diploma_student=1;
+            $parsonalData->save();
+            if($hsc!=null){
+                $hsc->delete();
+            }
         }
         if($bachelors!=null){
             $bachelors->update($bachelors_data);
@@ -241,27 +258,34 @@ class TutorController extends Controller
         $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
         $bachelors=$tutor->tutor_degrees()->where('degree_id',4)->first();
         $masters=$tutor->tutor_degrees()->where('degree_id',3)->first();
+        $isDiploma=$request->is_diploma_student;
+        $parsonalData=$tutor->tutor_personal_information;
+        if($isDiploma==null){
+            $isDiploma=0;
+        }
         $ssc_data=[
             "degree_id" => 6,
-            "institute_id" => $request->institute[6],
+            "institute_id" => $this->institute_id($request->institute[6]),
             "curriculum_id" => $request->curriculum[6],
             "group_or_major" => $request->group_or_major[6],
             "passing_year" => $request->passing_year[6],
             "gpa" => $request->gpa[6],
             "education_board" => $request->education_board[6],
         ];
-        $hsc_data=[
-            "degree_id" => 5,
-            "institute_id" => $request->institute[5],
-            "curriculum_id" => $request->curriculum[5],
-            "group_or_major" => $request->group_or_major[5],
-            "passing_year" => $request->passing_year[5],
-            "gpa" => $request->gpa[5],
-            "education_board" => $request->education_board[5],
-        ];
+        if($isDiploma==0){
+            $hsc_data=[
+                "degree_id" => 5,
+                "institute_id" => $this->institute_id($request->institute[5]),
+                "curriculum_id" => $request->curriculum[5],
+                "group_or_major" => $request->group_or_major[5],
+                "passing_year" => $request->passing_year[5],
+                "gpa" => $request->gpa[5],
+                "education_board" => $request->education_board[5],
+            ];
+        }
         $bachelors_data=[
             "degree_id" => 4,
-            "institute_id" => $request->institute[4],
+            "institute_id" => $this->institute_id($request->institute[4]),
             "gpa" => $request->gpa[4],
             "currently_studying" => $request->currently_studing[4],
             'study_type_id' => $request->study_type_id[4],
@@ -272,7 +296,7 @@ class TutorController extends Controller
         if($request->has_masters==1){
             $masters_data=[
                 "degree_id" => 3,
-                "institute_id" => $request->institute[3],
+                "institute_id" => $this->institute_id($request->institute[3]),
                 "gpa" => $request->gpa[3],
                 "currently_studying" => $request->currently_studing[3],
                 'study_type_id' => $request->study_type_id[3],
@@ -286,10 +310,20 @@ class TutorController extends Controller
         }else{
             $tutor->tutor_degrees()->create($ssc_data);
         }
-        if($hsc!=null){
-            $hsc->update($hsc_data);
+        if($isDiploma==0){
+            $parsonalData->is_diploma_student=0;
+            $parsonalData->save();
+            if($hsc!=null){
+                $hsc->update($hsc_data);
+            }else{
+                $tutor->tutor_degrees()->create($hsc_data);
+            }
         }else{
-            $tutor->tutor_degrees()->create($hsc_data);
+            $parsonalData->is_diploma_student=1;
+            $parsonalData->save();
+            if($hsc!=null){
+                $hsc->delete();
+            }
         }
         if($bachelors!=null){
             $bachelors->update($bachelors_data);

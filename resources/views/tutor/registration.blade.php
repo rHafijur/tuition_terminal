@@ -185,13 +185,75 @@
     }
 </script>
 <script>
-  $(function(){
-      //Initialize Select2 Elements
-        $('.select2').select2();
-        $('.select2').select2();
-
+  var masters_html="";
+  var hsc_html="";
+  function otherClicked(obj,num){
+    var el=$($(".ins_"+num)[0]);
+    el.html(`
+    <label>Institute</label>
+    <input required type="text" name="institute[`+num+`]" placeholder="Please Enter the Institute Name"  class="form-control">
+    `);
+    $(obj).closest(".select2-container").remove();
+  }
+  function otherButton(){
+    return `
+  <button class="btn btn-secondary" onclick="otherClicked(this)">Other</a>
+  `;
+  };
+  function insSelect2(num){
+      $('.select2_'+num).select2({
+        language: {
+          noResults: function(){
+          return `
+          <button class="btn btn-secondary" onclick="otherClicked(this,`+num+`)">Other</a>
+          `;
+          }
+        },
+        escapeMarkup: function(markup) {
+          return markup;
+        },
+    });
+  }
+  function hasMasterChanged(){
+    if(document.getElementById('has_masters').checked){
+      $("#masters").html(masters_html);
+      $(".select2_masters").select2();
+      $(".select2_masters").select2();
+      insSelect2(3);
+      insSelect2(3);
+    }else{
+      $("#masters").empty();
+    }
+  }
+  function isDiplomaChanged(){
+    if(document.getElementById('has_diploma').checked==false){
+      $("#hsc").html(hsc_html);
+      $(".select2hsc").select2();
+      $(".select2hsc").select2();
+      insSelect2(5);
+      insSelect2(5);
+    }else{
+      $("#hsc").empty();
+    }
+  }
+    $(function(){
         //Initialize Select2 Elements
-  });
+          $('.select2').select2();
+          $('.select2').select2();
+          var arr=[6,4];
+          for(var n of arr){
+            insSelect2(n);
+            insSelect2(n);
+          }
+
+          masters_html=$("#masters").html();
+          hsc_html=$("#hsc").html();
+          hasMasterChanged();
+          isDiplomaChanged();
+          
+
+          //Initialize Select2 Elements
+    });
 </script>
 @if (session('success'))
 <script>
