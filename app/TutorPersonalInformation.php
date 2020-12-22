@@ -30,7 +30,8 @@ class TutorPersonalInformation extends Model
         'reasones_to_get_hired',
         'overview',
     ];
-
+    protected $touches = ['tutor'];
+    
     public function tutor(){
         return $this->belongsTo("App\Tutor",'tutor_id');
     }
