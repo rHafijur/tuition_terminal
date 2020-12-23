@@ -26,7 +26,7 @@ Route::post('/otp/verify','Auth\OtpVerificationController@verify')->name('otp.ve
 Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.resend');
 Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
-
+Route::view('/register/user_types','register_type')->name('register_type');
 Route::prefix('parent')->group(function () {
     // Route::get('/registration','TutorController@registration')->name('tutor_registration');
     // Route::post('/registration','TutorController@create')->name('create_tutor');

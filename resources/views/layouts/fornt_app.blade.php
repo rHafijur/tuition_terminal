@@ -54,12 +54,18 @@
           <li class="nav-item">
             <a href="tutor-hub.php" class="nav-link"> TUTORS HUB</a>
           </li>
+          @if (!auth()->check())
           <li class="nav-item">
-            <a href="registration.php" class="nav-link"> REGISTRATION</a>
+            <a href="{{route('register_type')}}" class="nav-link"> REGISTRATION</a>
           </li>
           <li class="nav-item">
             <a href="{{ route('login') }}" class="nav-link"> SIGN IN</a>
           </li>
+          @else
+          <li class="nav-item">
+            <a href="{{ route('home') }}" class="nav-link">{{auth()->user()->name}}</a>
+          </li>
+          @endif
           <li class="nav-item">
             <a href="#" class="nav-link" id="navSlideBox">
               <i class="fa fa-info-circle" aria-hidden="true"></i>
