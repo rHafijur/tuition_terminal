@@ -95,3 +95,47 @@
 
 </body>
 </html>
+@extends('layouts.fornt_app')
+@section('content')
+<section id="login-section" class="text text-custom-p">
+  <div class="container">
+    <div class="login-reg-area p-5">
+      <form action="" class="">
+        <div class="form-top text-center">
+          <h3 class="mb-1 text-custom">Existing Member Sign In</h3>
+          <p class="lead text-bold">I am</p>
+          <div class="form-button mb-5">
+            <button class="btn btn-custom mr-3">Tutor</button>
+            <button class="btn btn-custom">Parent/Student</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Email/Phone Number">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control mb-3" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <input type="checkbox" class="mr-2 mt-3">Remember me
+        </div>
+        <button class="btn btn-custom btn-block btn-login mt-3">Login</button>
+        <a class="float-right mt-2" href="#">Forget Password</a>
+        <br>
+        <div class="form-footer py-5 text-center">
+          <p>Don't have an account? <a href="#">Create Account</a></p>
+          <br>
+          <p class="lead mb-0">OR</p>
+          <small>Login with your social Account</small>
+          <div class="d-block my-3">
+            <i class="fab fa-facebook-f fb-icon mr-3"></i>
+          <i class="fab fa-google-plus-g gplus-icon"></i>
+          </div>
+          <small class="mt-3">By signing up, you agree to our Term of Use and Privacy Policy</small>
+        </div>
+    </form></div>
+    
+  </div>
+  
+  
+</section>
+@endsection
