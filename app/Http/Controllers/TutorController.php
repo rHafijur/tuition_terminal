@@ -41,13 +41,28 @@ class TutorController extends Controller
         $categories_collection=null;
         $courses_collection=null;
         $city_collection=null;
-        if(auth()->check()){
-            $tutor=auth()->user()->tutor;
-            $categories=Category::all();
-            $categories_collection=CategoryResource::collection($categories);
-            $courses_collection=CourseResource::collection(Course::all());
-            $city_collection=CityResource::collection(City::all());
-        }
+        // if(auth()->check()){
+        //     $tutor=auth()->user()->tutor;
+        //     $categories=Category::all();
+        //     $categories_collection=CategoryResource::collection($categories);
+        //     $courses_collection=CourseResource::collection(Course::all());
+        //     $city_collection=CityResource::collection(City::all());
+        // }
+        return view('tutor.registration',compact('tutor','categories','categories_collection','courses_collection','city_collection'));
+    }
+    public function registration_steps(){
+        // $tutor=null;
+        // $categories=null;
+        // $categories_collection=null;
+        // $courses_collection=null;
+        // $city_collection=null;
+        $tutor=auth()->user()->tutor;
+        $categories=Category::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection(Course::all());
+        $city_collection=CityResource::collection(City::all());
+        // if(auth()->check()){
+        // }
         return view('tutor.registration',compact('tutor','categories','categories_collection','courses_collection','city_collection'));
     }
     public function create(Request $request){
@@ -75,13 +90,14 @@ class TutorController extends Controller
             'tutor_id'  => $tutor->id
             // 'tutor_id'  => 1
         ]);
-        // $user->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
+        $user->sendOtpSms();
         auth()->attempt([
             'email' => $request->email,
             'password' => $request->password,
         ]);
         // return view('auth.verify');
-        return redirect(route('tutor_registration')."?tab=pi")->with('success','Tutor Account Created Successfully. Please Complete your profile');
+        return redirect(route('tutor_registration_steps')."?tab=pi")->with('success','Tutor Account Created Successfully. Please Complete your profile');
     }
     public function dashboard(){
         $tutor=auth()->user()->tutor;
@@ -249,7 +265,7 @@ class TutorController extends Controller
         $tutor->prefered_locations()->sync($request->prefered_locations);
         $tutor->teaching_methods()->sync($request->teaching_methods);
 
-        return redirect(route('verifyEmailPage'))->with('success','Information Updated Successfully');
+        return redirect(route('home'))->with('success','Information Updated Successfully');
     }
     public function ei(Request $request){
         // dd($request);
@@ -342,7 +358,7 @@ class TutorController extends Controller
             }
         }
 
-        return redirect(route('tutor_registration')."?tab=ti")->with('success','Education Information Saved Successfully');
+        return redirect(route('tutor_registration_steps')."?tab=ti")->with('success','Education Information Saved Successfully');
     }
     public function pi(Request $request){
         // dd($request);
@@ -369,7 +385,7 @@ class TutorController extends Controller
         'overview' => $request->overview,
         ]);
 
-        return redirect(route('tutor_registration')."?tab=ei")->with('success','Parsonal Information Saved Successfully');
+        return redirect(route('tutor_registration_steps')."?tab=ei")->with('success','Parsonal Information Saved Successfully');
     }
     public function view_info(){
         $tutor = auth()->user()->tutor;

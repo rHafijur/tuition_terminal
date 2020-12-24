@@ -47,12 +47,14 @@ Route::prefix('parent')->group(function () {
 Route::prefix('tutor')->group(function () {
     Route::get('/registration','TutorController@registration')->name('tutor_registration');
     Route::post('/registration','TutorController@create')->name('create_tutor');
-
+    
+});
+Route::middleware(['tutor'])->prefix('tutor')->group(function () {
+    Route::get('/registration/steps','TutorController@registration_steps')->name('tutor_registration_steps');
     Route::post('/tutoring_info','TutorController@ti')->name('tutoring_info');
     Route::post('/educational_info','TutorController@ei')->name('educational_info');
     Route::post('/personal_info','TutorController@pi')->name('personal_info');
-});
-Route::middleware(['tutor'])->prefix('tutor')->group(function () {
+
     Route::get('/notification','NotificationController@tutorIndex')->name('tutor.notification');
     
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');

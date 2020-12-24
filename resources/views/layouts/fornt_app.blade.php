@@ -18,14 +18,20 @@
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/fontawesome.min.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/owl.carousel.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/owl.theme.default.css')}}">
+  @stack('css')
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.css')}}">
   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
   <style>
-      .btn-custom.active {
-    background: #50AB1D;
-    border: 1px solid #50AB1D;
-    color: #fff;
-}
+    .btn-custom.active {
+        background: #50AB1D;
+        border: 1px solid #50AB1D;
+        color: #fff;
+    }
+    a.active >div>i{
+        background: #50AB1D;
+        border: 1px solid #50AB1D !important;
+        color: #fff;
+    }
   </style>
 </head>
 
@@ -306,6 +312,7 @@
   <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
   <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
   <script src="{{asset('assets/js/custom.js')}}"></script>
+  @stack('js')
 </body>
 
 </html><!-- /Include Footer -->
