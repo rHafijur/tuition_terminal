@@ -39,6 +39,12 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+    public function redirectTo(){
+        if(auth()->user()->cb_roles_id==3){
+           return route('tutor_registration_steps')."?tab=pi";
+        }
+        return RouteServiceProvider::HOME;
+    }
     public function verifyEmailPage(){
         return view('auth.verify');
     }

@@ -25,7 +25,8 @@ class TutorDegree extends Model
         'university_type',
         'year_or_semester',
     ];
-
+    protected $touches = ['tutor'];
+    
     public function tutor(){
         return $this->belongsTo("App\Tutor",'tutor_id');
     }

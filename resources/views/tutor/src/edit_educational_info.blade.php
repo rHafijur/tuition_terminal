@@ -21,9 +21,9 @@
               <div class="card-body">
                 <div class="form-row">
                   <div class="col">
-                    <div  class="form-group">
+                    <div  class="form-group ins_6">
                         <label>Institute</label>
-                        <select required name="institute[6]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[6]"   class="select2_6 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -113,14 +113,21 @@
                 {{App\Degree::find(5)->title}}
                 @php
                     $hsc=$tutor->tutor_degrees()->where('degree_id',5)->first();
+                    $is_diploma=$tutor->tutor_personal_information->is_diploma_student;
                 @endphp
+                <div class="card-tools">
+                  <div class="custom-control custom-checkbox checkbox-lg align-middle">
+                    <input @if($is_diploma!=0) checked @endif onchange="isDiplomaChanged()" type="checkbox" value="1" class="custom-control-input" name="is_diploma_student" id="has_diploma">
+                    <label class="custom-control-label" for="has_diploma">I am a Diploma Student</label>
+                  </div>
+                </div>
               </div>
-              <div class="card-body">
+              <div class="card-body" id="hsc">
                 <div class="form-row">
                   <div class="col">
-                    <div  class="form-group">
+                    <div  class="form-group ins_5" data-ins="5">
                         <label>Institute</label>
-                        <select required name="institute[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[5]"   class="select2_5 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -139,7 +146,7 @@
                   <div class="col">
                     <div  class="form-group">
                       <label>Curriculum</label>
-                      <select required name="curriculum[5]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                      <select required name="curriculum[5]"   class="select2hsc select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         <option value="">Select Curriculum</option>
                         @foreach (App\Curriculum::OrderBy('title','asc')->get() as $curriculum)
                         @php
@@ -216,9 +223,9 @@
               <div class="card-body">
                 <div class="form-row">
                   <div class="col">
-                    <div  class="form-group">
+                    <div  class="form-group ins_4" data-ins="4">
                         <label>Institute</label>
-                        <select required name="institute[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[4]"   class="select2_4 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -318,9 +325,9 @@
               <div class="card-body" id="masters">
                 <div class="form-row">
                   <div class="col">
-                    <div  class="form-group">
+                    <div  class="form-group ins_3">
                         <label>Institute</label>
-                        <select required name="institute[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <select required name="institute[3]"   class="select2_3 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                           <option value="">Select Institute</option>
                           @foreach (App\Institute::OrderBy('title','asc')->get() as $institute)
                           @php
@@ -412,22 +419,3 @@
       
     </div>
   </div>
-  @push('js')
-      
-  <script>
-    var masters_html="";
-    $(function(){
-      masters_html=$("#masters").html();
-      hasMasterChanged();
-    });
-    function hasMasterChanged(){
-      if(document.getElementById('has_masters').checked){
-        $("#masters").html(masters_html);
-        $(".select2_masters").select2();
-        $(".select2_masters").select2();
-      }else{
-        $("#masters").empty();
-      }
-    }
-  </script>
-  @endpush

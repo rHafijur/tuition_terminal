@@ -1,5 +1,8 @@
 @extends('tutor.layouts.master',['title'=>'My Status'])
 @section('content')
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="row">
     <div class="col-md-12">
 
@@ -22,6 +25,10 @@
                     <tr>
                         <th>Rejected tuition</th>
                         <td>0</td>
+                    </tr>
+                    <tr>
+                        <th>Last Profile Updated At</th>
+                        <td>{{Carbon::parse(auth()->user()->tutor->updated_at)->toFormattedDateString()}}</td>
                     </tr>
                 </tbody>
             </table>

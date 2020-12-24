@@ -224,7 +224,7 @@
   body.on('keyup', 'input', goToNextInput);
   body.on('keydown', 'input', onKeyDown);
   body.on('click', 'input', onFocus);
-  var sec=30;
+  var sec=60;
   var interval= window.setInterval(function (){
     if(sec-- == 0){
         clearInterval(interval);
