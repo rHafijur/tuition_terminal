@@ -28,12 +28,33 @@ class JobOffer extends Model
         'status',
         'is_active',
         'teaching_method_id',
+        'tutor_study_type_id',
+        'tutor_religion_id',
+        'tutor_university_id',
+        'tutor_school_id',
+        'tutor_college_id',
+        'tutor_category_id',
+        'taken_by_1_id',
+        'taken_by_2_id',
+        'university_type',
+        'group',
+        'reference_name',
+        'reference_contact',
+        'reference_city_id',
+        'email',
+        'additional_contact',
+        'source',
+        'spicial_note',
+        'tutor_department',
     ];
     public function parents(){
         return $this->belongsTo("App\Parents",'parent_id');
     }
     public function city(){
         return $this->belongsTo("App\City",'city_id');
+    }
+    public function reference_city(){
+        return $this->belongsTo("App\City",'reference_city_id');
     }
     public function location(){
         return $this->belongsTo("App\Location",'location_id');
@@ -43,6 +64,30 @@ class JobOffer extends Model
     }
     public function course(){
         return $this->belongsTo("App\Course",'course_id');
+    }
+    public function tutor_study_type(){
+        return $this->belongsTo("App\StudyType",'tutor_study_type_id');
+    }
+    public function tutor_religion(){
+        return $this->belongsTo("App\Religion",'tutor_religion_id');
+    }
+    public function tutor_university(){
+        return $this->belongsTo("App\Institute",'tutor_university_id');
+    }
+    public function tutor_school(){
+        return $this->belongsTo("App\Institute",'tutor_school_id');
+    }
+    public function tutor_college(){
+        return $this->belongsTo("App\Institute",'tutor_college_id');
+    }
+    public function tutor_category(){
+        return $this->belongsTo("App\Category",'tutor_category_id');
+    }
+    public function em1(){
+        return $this->belongsTo("App\User",'taken_by_1_id');
+    }
+    public function em2(){
+        return $this->belongsTo("App\User",'taken_by_2_id');
     }
     public function applications(){
         return $this->hasMany('App\ApplicationForTutor','job_offer_id');
