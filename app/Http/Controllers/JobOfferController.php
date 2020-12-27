@@ -57,7 +57,7 @@ class JobOfferController extends Controller
             'requirements'=> $request->requirements,
             'hiring_from'=> $request->hiring_from,
             'status'=> -1,
-            'is_active'=> 0,
+            'is_active'=> 1,
             'tutor_study_type_id'=> $request->tutor_study_type_id,
             'tutor_religion_id'=> $request->tutor_religion_id,
             'tutor_university_id'=> $request->tutor_university_id,
