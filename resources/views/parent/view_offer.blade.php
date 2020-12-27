@@ -17,6 +17,12 @@
                         </th>
                     </tr>
                     <tr>
+                        <th scope="row">Job Offer Id</th>
+                        <td>
+                            {{$offer->id}}
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row">Category</th>
                         <td>
                             {{$offer->category->title}}
@@ -84,9 +90,75 @@
                         </th>
                     </tr>
                     <tr>
+                        <th scope="row">Medium</th>
+                        <td>
+                            @if ($offer->tutor_category!=null)
+                                {{$offer->tutor_category->title}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">University</th>
+                        <td>
+                            @if ($offer->tutor_university!=null)
+                                {{$offer->tutor_university->title}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">University Type</th>
+                        <td>
+                            {{$offer->university_type}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Depertment</th>
+                        <td>
+                            {{$offer->tutor_department}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">College</th>
+                        <td>
+                            @if ($offer->tutor_college!=null)
+                                {{$offer->tutor_college->title}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Group</th>
+                        <td>
+                            {{$offer->group}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">School</th>
+                        <td>
+                            @if ($offer->tutor_school!=null)
+                                {{$offer->tutor_school->title}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Study Type</th>
+                        <td>
+                            @if ($offer->tutor_study_type!=null)
+                                {{$offer->tutor_study_type->title}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row">Tutor's Gender</th>
                         <td>
                             {{$offer->tutor_gender}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tutor's Religion</th>
+                        <td>
+                            @if ($offer->tutor_religion!=null)
+                                {{$offer->tutor_religion->title}}
+                            @endif
                         </td>
                     </tr>
                     <tr>
@@ -134,6 +206,50 @@
                         <th scope="row">Phone</th>
                         <td>
                             {{$offer->phone}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>
+                            {{$offer->email}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Additional contact Number</th>
+                        <td>
+                            {{$offer->additional_contact}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Reference Name</th>
+                        <td>
+                            {{$offer->reference_name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Reference Contact Number</th>
+                        <td>
+                            {{$offer->reference_contact}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Reference City</th>
+                        <td>
+                            @if ($offer->reference_city!=null)
+                                {{$offer->reference_city->name}}
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Source</th>
+                        <td>
+                            {{$offer->source}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Spicial note</th>
+                        <td>
+                            {{$offer->spicial_note}}
                         </td>
                     </tr>
                 </tbody>

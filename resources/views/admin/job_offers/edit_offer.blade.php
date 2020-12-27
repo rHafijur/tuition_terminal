@@ -1,25 +1,15 @@
-@push('css')
-      <!-- Select2 -->
-  <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2/css/select2.min.css')}}">
-  <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-@endpush
-@push('js')
-    <!-- Select2 -->
-<script src="{{asset('admin_lte/plugins/select2/js/select2.full.min.js')}}"></script>
-@endpush
-@extends('parent.layouts.master',['title'=>'Edit Offer'])
-
+@extends(getThemePath('layout.layout'))
 @section('content')
-<div class="card">
-    <div class="card-header p-2">
+<div class="box">
+    <div class="box-header p-2">
       <ul id="tab_nav" class="nav nav-pills">
         <li class="nav-item"><a class="nav-link active">Student Information</a></li>
         <li class="nav-item"><a class="nav-link">Tutor Requirement</a></li>
         <li class="nav-item"><a class="nav-link">Contact Information</a></li>
       </ul>
-    </div><!-- /.card-header -->
-    <div class="card-body">
-      <form id="offer_form" action="{{route('parent.update_offer')}}" method="POST">
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      <form id="offer_form" action="{{ action('AdminJobOffersController@postUpdate') }}" method="POST">
         @csrf
         <input type="hidden" name="id" value="{{$offer->id}}">
         <div id="tab_content" class="tab-content">
@@ -397,7 +387,7 @@
           </div>
       </form>
       <!-- /.tab-content -->
-    </div><!-- /.card-body -->
+    </div><!-- /.box-body -->
   </div>
   <script>
       const resource=JSON.parse(`{!!json_encode($categories_collection)!!}`);
@@ -528,7 +518,8 @@
       }
   </script>
 @endsection
-@push('js')
+@push('bottom')
+{{-- <script src="{{asset('admin_lte/plugins/select2/js/select2.full.min.js')}}"></script> --}}
 <script>
     $("#course_subject_ids").select2();
     // $("#city_id").select2();

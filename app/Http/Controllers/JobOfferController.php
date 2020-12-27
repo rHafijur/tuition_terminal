@@ -9,6 +9,7 @@ use App\Category;
 use App\Course;
 use App\City;
 use App\Tutor;
+use App\Institute;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
@@ -25,11 +26,13 @@ class JobOfferController extends Controller
     public function create_offer_form(){
         $categories=Category::all();
         $courses=Course::all();
+        $institutes=Institute::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection($courses);
         $city_collection=CityResource::collection(City::all());
+        // return $city_collection;
 
-        return view('parent.create_offer',\compact('courses','categories','categories_collection','courses_collection','city_collection'));
+        return view('parent.create_offer',\compact('courses','categories','categories_collection','courses_collection','city_collection','institutes'));
     }
     public function create(Request $request){
         // dd($request);
@@ -54,7 +57,23 @@ class JobOfferController extends Controller
             'requirements'=> $request->requirements,
             'hiring_from'=> $request->hiring_from,
             'status'=> -1,
-            'is_active'=> 0,
+            'is_active'=> 1,
+            'tutor_study_type_id'=> $request->tutor_study_type_id,
+            'tutor_religion_id'=> $request->tutor_religion_id,
+            'tutor_university_id'=> $request->tutor_university_id,
+            'tutor_school_id'=> $request->tutor_school_id,
+            'tutor_college_id'=> $request->tutor_college_id,
+            'tutor_category_id'=> $request->tutor_category_id,
+            'university_type'=> $request->university_type,
+            'group'=> $request->group,
+            'reference_name'=> $request->reference_name,
+            'reference_contact'=> $request->reference_contact,
+            'reference_city_id'=> $request->reference_city_id,
+            'email'=> $request->email,
+            'additional_contact'=> $request->additional_contact,
+            'source'=> $request->source,
+            'spicial_note'=> $request->spicial_note,
+            'tutor_department'=> $request->tutor_department,
         ]);
         $jobOffer->course_subjects()->sync($request->course_subject_ids);
         // $jobOffer->teaching_methods()->sync($request->teaching_method_ids);
@@ -74,10 +93,11 @@ class JobOfferController extends Controller
         }
         $categories=Category::all();
         $courses=Course::all();
+        $institutes=Institute::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection($courses);
         $city_collection=CityResource::collection(City::all());
-        return view('parent.edit_offer',compact('offer','courses','categories','categories_collection','courses_collection','city_collection'));
+        return view('parent.edit_offer',compact('offer','courses','categories','categories_collection','courses_collection','city_collection','institutes'));
     }
     public function update(Request $request){
         $offer=auth()->user()->parents->job_offers()->where('id',$request->id)->first();
@@ -100,6 +120,22 @@ class JobOfferController extends Controller
         $offer->number_of_students = $request->number_of_students;
         $offer->requirements = $request->requirements;
         $offer->hiring_from = $request->hiring_from;
+        $offer->tutor_study_type_id = $request->tutor_study_type_id;
+        $offer->tutor_religion_id = $request->tutor_religion_id;
+        $offer->tutor_university_id = $request->tutor_university_id;
+        $offer->tutor_school_id = $request->tutor_school_id;
+        $offer->tutor_college_id = $request->tutor_college_id;
+        $offer->tutor_category_id = $request->tutor_category_id;
+        $offer->university_type = $request->university_type;
+        $offer->group = $request->group;
+        $offer->reference_name = $request->reference_name;
+        $offer->reference_contact = $request->reference_contact;
+        $offer->reference_city_id = $request->reference_city_id;
+        $offer->email = $request->email;
+        $offer->additional_contact = $request->additional_contact;
+        $offer->source = $request->source;
+        $offer->spicial_note = $request->spicial_note;
+        $offer->tutor_department = $request->tutor_department;
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
         return redirect()->back()->with('success','Job offer has been updated successfully');
