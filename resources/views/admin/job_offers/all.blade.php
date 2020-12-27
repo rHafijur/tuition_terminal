@@ -1,4 +1,10 @@
 @extends(getThemePath('layout.layout'))
+@php
+    $is_sa=false;
+    if(auth()->user()->cb_roles_id==1){
+        $is_sa=true;
+    }
+@endphp
 @section('content')
 @php
    use Carbon\Carbon;
@@ -55,7 +61,9 @@
                         @endphp
                         <tr>
                             <td>{{$dt->toDateString()}}</td>
-                            <td>{{$offer->id}}</td>
+                            <td>
+                                <a href="{{cb()->getAdminUrl("job_offers/detail/".$offer->id)}}" target="_blank">{{$offer->id}}</a>
+                            </td>
                             <td>{{$offer->category->title}}</td>
                             <td>{{$offer->course->title}}</td>
                             <td>{{$offer->location->name}}, {{$offer->city->name}}</td>
@@ -88,7 +96,12 @@
                             <td>
                                 <input onchange="activeChanged(this,{{$offer->id}})" type="checkbox" {{$checked}} data-toggle="toggle">
                             </td>
-                            <td>Action</td>
+                            <td>
+                                <a href="{{cb()->getAdminUrl("job_offers/edit/".$offer->id)}}" target="_blank"><button class="btn btn-warning btn-sm">Edit</button></a>
+                                @if ($is_sa)
+                                <a href="{{cb()->getAdminUrl("job_offers/delete/".$offer->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
+                                @endif
+                            </td>
                         </tr>                         
                         @endforeach
                     </tbody>

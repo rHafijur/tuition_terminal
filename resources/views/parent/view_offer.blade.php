@@ -17,6 +17,12 @@
                         </th>
                     </tr>
                     <tr>
+                        <th scope="row">Job Offer Id</th>
+                        <td>
+                            {{$offer->id}}
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row">Category</th>
                         <td>
                             {{$offer->category->title}}
