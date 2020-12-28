@@ -91,7 +91,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{$offer->applications->count()}}
+                                <a href="{{cb()->getAdminUrl("job_offers/application-list/".$offer->id)}}" target="_blank" ><span>{{$offer->applications->count()}}</span> <span class="badge badge-pill badge-info">{{$offer->applications()->where('is_seen',0)->get()->count()}}</span></a>
                             </td>
                             <td>
                                 <input onchange="activeChanged(this,{{$offer->id}})" type="checkbox" {{$checked}} data-toggle="toggle">

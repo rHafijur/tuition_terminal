@@ -90,6 +90,9 @@ class JobOffer extends Model
         return $this->belongsTo("App\User",'taken_by_2_id');
     }
     public function applications(){
+        return $this->hasMany('App\JobApplication','job_offer_id');
+    }
+    public function tutor_applications(){
         return $this->hasMany('App\ApplicationForTutor','job_offer_id');
     }
     public function course_subjects(){

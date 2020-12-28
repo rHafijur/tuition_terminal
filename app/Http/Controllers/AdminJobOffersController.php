@@ -9,6 +9,7 @@ use App\Course;
 use App\City;
 use App\Tutor;
 use App\Institute;
+use App\JobApplication;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
@@ -101,5 +102,28 @@ class AdminJobOffersController extends CBController {
         $offer=JobOffer::findOrFail($id);
         $offer->delete();
         return redirect()->back()->with('success','Job offer has been deleted successfully');
+    }
+
+    public function getApplicationList($id){
+        $page_title = "Applications of Job Id: ".$id;
+        $offer = JobOffer::findOrFail($id);
+        return view('admin.job_offers.single_job_applications',compact('page_title','offer'));
+    }
+    public function getApplicationTake($id){
+        $application=JobApplication::findOrFail($id);
+        $offer=$application->job_offer;
+        $user_id=auth()->user()->id;
+        if($offer->taken_by_1_id==null){
+            $offer->taken_by_1_id=$user_id;
+            $application->taken_by_id=$user_id;
+            $offer->save();
+            $application->save();
+        }elseif($offer->taken_by_2_id==null){
+            $offer->taken_by_2_id=$user_id;
+            $application->taken_by_id=$user_id;
+            $offer->save();
+            $application->save();
+        }
+        return redirect()->back();
     }
 }
