@@ -17,6 +17,11 @@ use App\Http\Resources\CityResource;
 
 class AdminJobOffersController extends CBController {
 
+    protected function redirectIfNotSuperAdmin(){
+        if(auth()->user()->cb_roles_id!=1){
+            return cb()->redirectBack('Unauthorized Operation','warning');
+        }
+    }
 
     public function cbInit()
     {
@@ -93,7 +98,7 @@ class AdminJobOffersController extends CBController {
         $offer->tutor_department = $request->tutor_department;
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
-        return redirect()->back()->with('success','Job offer has been updated successfully');
+        return cb()->redirectBack('Job offer has been deleted successfully','success');
     }
     public function getDelete($id){
         if(auth()->user()->cb_roles_id==!1){
@@ -101,7 +106,7 @@ class AdminJobOffersController extends CBController {
         }
         $offer=JobOffer::findOrFail($id);
         $offer->delete();
-        return redirect()->back()->with('success','Job offer has been deleted successfully');
+        return cb()->redirectBack('Job offer has been deleted successfully','success');
     }
 
     public function getApplicationList($id){
@@ -125,5 +130,34 @@ class AdminJobOffersController extends CBController {
             $application->save();
         }
         return redirect()->back();
+    }
+    public function postApplicationUpdateNote(Request $request){
+        $application=JobApplication::findOrFail($request->id);
+        $application->note=$request->note;
+        $application->save();
+        return cb()->redirectBack('Note Updated Successfully','success');
+    }
+    public function postNewApplication(Request $request){
+        $tutor=Tutor::where('tutor_id',$request->tutor_id)->first();
+        if($tutor==null){
+            return cb()->redirectBack('Wrong Tutor Id','warning');
+        }
+        $offer = JobOffer::findOrFail($request->id);
+        $applied=$offer->applications()->where('tutor_id',$tutor->id)->first();
+        if($applied!=null){
+            return cb()->redirectBack('The Given Tutor Already Applied','warning');
+        }
+        JobApplication::create([
+            'job_offer_id'=>$offer->id,
+            'tutor_id'=>$tutor->id,
+        ]);
+        return cb()->redirectBack('New Tutor added to the job offer!','success');
+
+    }
+    public  function getApplicationDelete($id){
+        $this->redirectIfNotSuperAdmin();
+        $application=JobApplication::findOrFail($id);
+        $application->delete();
+        return cb()->redirectBack("Application Deleted Successfully",'success');
     }
 }

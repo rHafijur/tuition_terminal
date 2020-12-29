@@ -5,6 +5,10 @@
 @endpush
 @php
     use Carbon\Carbon;
+    $is_super_admin=false;
+    if (auth()->user()->cb_roles_id==1) {
+        $is_super_admin=true;
+    }
 @endphp
 <div class="row">
     <div class="col-md-12">
@@ -13,6 +17,9 @@
             <h3 class="card-title">
                 Application List (Total:{{$offer->applications()->count()}})
             </h3>
+            <div class="card-tools pull-right">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addApplicationModal">+Add New</button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table">
@@ -90,9 +97,13 @@
                             </td>
                             <td>
                                 @if ($application->taken_by==null)
-                                    <a href="{{cb()->getAdminUrl("job_offers/application-take/".$application->id)}}"><button class="btn btn-info">Take</button></a>
+                                    <a href="{{cb()->getAdminUrl("job_offers/application-take/".$application->id)}}"><button class="btn btn-info btn-sm">Take</button></a>
                                 @else
-                                    <button class="btn btn-info">Taken</button>
+                                    <button class="btn btn-info btn-sm">Taken</button>
+                                @endif
+                                <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToNoteModal(this)" data-note="{{$application->note}}" data-id="{{$application->id}}" data-toggle="modal" data-target="#noteModal">Note</button>
+                                @if ($is_super_admin)
+                                <a href="{{cb()->getAdminUrl("job_offers/application-delete/".$application->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
                                 @endif
                             </td>
                         </tr>
@@ -105,4 +116,64 @@
       <!-- /.card -->
     </div>
   </div>
+
+  <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="noteModalLabel">Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="noteForm" action="{{cb()->getAdminUrl("job_offers/application-update-note")}}" method="post">
+                @csrf
+                <div class="form-group">
+                    <input type="hidden" name="id" id="inputNoteId">
+                    <textarea name="note" id="inputNoteText" class="form-control" cols="30" rows="7"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" onclick="$('#noteForm').submit()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addApplicationModal" tabindex="-1" aria-labelledby="addApplicationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addApplicationModalLabel">Add New Application</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="newApplicationForm" action="{{cb()->getAdminUrl("job_offers/new-application")}}" method="post">
+                @csrf
+                <div class="form-group">
+                    <input type="hidden" name="id" value="{{$offer->id}}">
+                    <label for="inputTutorId">Tutor ID</label>
+                    <input name="tutor_id"  id="inputTutorId" class="form-control" placeholder="Ex:A000001" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" onclick="$('#newApplicationForm').submit()" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+      function loadDataToNoteModal(el){
+        el=$(el);
+        $("#inputNoteId").val(el.data('id'));
+        $("#inputNoteText").text(el.data('note'));
+      }
+  </script>
 @endsection
