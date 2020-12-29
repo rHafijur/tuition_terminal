@@ -75,6 +75,7 @@
                         <th>Application ID</th>
                         <th>Job ID</th>
                         <th>Tutor Name</th>
+                        <th>Matched Rate</th>
                         <th>Taken By</th>
                         <th>Actions</th>
                     </tr>
@@ -90,6 +91,7 @@
                             <td>{{$application->id}}</td>
                             <td>{{$application->job_offer_id}}</td>
                             <td>{{$application->tutor->user->name}} {!!$application->tutor->getStatusIcon()!!}</td>
+                            <td>{{$application->matched_rate()}}</td>
                             <td>
                                 @if ($application->taken_by!=null)
                                 {{$application->taken_by->name}}
