@@ -199,6 +199,18 @@ class Tutor extends Model
         }
         return "";
     }
+    public function getRating(){
+        $rating=4;
+        $stars="";
+        for($i=0;$i<5;$i++){
+            if($i < $rating){
+                $stars.='<span style="color:orange" class="fa fa-star"></span>';
+            }else{
+                $stars.='<span class="fa fa-star"></span>';
+            }
+        }
+        return $stars;
+    }
     public function save_tutor_id(){
         $id=$this->id;
         $mod= $id % 1000000;

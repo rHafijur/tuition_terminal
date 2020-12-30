@@ -11,6 +11,7 @@
 @endphp
 @push('head')
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{asset('admin_lte/plugins/fontawesome-free/css/all.min.css')}}">
 @endpush
 @push('bottom')
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -91,16 +92,18 @@
                                 @endif
                             </td>
                             <td>
-                                {{$offer->applications->count()}}
+                                <a href="{{cb()->getAdminUrl("job_offers/application-list/".$offer->id)}}" target="_blank" ><span>{{$offer->applications->count()}}</span> <span class="badge badge-pill badge-info">{{$offer->applications()->where('is_seen',0)->get()->count()}}</span></a>
                             </td>
                             <td>
                                 <input onchange="activeChanged(this,{{$offer->id}})" type="checkbox" {{$checked}} data-toggle="toggle">
                             </td>
                             <td>
+                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
                                 <a href="{{cb()->getAdminUrl("job_offers/edit/".$offer->id)}}" target="_blank"><button class="btn btn-warning btn-sm">Edit</button></a>
                                 @if ($is_sa)
                                 <a href="{{cb()->getAdminUrl("job_offers/delete/".$offer->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
                                 @endif
+                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToSearchTutorModal({{$offer->id}})" data-toggle="modal" data-target="#searchTutorModal">Search Tutor</button>
                             </td>
                         </tr>                         
                         @endforeach
@@ -109,9 +112,58 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="currentConditionModal" tabindex="-1" aria-labelledby="currentConditionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="currentConditionModalLabel">Current Condition</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="currentConditionModalBody">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="modal fade" id="searchTutorModal" tabindex="-1" aria-labelledby="searchTutorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchTutorModalLabel">Search Tutors</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="searchTutorModalBody">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection
 @push('bottom')
-    <script>
+<script>
+        var loading=`
+        Loading...
+        `;
         function activeChanged(el,id){
             var stat=0;
             if(el.checked){
@@ -120,6 +172,26 @@
             $.get('{{cb()->getAdminUrl("job_offers/change-active")}}'+'/'+id+"/"+stat,function(data,status){
                 // console.log(status);
                 // console.log(data);
+            });
+        }
+        function loadDataToCurrentConditoinModal(id){
+            $("#currentConditionModalBody").html(loading);
+            $.get('{{cb()->getAdminUrl("job_offers/offer-current-condition")}}'+'/'+id,function(data,status){
+                if(status=="success"){
+                    $("#currentConditionModalBody").html(data);
+                }else{
+                    $("#currentConditionModalBody").html("Something went wrong, please try again");
+                }
+            });
+        }
+        function loadDataToSearchTutorModal(id){
+            $("#searchTutorModalBody").html(loading);
+            $.get('{{cb()->getAdminUrl("job_offers/offer-search-tutor")}}'+'/'+id,function(data,status){
+                if(status=="success"){
+                    $("#searchTutorModalBody").html(data);
+                }else{
+                    $("#searchTutorModalBody").html("Something went wrong, please try again");
+                }
             });
         }
     </script>

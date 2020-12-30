@@ -9,6 +9,7 @@ use App\Course;
 use App\City;
 use App\Tutor;
 use App\Institute;
+use App\JobApplication;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
@@ -16,6 +17,11 @@ use App\Http\Resources\CityResource;
 
 class AdminJobOffersController extends CBController {
 
+    protected function redirectIfNotSuperAdmin(){
+        if(auth()->user()->cb_roles_id!=1){
+            return cb()->redirectBack('Unauthorized Operation','warning');
+        }
+    }
 
     public function cbInit()
     {
@@ -92,7 +98,7 @@ class AdminJobOffersController extends CBController {
         $offer->tutor_department = $request->tutor_department;
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
-        return redirect()->back()->with('success','Job offer has been updated successfully');
+        return cb()->redirectBack('Job offer has been deleted successfully','success');
     }
     public function getDelete($id){
         if(auth()->user()->cb_roles_id==!1){
@@ -100,6 +106,68 @@ class AdminJobOffersController extends CBController {
         }
         $offer=JobOffer::findOrFail($id);
         $offer->delete();
-        return redirect()->back()->with('success','Job offer has been deleted successfully');
+        return cb()->redirectBack('Job offer has been deleted successfully','success');
+    }
+
+    public function getApplicationList($id){
+        $page_title = "Applications of Job Id: ".$id;
+        $offer = JobOffer::findOrFail($id);
+        return view('admin.job_offers.single_job_applications',compact('page_title','offer'));
+    }
+    public function getApplicationTake($id){
+        $application=JobApplication::findOrFail($id);
+        $offer=$application->job_offer;
+        $user_id=auth()->user()->id;
+        if($offer->taken_by_1_id==null){
+            $offer->taken_by_1_id=$user_id;
+            $application->taken_by_id=$user_id;
+            $offer->save();
+            $application->save();
+        }elseif($offer->taken_by_2_id==null){
+            $offer->taken_by_2_id=$user_id;
+            $application->taken_by_id=$user_id;
+            $offer->save();
+            $application->save();
+        }
+        return redirect()->back();
+    }
+    public function postApplicationUpdateNote(Request $request){
+        $application=JobApplication::findOrFail($request->id);
+        $application->note=$request->note;
+        $application->save();
+        return cb()->redirectBack('Note Updated Successfully','success');
+    }
+    public function postNewApplication(Request $request){
+        $tutor=Tutor::where('tutor_id',$request->tutor_id)->first();
+        if($tutor==null){
+            return cb()->redirectBack('Wrong Tutor Id','warning');
+        }
+        $offer = JobOffer::findOrFail($request->id);
+        $applied=$offer->applications()->where('tutor_id',$tutor->id)->first();
+        if($applied!=null){
+            return cb()->redirectBack('The Given Tutor Already Applied','warning');
+        }
+        JobApplication::create([
+            'job_offer_id'=>$offer->id,
+            'tutor_id'=>$tutor->id,
+        ]);
+        return cb()->redirectBack('New Tutor added to the job offer!','success');
+
+    }
+    public  function getApplicationDelete($id){
+        $this->redirectIfNotSuperAdmin();
+        $application=JobApplication::findOrFail($id);
+        $application->delete();
+        return cb()->redirectBack("Application Deleted Successfully",'success');
+    }
+    public function getOfferCurrentCondition($id){
+        $offer = JobOffer::findOrFail($id);
+        return view('admin.job_offers.src.current_condition_ajax',compact('offer'));
+    }
+    public function getOfferSearchTutor($id){
+        $offer = JobOffer::findOrFail($id);
+        $tutors =$offer->search_tutors_by_matching();
+        // dd($tutors);
+        return view('admin.job_offers.src.search_tutor_modal_ajax',compact('offer','tutors'));
     }
 }
