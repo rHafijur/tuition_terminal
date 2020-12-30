@@ -33,6 +33,7 @@ class JobApplication extends Model
         'is_canceled',
         'is_taken',
         'is_seen',
+        'current_stage',
     ];
     
     public function job_offer(){
