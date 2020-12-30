@@ -160,4 +160,8 @@ class AdminJobOffersController extends CBController {
         $application->delete();
         return cb()->redirectBack("Application Deleted Successfully",'success');
     }
+    public function getOfferCurrentCondition($id){
+        $offer = JobOffer::findOrFail($id);
+        return view('admin.job_offers.src.current_condition_ajax',compact('offer'));
+    }
 }

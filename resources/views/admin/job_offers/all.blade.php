@@ -97,6 +97,7 @@
                                 <input onchange="activeChanged(this,{{$offer->id}})" type="checkbox" {{$checked}} data-toggle="toggle">
                             </td>
                             <td>
+                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
                                 <a href="{{cb()->getAdminUrl("job_offers/edit/".$offer->id)}}" target="_blank"><button class="btn btn-warning btn-sm">Edit</button></a>
                                 @if ($is_sa)
                                 <a href="{{cb()->getAdminUrl("job_offers/delete/".$offer->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
@@ -109,6 +110,23 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="currentConditionModal" tabindex="-1" aria-labelledby="currentConditionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="currentConditionModalLabel">Current Condition</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="currentConditionModalBody">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection
 @push('bottom')
     <script>
@@ -120,6 +138,15 @@
             $.get('{{cb()->getAdminUrl("job_offers/change-active")}}'+'/'+id+"/"+stat,function(data,status){
                 // console.log(status);
                 // console.log(data);
+            });
+        }
+        function loadDataToCurrentConditoinModal(id){
+            $.get('{{cb()->getAdminUrl("job_offers/offer-current-condition")}}'+'/'+id,function(data,status){
+                if(status=="success"){
+                    $("#currentConditionModalBody").html(data);
+                }else{
+                    $("#currentConditionModalBody").html("Something went wrong, please try again");
+                }
             });
         }
     </script>
