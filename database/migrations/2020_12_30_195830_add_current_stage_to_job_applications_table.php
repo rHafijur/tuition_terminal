@@ -14,7 +14,7 @@ class AddCurrentStageToJobApplicationsTable extends Migration
     public function up()
     {
         Schema::table('job_applications', function (Blueprint $table) {
-            $table->enum('current_stage',['waiting','meet','trial','confirm','repost','cancel'])->nullable();
+            $table->enum('current_stage',['waiting','meet','trial','confirm','payment','repost','cancel'])->nullable();
         });
     }
 
