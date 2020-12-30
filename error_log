@@ -1,0 +1,7 @@
+[08-Dec-2020 22:11:38 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[13-Dec-2020 21:07:52 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 294912 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/RuleWatchGraph.php on line 49
+[13-Dec-2020 21:09:29 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[13-Dec-2020 21:32:52 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 294912 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/RuleWatchGraph.php on line 49
+[13-Dec-2020 21:45:44 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 4096 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/Rule2Literals.php on line 53
+[13-Dec-2020 22:02:26 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[13-Dec-2020 22:09:27 UTC] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
