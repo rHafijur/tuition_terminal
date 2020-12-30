@@ -11,6 +11,7 @@
 @endphp
 @push('head')
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{asset('admin_lte/plugins/fontawesome-free/css/all.min.css')}}">
 @endpush
 @push('bottom')
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -102,6 +103,7 @@
                                 @if ($is_sa)
                                 <a href="{{cb()->getAdminUrl("job_offers/delete/".$offer->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
                                 @endif
+                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToSearchTutorModal({{$offer->id}})" data-toggle="modal" data-target="#searchTutorModal">Search Tutor</button>
                             </td>
                         </tr>                         
                         @endforeach
@@ -127,6 +129,24 @@
           </div>
         </div>
       </div>
+    
+      <div class="modal fade" id="searchTutorModal" tabindex="-1" aria-labelledby="searchTutorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchTutorModalLabel">Current Condition</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="searchTutorModalBody">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 @endsection
 @push('bottom')
     <script>
@@ -141,11 +161,22 @@
             });
         }
         function loadDataToCurrentConditoinModal(id){
+            $("#currentConditionModalBody").empty();
             $.get('{{cb()->getAdminUrl("job_offers/offer-current-condition")}}'+'/'+id,function(data,status){
                 if(status=="success"){
                     $("#currentConditionModalBody").html(data);
                 }else{
                     $("#currentConditionModalBody").html("Something went wrong, please try again");
+                }
+            });
+        }
+        function loadDataToSearchTutorModal(id){
+            $("#searchTutorModalBody").empty();
+            $.get('{{cb()->getAdminUrl("job_offers/offer-search-tutor")}}'+'/'+id,function(data,status){
+                if(status=="success"){
+                    $("#searchTutorModalBody").html(data);
+                }else{
+                    $("#searchTutorModalBody").html("Something went wrong, please try again");
                 }
             });
         }

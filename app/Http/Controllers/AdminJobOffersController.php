@@ -164,4 +164,10 @@ class AdminJobOffersController extends CBController {
         $offer = JobOffer::findOrFail($id);
         return view('admin.job_offers.src.current_condition_ajax',compact('offer'));
     }
+    public function getOfferSearchTutor($id){
+        $offer = JobOffer::findOrFail($id);
+        $tutors =$offer->search_tutors_by_matching();
+        // dd($tutors);
+        return view('admin.job_offers.src.search_tutor_modal_ajax',compact('offer','tutors'));
+    }
 }
