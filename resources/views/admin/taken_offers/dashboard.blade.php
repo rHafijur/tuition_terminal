@@ -4,7 +4,6 @@
         'meet',
         'trial',
         'confirm',
-        'payment',
         'repost',
         'cancel',
     ];
@@ -69,7 +68,7 @@
                                 {{$application->tutor->user->phone}}
                             </td>
                             <td>
-                                <select class="form-control" style="max-width: 100px">
+                                <select onchange="stageOptionChanged(this,{{$application->id}})" class="form-control" style="max-width: 100px">
                                     <option value="">Select</option>
                                     @foreach ($stages as $st)
                                     <option value="{{$st}}" @if($st==$application->current_stage) selected @endif>{{ucfirst($st)}}</option>
@@ -88,36 +87,5 @@
             </table>
         </div>
     </div>
-    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="noteModalLabel">Note</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <form id="noteForm" action="{{cb()->getAdminUrl("job_offers/application-update-note")}}" method="post">
-                    @csrf
-                    <div class="form-group">
-                        <input type="hidden" name="id" id="inputNoteId">
-                        <textarea name="note" id="inputNoteText" class="form-control" cols="30" rows="7"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" onclick="$('#noteForm').submit()" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    <script>
-        function loadDataToNoteModal(el){
-          el=$(el);
-          $("#inputNoteId").val(el.data('id'));
-          $("#inputNoteText").text(el.data('note'));
-        }
-    </script>
+    @include('admin.taken_offers.src.modals');
 @endsection
