@@ -23,6 +23,24 @@
       </div>
     </div>
   </div>
+<div class="modal fade" id="datesModal" tabindex="-1" aria-labelledby="datesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datesModalLabel">Dates</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="dates_modal_body">
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="setWaitingModal" tabindex="-1" aria-labelledby="setWaitingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -217,6 +235,20 @@
       el=$(el);
       $("#inputNoteId").val(el.data('id'));
       $("#inputNoteText").text(el.data('note'));
+    }
+    function dateButtonClicked(id){
+        $("#datesModal").modal('show');
+        $("#dates_modal_body").html("Loading....");
+        
+        $.get('{{cb()->getAdminUrl("taken_offers/view-dates-ajax")}}/'+id,
+            function (data, status) {
+                if(status=="success"){
+                    $("#dates_modal_body").html(data);
+                }else{
+                    $("#dates_modal_body").html("Something Went Wrong");
+                }
+            }
+        );
     }
     function stageOptionChanged(el,id){
         switch (el.value) {

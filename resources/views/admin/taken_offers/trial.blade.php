@@ -11,6 +11,7 @@
     if(auth()->user()->cb_roles_id==1){
         $is_sa=true;
     }
+    use Carbon\Carbon;
 @endphp
 @extends(getThemePath('layout.layout'))
 @push('head')
@@ -46,38 +47,20 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="report-card card">
-                        <h2>{{$waiting_cnt + $meeting_cnt + $trial_cnt}}</h2>
-                        <span>Total Pending</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$waiting_cnt}}</h2>
-                        <span>Waiting</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$meeting_cnt}}</h2>
-                        <span>Meeting</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
                         <h2>{{$trial_cnt}}</h2>
-                        <span>Trial</span>
+                        <span>Total Trial</span>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="report-card card">
-                        <h2>{{$confirm_cnt}}</h2>
-                        <span>Confirm</span>
+                        <h2>{{$new_cnt}}</h2>
+                        <span>New in</span>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="report-card card">
-                        <h2>{{$revenue}}</h2>
-                        <span>Revenue</span>
+                        <h2>{{$today_cnt}}</h2>
+                        <span>Today's Trial</span>
                     </div>
                 </div>
             </div>
@@ -88,6 +71,7 @@
                     <tr>
                         <th>Dates</th>
                         <th>Tuition ID</th>
+                        <th>Trial Date</th>
                         <th>Class</th>
                         <th>Location</th>
                         <th>Tutor's ID</th>
@@ -106,6 +90,9 @@
                             </td>
                             <td>
                                 {{$application->job_offer_id}}
+                            </td>
+                            <td>
+                                {{Carbon::parse($application->trial_date)->toDateString()}}
                             </td>
                             <td>
                                 {{$application->job_offer->course->title}}

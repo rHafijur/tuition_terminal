@@ -121,11 +121,13 @@ class AdminJobOffersController extends CBController {
         if($offer->taken_by_1_id==null){
             $offer->taken_by_1_id=$user_id;
             $application->taken_by_id=$user_id;
+            $application->taken_date=now();
             $offer->save();
             $application->save();
         }elseif($offer->taken_by_2_id==null){
             $offer->taken_by_2_id=$user_id;
             $application->taken_by_id=$user_id;
+            $application->taken_date=now();
             $offer->save();
             $application->save();
         }

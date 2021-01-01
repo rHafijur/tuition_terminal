@@ -43,44 +43,6 @@
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/cancel")}}" class="nav-link @if($stage=="cancel")active @endif">Cancel</a></li>
                 </ul>
             </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$waiting_cnt + $meeting_cnt + $trial_cnt}}</h2>
-                        <span>Total Pending</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$waiting_cnt}}</h2>
-                        <span>Waiting</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$meeting_cnt}}</h2>
-                        <span>Meeting</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$trial_cnt}}</h2>
-                        <span>Trial</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$confirm_cnt}}</h2>
-                        <span>Confirm</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$revenue}}</h2>
-                        <span>Revenue</span>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="card-body">
             <table class="table">
