@@ -79,6 +79,7 @@
                         <th>Tuition ID</th>
                         <th>Confirm Date</th>
                         <th>Payment Date</th>
+                        <th>Payment Amount</th>
                         <th>Class</th>
                         <th>Location</th>
                         <th>Tutor's ID</th>
@@ -103,6 +104,9 @@
                             </td>
                             <td>
                                 {{Carbon::parse($application->payment_date)->toDateString()}}
+                            </td>
+                            <td>
+                                {{$application->net_receivable_amount}}
                             </td>
                             <td>
                                 {{$application->job_offer->course->title}}

@@ -35,42 +35,33 @@
     <div class="box box-default">
         <div class="box-header with-border">
             <h1 class="box-title"><i class="fa fa-eye"></i>All Job Offers</h1>
+            <div class="card-tools pull-right">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addApplicationModal">+Add New</button>
+            </div>
             <div class="row">
                 <ul id="tab_nav" class="nav nav-pills">
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/available-offers")}}" class="nav-link">Available Offers</a></li>
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/all")}}" class="nav-link active">All Offers</a></li>
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/applications")}}" class="nav-link">Applications</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/all")}}" class="nav-link">All Offers</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/applications")}}" class="nav-link active">Applications</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/add_new")}}" class="nav-link">Add New Tuiton</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-2">
                     <div class="report-card card">
-                        <h2>{{$all_offer_cnt}}</h2>
-                        <span>All Offers</span>
+                        <h2>{{$total_cnt}}</h2>
+                        <span>Total Applications</span>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="report-card card">
-                        <h2>{{$available_offer_cnt}}</h2>
-                        <span>Available Offers</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$pending_offer_cnt}}</h2>
-                        <span>Pending Offers</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$todays_offer_cnt}}</h2>
-                        <span>Today's Offers</span>
+                        <h2>{{$todays_cnt}}</h2>
+                        <span>Today's Applications</span>
                     </div>
                 </div>
             </div>
             <button onclick="$('#filters').toggleClass('hide')" class="btn btn-light"><i class="fa fa-filter"></i></button>
-            <form action="{{cb()->getAdminUrl("job_offers/all")}}" method="GET">
+            <form action="{{cb()->getAdminUrl("job_offers/applications")}}" method="GET">
                 <div id="filters" class="hide card card-body">
                     <div class="form-row">
                         <div class="form-group col-md-2">
@@ -135,7 +126,7 @@
                             @php
                                 $ocs=$request->course_subject_ids;
                             @endphp
-                            <select class="form-control required-input select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                            <select class="form-control required-input select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="multiple" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                                 @if ($request->course_id!=null)
                                     @foreach (App\Course::find($request->course_id)->course_subjects as $cs)
                                     @php
@@ -153,36 +144,34 @@
                             </select>
                         </div>
                         <div class="form-group col">
-                            <label for="time">Tutoring Time</label>
-                            <input class="form-control required-input" value="{{$request->time}}" name="time" id="time" type="time">
+                            <label for="reference_name">Remarks</label>
+                            <input class="form-control required-input" name="reference_name" value="{{$request->reference_name}}" id="reference_name" type="text">
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col">
-                            <label for="salary">Salary</label>
-                            <input class="form-control required-input" value="{{$request->salary}}" name="salary" id="salary" type="number">
-                        </div>
-                        <div class="form-group col">
-                            <label for="source">Source</label>
-                            <select class="form-control required-input" name="source" id="source">
-                                <option value="">Select Source</option>
-                                <option @if($request->source=="Facebook") selected @endif value="Facebook">Facebook</option>
-                                <option @if($request->source=="Google") selected @endif value="Google">Google</option>
-                                <option @if($request->source=="Offline Marketing") selected @endif value="Offline Marketing">Offline Marketing</option>
-                                <option @if($request->source=="Lead Offer") selected @endif value="Lead Offer">Lead Offer</option>
-                                <option @if($request->source=="Other") selected @endif value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group col">
-                            <label for="taken_by_id">Taken By</label>
-                            <select class="form-control required-input select2" name="taken_by_id" id="taken_by_id">
-                                <option value="">Select User</option>
-                                @foreach (App\User::whereIn('cb_roles_id',[1,2])->get() as $user)
-                                    <option @if($user->id==$request->taken_by_id) selected @endif value="{{$user->id}}">{{$user->name}}</option>
+                        <div class="form-group col-md-2">
+                            <label for="tutor_city_id">City</label>
+                            <select onchange="tutorCityChanged(this)" class="form-control required-input select2" name="tutor_city_id" id="tutor_city_id">
+                                <option value="">Select City</option>
+                                @foreach ($city_collection as $city)
+                                    <option @if($city->id==$request->tutor_city_id) selected @endif value="{{$city->id}}">{{$city->name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col">
+                        <div class="form-group col-md-2">
+                            <label for="tutor_location_id">Location</label>
+                            <select class="form-control required-input" name="tutor_location_id" data-select2-id="" id="tutor_location_id">
+                                @if ($request->tutor_city_id!=null)
+                                    @php
+                                        $scity=App\City::find($request->tutor_city_id);
+                                    @endphp    
+                                    @foreach ($scity->locations as $location)
+                                        <option @if($location->id==$request->tutor_location_id) selected @endif value="{{$location->id}}">{{$location->name}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
                             <label for="channel">Channel</label>
                             <select class="form-control required-input" name="channel" id="channel">
                                 <option value="">Select channel</option>
@@ -191,7 +180,7 @@
                                 <option @if($request->channel=="System") selected @endif value="System">System</option>
                             </select>
                         </div>
-                        <div class="form-group col">
+                        <div class="form-group col-md-2">
                             <label for="tutor_gender">Tutor's Gender</label>
                             <select class="form-control required-input" name="tutor_gender" id="tutor_gender">
                                 <option value="">Select Gender</option>
@@ -199,16 +188,8 @@
                                 <option @if($request->tutor_gender=='female') selected @endif value="female">Female</option>
                             </select>
                         </div>
-                        <div class="form-group col">
-                            <label for="tutor_department">Depertment</label>
-                            <input class="form-control required-input" name="tutor_department" value="{{$request->tutor_department}}" id="tutor_department" type="text">
-                        </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="reference_name">Remarks</label>
-                            <input class="form-control required-input" name="reference_name" value="{{$request->reference_name}}" id="reference_name" type="text">
-                        </div>
                         <div class="form-group col-md-1" style="margin-top:32px">
                             <button class="btn btn-primary" type="submit">Apply Filter</button>
                         </div>
@@ -227,78 +208,51 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Job Id</th>
-                            <th>Category</th>
-                            <th>Course</th>
-                            <th>Location</th>
-                            <th>Salary</th>
-                            <th>Phone</th>
-                            <th>T Gender</th>
-                            <th>T University Type</th>
-                            <th>Remarks</th>
-                            <th>Status</th>
-                            <th>EM-1</th>
-                            <th>EM-2</th>
-                            <th>Applied Tutors</th>
-                            <th>Live</th>
-                            <th>Action</th>
+                            <th>Time</th>
+                            <th>Application ID</th>
+                            <th>Job ID</th>
+                            <th>Tutor Name</th>
+                            <th>Matched Rate</th>
+                            <th>Taken By</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($job_offers as $offer)
-                        @php
-                            $dt=Carbon::parse($offer->created_at);
-                            $checked="";
-                            if($offer->is_active==1){
-                                $checked="checked";
-                            }
-                        @endphp
-                        <tr>
-                            <td>{{$dt->toDateString()}}</td>
-                            <td>
-                                <a href="{{cb()->getAdminUrl("job_offers/detail/".$offer->id)}}" target="_blank">{{$offer->id}}</a>
-                            </td>
-                            <td>{{$offer->category->title}}</td>
-                            <td>{{$offer->course->title}}</td>
-                            <td>{{$offer->location->name}}, {{$offer->city->name}}</td>
-                            <td>{{$offer->min_salary}} - {{$offer->max_salary}}</td>
-                            <td>{{$offer->phone}}</td>
-                            <td>{{$offer->tutor_gender}}</td>
-                            <td>
-                                {{-- @if ($offer->tutor_study_type!=null)
-                                {{$offer->tutor_study_type->title}}
-                                @endif --}}
-                                {{$offer->university_type}}
-                            </td>
-                            <td>
-                                {{$offer->reference_name}}
-                            </td>
-                            <td>{{$offer->getStatus()}}</td>
-                            <td>
-                                @if ($offer->em1!=null)
-                                {{$offer->em1->name}}
-                                @endif
-                            </td>
-                            <td>
-                                @if ($offer->em2!=null)
-                                {{$offer->em2->name}}
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{cb()->getAdminUrl("job_offers/application-list/".$offer->id)}}" target="_blank" ><span>{{$offer->applications->count()}}</span> <span class="badge badge-pill badge-info">{{$offer->applications()->where('is_seen',0)->get()->count()}}</span></a>
-                            </td>
-                            <td>
-                                <input onchange="activeChanged(this,{{$offer->id}})" type="checkbox" {{$checked}} data-toggle="toggle">
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
-                                <a href="{{cb()->getAdminUrl("job_offers/edit/".$offer->id)}}" target="_blank"><button class="btn btn-warning btn-sm">Edit</button></a>
-                                @if ($is_sa)
-                                <a href="{{cb()->getAdminUrl("job_offers/delete/".$offer->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
-                                @endif
-                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToSearchTutorModal({{$offer->id}})" data-toggle="modal" data-target="#searchTutorModal">Search Tutor</button>
-                            </td>
-                        </tr>                         
+                        @foreach ($applications as $application)
+                            @php
+                                // dd($application->taken_by->name);
+                            @endphp
+                            <tr>
+                                <td>{{Carbon::parse($application->created_at)->toDateString()}}</td>
+                                <td>{{Carbon::parse($application->created_at)->toTimeString()}}</td>
+                                <td>{{$application->id}}</td>
+                                <td>
+                                    <a href="{{cb()->getAdminUrl("job_offers/detail/".$application->job_offer_id)}}" target="_blank">{{$application->job_offer_id}}</a>
+                                </td>
+                                <td>
+                                    <a href="{{cb()->getAdminUrl("tutors/single/".$application->tutor_id)}}" target="_blank">
+                                        {{$application->tutor->user->name}} {!!$application->tutor->getStatusIcon()!!}
+                                    </a>
+                                </td>
+                                <td>{{$application->matched_rate()}}</td>
+                                <td>
+                                    @if ($application->taken_by!=null)
+                                    {{$application->taken_by->name}}
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{cb()->getAdminUrl("job_offers/application-list/".$application->job_offer)}}" target="_blank" ><span>{{$application->job_offer->applications->count()}}</span> <span class="badge badge-pill badge-info">{{$application->job_offer->applications()->where('is_seen',0)->get()->count()}} Applications</span></a>
+                                    @if ($application->taken_by==null)
+                                        <a href="{{cb()->getAdminUrl("job_offers/application-take/".$application->id)}}"><button class="btn btn-info btn-sm">Take</button></a>
+                                    @else
+                                        <button class="btn btn-info btn-sm">Taken</button>
+                                    @endif
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToNoteModal(this)" data-note="{{$application->note}}" data-id="{{$application->id}}" data-toggle="modal" data-target="#noteModal">Note</button>
+                                    @if ($is_sa)
+                                    <a href="{{cb()->getAdminUrl("job_offers/application-delete/".$application->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -306,55 +260,73 @@
         </div>
     </div>
     
-    <div class="modal fade" id="currentConditionModal" tabindex="-1" aria-labelledby="currentConditionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="currentConditionModalLabel">Current Condition</h5>
+              <h5 class="modal-title" id="noteModalLabel">Note</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" id="currentConditionModalBody">
-                <div class="text-center">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
+            <div class="modal-body">
+                <form id="noteForm" action="{{cb()->getAdminUrl("job_offers/application-update-note")}}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" name="id" id="inputNoteId">
+                        <textarea name="note" id="inputNoteText" class="form-control" cols="30" rows="7"></textarea>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" onclick="$('#noteForm').submit()" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
       </div>
     
-      <div class="modal fade" id="searchTutorModal" tabindex="-1" aria-labelledby="searchTutorModalLabel" aria-hidden="true">
+      <div class="modal fade" id="addApplicationModal" tabindex="-1" aria-labelledby="addApplicationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="searchTutorModalLabel">Search Tutors</h5>
+              <h5 class="modal-title" id="addApplicationModalLabel">Add New Application</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" id="searchTutorModalBody">
-                <div class="text-center">
-                    <div class="spinner-border" role="status">
-                      <span class="sr-only">Loading...</span>
+            <div class="modal-body">
+                <form id="newApplicationForm" action="{{cb()->getAdminUrl("job_offers/new-application")}}" method="post">
+                    @csrf
+
+                    <div class="form-group">
+                        <label for="inputJobOfferId">Job Offer ID</label>
+                        <input name="id" type="number" id="inputJobOfferId" class="form-control" placeholder="Ex:123" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="inputTutorId">Tutor ID</label>
+                        <input name="tutor_id"  id="inputTutorId" class="form-control" placeholder="Ex:A000001" required>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" onclick="$('#newApplicationForm').submit()" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
       </div>
+      <script>
+          function loadDataToNoteModal(el){
+            el=$(el);
+            $("#inputNoteId").val(el.data('id'));
+            $("#inputNoteText").text(el.data('note'));
+          }
+      </script>
 @endsection
 @push('bottom')
 <script>
-        const resource=JSON.parse(`{!!json_encode($categories_collection)!!}`);
+             const resource=JSON.parse(`{!!json_encode($categories_collection)!!}`);
         const courses_resource=JSON.parse(`{!!json_encode($courses_collection)!!}`);
         const city_resource=JSON.parse(`{!!json_encode($city_collection)!!}`);
         function  getCategory(id){
@@ -433,42 +405,22 @@
             console.log(html);
             $("#location_id").html(html);
             $("#location_id").select2();
+            $("#location_id").select2();
 
         }
-
-        var loading=`
-        Loading...
-        `;
-        function activeChanged(el,id){
-            var stat=0;
-            if(el.checked){
-                stat=1;
+        function tutorCityChanged(obj){
+            var city=getCity($(obj).val());
+            var html="";
+            for(var loc of city.locations){
+                html+=`<option value="`+loc.id+`" data-select2-id="`+loc.id+`">`+loc.name+`</option>`;
             }
-            $.get('{{cb()->getAdminUrl("job_offers/change-active")}}'+'/'+id+"/"+stat,function(data,status){
-                // console.log(status);
-                // console.log(data);
-            });
+            console.log(html);
+            $("#tutor_location_id").html(html);
+            $("#tutor_location_id").select2();
+            $("#tutor_location_id").select2();
+
         }
-        function loadDataToCurrentConditoinModal(id){
-            $("#currentConditionModalBody").html(loading);
-            $.get('{{cb()->getAdminUrl("job_offers/offer-current-condition")}}'+'/'+id,function(data,status){
-                if(status=="success"){
-                    $("#currentConditionModalBody").html(data);
-                }else{
-                    $("#currentConditionModalBody").html("Something went wrong, please try again");
-                }
-            });
-        }
-        function loadDataToSearchTutorModal(id){
-            $("#searchTutorModalBody").html(loading);
-            $.get('{{cb()->getAdminUrl("job_offers/offer-search-tutor")}}'+'/'+id,function(data,status){
-                if(status=="success"){
-                    $("#searchTutorModalBody").html(data);
-                }else{
-                    $("#searchTutorModalBody").html("Something went wrong, please try again");
-                }
-            });
-        }
-    </script>
+
+</script>
     
 @endpush

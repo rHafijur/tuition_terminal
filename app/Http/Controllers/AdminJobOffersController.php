@@ -2,7 +2,7 @@
 
 use crocodicstudio\crudbooster\controllers\CBController;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 use App\JobOffer;
 use App\Category;
 use App\Course;
@@ -39,9 +39,266 @@ class AdminJobOffersController extends CBController {
     }
     public function getAll(){
         $page_title = "All Job Offers";
-        $job_offers = JobOffer::latest()->get();
-        // dd($job_offers);
-        return view('admin.job_offers.all',\compact('page_title','job_offers'));
+        $request=request();
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+        $all_offer_cnt=JobOffer::all()->count();
+        $available_offer_cnt=JobOffer::where(function($q){
+            return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
+        })->get()->count();
+        $pending_offer_cnt=JobOffer::whereHas('applications',function($q){
+            return $q->whereNull('current_stage')->orWhereIn('current_stage',['waiting','meet','trial']);
+        })->get()->count();
+        $todays_offer_cnt=JobOffer::whereDate('created_at',Carbon::today())->get()->count();
+
+        $job_offers = JobOffer::select("*");
+        if($request->from!=null && $request->to!=null){
+            $job_offers= $job_offers->whereBetween('created_at',[$request->from,$request->to]);
+        }else{
+            if($request->from!=null){
+                $job_offers= $job_offers->whereBetween('created_at',[$request->from,now()]);
+            }
+        }
+        if($request->city_id!=null){
+            $job_offers= $job_offers->where('city_id',$request->city_id);
+        }
+        if($request->location_id!=null){
+            $job_offers= $job_offers->where('location_id',$request->location_id);
+        }
+        if($request->category_id!=null){
+            $job_offers= $job_offers->where('category_id',$request->category_id);
+        }
+        if($request->course_id!=null){
+            $job_offers= $job_offers->where('course_id',$request->course_id);
+        }
+        if($request->course_subject_ids!=null && count($request->course_subject_ids)>0){
+            $job_offers= $job_offers->whereHas('course_subjects',function($query) use($request){
+                return $query->whereIn('id',$request->course_subject_ids);
+            });
+        }
+        if($request->salary!=null){
+            $job_offers= $job_offers->where('min_salary','<=',$request->salary)->where('max_salary','>=',$request->salary);
+        }
+        if($request->source!=null){
+            $job_offers= $job_offers->where('source',$request->source);
+        }
+        if($request->tutor_gender!=null){
+            $job_offers= $job_offers->where('tutor_gender',$request->tutor_gender);
+        }
+        if($request->tutor_department!=null){
+            $job_offers= $job_offers->where('tutor_department',$request->tutor_department);
+        }
+        if($request->reference_name!=null){
+            $job_offers= $job_offers->where('reference_name',$request->reference_name);
+        }
+        if($request->time!=null){
+            $job_offers= $job_offers->where('time',$request->time);
+        }
+        if($request->taken_by_id!=null){
+            $job_offers= $job_offers->where(function($query) use($request){
+                return $query->where('taken_by_1_id',$request->taken_by_id)->orWhere('taken_by_2_id',$request->taken_by_id);
+            });
+        }
+        // dd($job_offers->get(),$job_offers,$request);
+        // $job_offers = JobOffer::all();
+        $job_offers = $job_offers->get();
+        // dd($categories_collection);
+        return view('admin.job_offers.all',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
+    }
+    public function getAvailableOffers(){
+        $page_title = "Available Job Offers";
+        $request=request();
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+
+        $all_offer_cnt=JobOffer::all()->count();
+        $available_offer_cnt=JobOffer::where(function($q){
+            return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
+        })->get()->count();
+        $pending_offer_cnt=JobOffer::whereHas('applications',function($q){
+            return $q->whereNull('current_stage')->orWhereIn('current_stage',['waiting','meet','trial']);
+        })->get()->count();
+        $todays_offer_cnt=JobOffer::whereDate('created_at',Carbon::today())->get()->count();
+
+        $job_offers = JobOffer::where(function($q){
+            return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
+        });
+        if($request->from!=null && $request->to!=null){
+            $job_offers= $job_offers->whereBetween('created_at',[$request->from,$request->to]);
+        }else{
+            if($request->from!=null){
+                $job_offers= $job_offers->whereBetween('created_at',[$request->from,now()]);
+            }
+        }
+        if($request->city_id!=null){
+            $job_offers= $job_offers->where('city_id',$request->city_id);
+        }
+        if($request->location_id!=null){
+            $job_offers= $job_offers->where('location_id',$request->location_id);
+        }
+        if($request->category_id!=null){
+            $job_offers= $job_offers->where('category_id',$request->category_id);
+        }
+        if($request->course_id!=null){
+            $job_offers= $job_offers->where('course_id',$request->course_id);
+        }
+        if($request->course_subject_ids!=null && count($request->course_subject_ids)>0){
+            $job_offers= $job_offers->whereHas('course_subjects',function($query) use($request){
+                return $query->whereIn('id',$request->course_subject_ids);
+            });
+        }
+        if($request->salary!=null){
+            $job_offers= $job_offers->where('min_salary','<=',$request->salary)->where('max_salary','>=',$request->salary);
+        }
+        if($request->source!=null){
+            $job_offers= $job_offers->where('source',$request->source);
+        }
+        if($request->tutor_gender!=null){
+            $job_offers= $job_offers->where('tutor_gender',$request->tutor_gender);
+        }
+        if($request->tutor_department!=null){
+            $job_offers= $job_offers->where('tutor_department',$request->tutor_department);
+        }
+        if($request->reference_name!=null){
+            $job_offers= $job_offers->where('reference_name',$request->reference_name);
+        }
+        if($request->time!=null){
+            $job_offers= $job_offers->where('time',$request->time);
+        }
+        if($request->taken_by_id!=null){
+            $job_offers= $job_offers->where(function($query) use($request){
+                return $query->where('taken_by_1_id',$request->taken_by_id)->orWhere('taken_by_2_id',$request->taken_by_id);
+            });
+        }
+        // dd($job_offers->get(),$job_offers,$request);
+        // $job_offers = JobOffer::all();
+        $job_offers = $job_offers->get();
+        // dd($categories_collection);
+        return view('admin.job_offers.available',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
+    }
+
+    public function getApplications(){
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+
+        $request=\request();
+        $page_title = "Job Offers Applications";
+        $todays_cnt= JobApplication::whereDate('created_at',Carbon::today())->get()->count();
+        $total_cnt= JobApplication::all()->count();
+        $applications = JobApplication::select("*");
+        $applications = $applications->whereHas('job_offer',function($q) use($request){
+            if($request->from!=null && $request->to!=null){
+                $q= $q->whereBetween('created_at',[$request->from,$request->to]);
+            }else{
+                if($request->from!=null){
+                    $q= $q->whereBetween('created_at',[$request->from,now()]);
+                }
+            }
+            if($request->city_id!=null){
+                $q= $q->where('city_id',$request->city_id);
+            }
+            if($request->location_id!=null){
+                $q= $q->where('location_id',$request->location_id);
+            }
+            if($request->category_id!=null){
+                $q= $q->where('category_id',$request->category_id);
+            }
+            if($request->course_id!=null){
+                $q= $q->where('course_id',$request->course_id);
+            }
+            if($request->course_subject_ids!=null && count($request->course_subject_ids)>0){
+                $q= $q->whereHas('course_subjects',function($query) use($request){
+                    return $query->whereIn('id',$request->course_subject_ids);
+                });
+            }
+            if($request->reference_name!=null){
+                $q= $q->where('reference_name',$request->reference_name);
+            }
+            return $q;
+        });
+        // $applications->dd();
+        $applications = $applications->whereHas('tutor',function($q) use($request){
+            if($request->tutor_city_id!=null){
+                $q= $q->where('city_id',$request->tutor_city_id);
+            }
+            if($request->tutor_location_id!=null){
+                $q= $q->where('location_id',$request->tutor_location_id);
+            }
+            if($request->tutor_gender!=null){
+                $q= $q->whereHas('tutor_personal_information',function($qu) use($request){
+                    return $qu->where('gender',$request->tutor_gender);
+                });
+            }
+        });
+        // dd($applications->latest());
+        $applications=$applications->latest()->get();
+        return view('admin.job_offers.applications',compact('page_title','request','courses','categories','categories_collection','courses_collection','city_collection','institutes','applications','total_cnt','todays_cnt'));
+    }
+    public function getAdd_new(){
+        $page_title="New Job Offer";
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+        return view('admin.job_offers.add_new',\compact('page_title','courses','categories','categories_collection','courses_collection','city_collection','institutes'));
+    }
+    public function postSaveNew(){
+        $request=\request();
+        $jobOffer= JobOffer::create([
+            'parent_id'=> $request->parent_id,
+            'category_id'=> $request->category_id,
+            'course_id'=> $request->course_id,
+            'city_id'=> $request->city_id,
+            'location_id'=> $request->location_id,
+            'teaching_method_id'=> $request->teaching_method_id,
+            'name'=> $request->name,
+            'phone'=> $request->phone,
+            'address'=> $request->address,
+            'days_in_week'=> $request->days_in_week,
+            'time'=> $request->time,
+            'min_salary'=> $request->min_salary,
+            'max_salary'=> $request->max_salary,
+            'student_gender'=> $request->student_gender,
+            'tutor_gender'=> $request->tutor_gender,
+            'name_of_institute'=> $request->name_of_institute,
+            'number_of_students'=> $request->number_of_students,
+            'requirements'=> $request->requirements,
+            'hiring_from'=> $request->hiring_from,
+            'status'=> 1,
+            'is_active'=> 1,
+            'tutor_study_type_id'=> $request->tutor_study_type_id,
+            'tutor_religion_id'=> $request->tutor_religion_id,
+            'tutor_university_id'=> $request->tutor_university_id,
+            'tutor_school_id'=> $request->tutor_school_id,
+            'tutor_college_id'=> $request->tutor_college_id,
+            'tutor_category_id'=> $request->tutor_category_id,
+            'university_type'=> $request->university_type,
+            'group'=> $request->group,
+            'reference_name'=> $request->reference_name,
+            'reference_contact'=> $request->reference_contact,
+            'reference_city_id'=> $request->reference_city_id,
+            'email'=> $request->email,
+            'additional_contact'=> $request->additional_contact,
+            'source'=> $request->source,
+            'spicial_note'=> $request->spicial_note,
+            'tutor_department'=> $request->tutor_department,
+        ]);
+        $jobOffer->course_subjects()->sync($request->course_subject_ids);
+        return cb()->redirect(cb()->getAdminUrl("job_offers/available-offers"),'Job offer saved successfully','success');
     }
     public function getDetail($id){
         $page_title = "Job Offer Detail -".$id;
@@ -121,13 +378,13 @@ class AdminJobOffersController extends CBController {
         if($offer->taken_by_1_id==null){
             $offer->taken_by_1_id=$user_id;
             $application->taken_by_id=$user_id;
-            $application->taken_date=now();
+            $application->taken_at=now();
             $offer->save();
             $application->save();
         }elseif($offer->taken_by_2_id==null){
             $offer->taken_by_2_id=$user_id;
             $application->taken_by_id=$user_id;
-            $application->taken_date=now();
+            $application->taken_at=now();
             $offer->save();
             $application->save();
         }

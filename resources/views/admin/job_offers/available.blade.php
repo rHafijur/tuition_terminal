@@ -37,8 +37,8 @@
             <h1 class="box-title"><i class="fa fa-eye"></i>All Job Offers</h1>
             <div class="row">
                 <ul id="tab_nav" class="nav nav-pills">
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/available-offers")}}" class="nav-link">Available Offers</a></li>
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/all")}}" class="nav-link active">All Offers</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/available-offers")}}" class="nav-link active">Available Offers</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/all")}}" class="nav-link">All Offers</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/applications")}}" class="nav-link">Applications</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/add_new")}}" class="nav-link">Add New Tuiton</a></li>
                 </ul>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <button onclick="$('#filters').toggleClass('hide')" class="btn btn-light"><i class="fa fa-filter"></i></button>
-            <form action="{{cb()->getAdminUrl("job_offers/all")}}" method="GET">
+            <form action="{{cb()->getAdminUrl("job_offers/available-offers")}}" method="GET">
                 <div id="filters" class="hide card card-body">
                     <div class="form-row">
                         <div class="form-group col-md-2">
