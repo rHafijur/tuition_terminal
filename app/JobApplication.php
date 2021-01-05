@@ -34,6 +34,13 @@ class JobApplication extends Model
         'is_taken',
         'is_seen',
         'current_stage',
+        'channel',
+        'received_amount',
+        'due_date',
+        'is_payment_turned_off',
+        'payment_turned_off_reason',
+        'turned_off_amount',
+        'reference_amount',
     ];
     
     public function job_offer(){

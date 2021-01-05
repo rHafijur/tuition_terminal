@@ -11,7 +11,6 @@
     if(auth()->user()->cb_roles_id==1){
         $is_sa=true;
     }
-    use Carbon\Carbon;
 @endphp
 @extends(getThemePath('layout.layout'))
 @push('head')
@@ -47,26 +46,38 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="report-card card">
+                        <h2>{{$waiting_cnt + $meeting_cnt + $trial_cnt}}</h2>
+                        <span>Total Pending</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="report-card card">
+                        <h2>{{$waiting_cnt}}</h2>
+                        <span>Waiting</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="report-card card">
+                        <h2>{{$meeting_cnt}}</h2>
+                        <span>Meeting</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="report-card card">
+                        <h2>{{$trial_cnt}}</h2>
+                        <span>Trial</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="report-card card">
                         <h2>{{$confirm_cnt}}</h2>
-                        <span>Total Confirm</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$new_cnt}}</h2>
-                        <span>Today's in</span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="report-card card">
-                        <h2>{{$today_cnt}}</h2>
-                        <span>Today's Confirm</span>
+                        <span>Confirm</span>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="report-card card">
                         <h2>{{$revenue}}</h2>
-                        <span>Amount</span>
+                        <span>Revenue</span>
                     </div>
                 </div>
             </div>
@@ -77,9 +88,6 @@
                     <tr>
                         <th>Dates</th>
                         <th>Tuition ID</th>
-                        <th>Confirm Date</th>
-                        <th>Payment Date</th>
-                        <th>Payment Amount</th>
                         <th>Class</th>
                         <th>Location</th>
                         <th>Tutor's ID</th>
@@ -98,15 +106,6 @@
                             </td>
                             <td>
                                 {{$application->job_offer_id}}
-                            </td>
-                            <td>
-                                {{Carbon::parse($application->confirm_date)->toDateString()}}
-                            </td>
-                            <td>
-                                {{Carbon::parse($application->payment_date)->toDateString()}}
-                            </td>
-                            <td>
-                                {{$application->net_receivable_amount}}
                             </td>
                             <td>
                                 {{$application->job_offer->course->title}}
@@ -141,7 +140,6 @@
                                     <button class="btn btn-danger btn-sm">Delete</button>
                                 @endif
                                 <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToNoteModal(this)" data-note="{{$application->note}}" data-id="{{$application->id}}" data-toggle="modal" data-target="#noteModal">Note</button>
-                                <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToPaymentModal(this)" data-id="{{$application->id}}" data-toggle="modal" data-target="#paymentModal">Payment</button>
                             </td>
                         </tr>
                     @endforeach
@@ -149,80 +147,5 @@
             </table>
         </div>
     </div>
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="paymentModalLabel">Payment</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="paymentModalForm">
-                
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" onclick="$('#paymentForm').submit()" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <script>
-            function loadDataToPaymentModal(el){
-                var id=$(el).data('id');
-                $("#paymentModalForm").html("Loading....");
-                
-                $.get('{{cb()->getAdminUrl("taken_offers/payment-form-ajax")}}/'+id,
-                    function (data, status) {
-                        if(status=="success"){
-                            $("#paymentModalForm").html(data);
-                        }else{
-                            $("#paymentModalForm").html("Something Went Wrong");
-                        }
-                    }
-                );
-            }
-            function hasReferenceChanged(el){
-                if(el.checked){
-                    $("#reference_fields").removeClass('hide');
-                    $(".reference_fs").attr('required','required');
-                }else{
-                    $("#reference_fields").addClass('hide');
-                    $(".reference_fs").removeAttr('required');
-                }
-            }
-            function hasDueChanged(el){
-                if(el.checked){
-                    $(".due_fs").attr('required','required');
-                    $("#due_fields").removeClass('hide');
-                }else{
-                    $("#due_fields").addClass('hide');
-                    $(".due_fs").removeAttr('required');
-                }
-            }
-            function turnOffChanged(el){
-                if(el.checked){
-                    $(".turn_off_fs").attr('required','required');
-                    $("#turn_off_fields").removeClass('hide');
-                }else{
-                    $(".turn_off_fs").removeAttr('required');
-                    $("#turn_off_fields").addClass('hide');
-                }
-            }
-            function received_changed(){
-                var nra=$("#nra").val();
-                var ra=$("#ra").val();
-                var da=$("#da").val();
-                if(parseFloat(nra) > parseFloat(ra)){
-                    $("#da").val(nra - ra);
-                    document.getElementById("has_due").checked=true;
-                    $("#due_fields").removeClass('hide');
-                }else{
-                    document.getElementById("has_due").checked=false;
-                    $("#due_fields").addClass('hide');
-                }
-            }
-      </script>
     @include('admin.taken_offers.src.modals');
 @endsection

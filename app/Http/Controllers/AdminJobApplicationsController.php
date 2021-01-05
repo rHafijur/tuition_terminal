@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 use App\JobApplication;
+use App\Payment;
 
 class AdminJobApplicationsController extends CBController {
 
@@ -72,6 +73,19 @@ class AdminJobApplicationsController extends CBController {
 		$revenue=JobApplication::sum('net_receivable_amount');
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.confirm',\compact('stage','page_title','applications','confirm_cnt','new_cnt','today_cnt','revenue'));
+	}
+	public function getPayment(){
+		$page_title="Taken Offers";
+		$stage="payment";
+		$applications=JobApplication::where('current_stage','payment')->get();
+		// dd($applications);
+		$waiting_cnt=JobApplication::where("current_stage",'waiting')->get()->count();
+		$meeting_cnt=JobApplication::where("current_stage",'meet')->get()->count();
+		$trial_cnt=JobApplication::where("current_stage",'trial')->get()->count();
+		$confirm_cnt=JobApplication::where("current_stage",'confirm')->get()->count();
+		$revenue=JobApplication::sum('net_receivable_amount');
+		// dd($waiting_cnt,$meeting_cnt,$trial_cnt,$confirm_cnt,$revenue);
+		return view('admin.taken_offers.payment',\compact('stage','page_title','applications','waiting_cnt','meeting_cnt','trial_cnt','confirm_cnt','revenue'));
 	}
 	public function getRepost(){
 		$page_title="Taken Offers - Repost";
@@ -141,5 +155,42 @@ class AdminJobApplicationsController extends CBController {
 	public function getViewDatesAjax($id){
 		$app=JobApplication::findOrFail($id);
 		return view('admin.taken_offers.src.view_dates_ajax',compact('app'));
+	}
+	public function getPaymentFormAjax($id){
+		$app=JobApplication::findOrFail($id);
+		return view('admin.taken_offers.src.payment_form_ajax',compact('app'));
+	}
+	public function postSavePayment(){
+		$request=request();
+		if($request->is_turned_off==null){
+			$request->is_turned_off=0;
+		}
+		$app=JobApplication::findOrFail($request->id);
+		$app->received_amount=$request->received_amount;
+		if($request->has_due==1){
+			$app->due_date=$request->due_date;
+			// $app->due_amount=$request->due_amount;
+		}
+		$app->is_payment_turned_off=$request->is_turned_off;
+		$app->payment_turned_off_reason=$request->payment_turned_off_reason;
+		$app->turned_off_amount=$request->payment_turned_off_amount;
+		$app->reference_amount=$request->reference_amount;
+		$app->current_stage="payment";
+		$app->save();
+		$user_id=$app->tutor->user_id;
+		Payment::create([
+			'user_id'=>$user_id,
+			'confirmed'=>1,
+			'payment_for'=>"Tuition Match",
+			'method'=>$request->method,
+			'sent_to'=>$request->sent_to,
+			'amount'=>$request->received_amount,
+			'due_amount'=>$request->due_amount,
+			'receivable_amount'=>$app->net_receivable_amount,
+			'due_date'=>$request->due_date,
+			'is_turned_off'=>$request->is_turned_off,
+			'turned_off_amount'=>$request->payment_turned_off_amount,
+		]);
+		return cb()->redirectBack('Application stage successfully changed to Payment','success');
 	}
 }

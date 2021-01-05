@@ -16,6 +16,11 @@ class Payment extends Model
         'note',
         'confirmed',
         'payment_for',
+        'due_amount',
+        'receivable_amount',
+        'due_date',
+        'is_turned_off',
+        'turned_off_amount',
     ];
 
     public function user(){
