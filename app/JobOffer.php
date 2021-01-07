@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Tutor;
+use App\JobApplication;
 class JobOffer extends Model
 {
     protected $fillable=[
@@ -115,6 +116,13 @@ class JobOffer extends Model
             return 'Canceled';
         }
         return 'Approved';
+    }
+    public function already_applied(){
+        $app = $this->applications()->where('tutor_id',auth()->user()->tutor->id)->first();
+        if($app==null){
+            return true;
+        }
+        return false;
     }
     public function search_tutors_by_matching(){
         $tutors=Tutor::all();

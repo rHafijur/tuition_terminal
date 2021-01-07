@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use App\User;
 use App\Tutor;
+use App\JobOffer;
 use App\TutorPersonalInformation;
 use App\Category;
 use App\Course;
@@ -101,13 +102,22 @@ class TutorController extends Controller
     }
     public function dashboard(){
         $tutor=auth()->user()->tutor;
+        if($tutor->getProfileComplete() < 70){
+            return redirect()->back();
+        }
+        $job_offers=JobOffer::latest()->get();
+        // dd($job_offers);
+        return view('tutor.dashboard',\compact('job_offers'));
+    }
+    public function edit_info(){
+        $tutor=auth()->user()->tutor;
         $categories=Category::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection(Course::all());
         $city_collection=CityResource::collection(City::all());
         // return $city_collection;
         // dd($tutor->course_subjects[0]);
-        return view('tutor.dashboard',\compact('tutor','categories','categories_collection','courses_collection','city_collection'));
+        return view('tutor.edit_tutor_info',\compact('tutor','categories','categories_collection','courses_collection','city_collection'));
     }
     public function update_ti(Request $request){
         $tutor = auth()->user()->tutor;

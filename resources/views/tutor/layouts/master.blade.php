@@ -139,6 +139,12 @@ to get the desired effect
               <li class="nav-item">
                 <a href="{{route('tutor_dashboard')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
+                  <p>Tutor Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tutor_edit_info')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
                   <p>Edit Info</p>
                 </a>
               </li>

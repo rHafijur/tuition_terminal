@@ -58,6 +58,9 @@ Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::get('/notification','NotificationController@tutorIndex')->name('tutor.notification');
     
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
+    Route::post('/job_offer/apply','JobApplicationController@apply_to_job_offer')->name('apply_to_job_offer');
+
+    Route::get('/edit_info','TutorController@edit_info')->name('tutor_edit_info');
     Route::get('/view_info','TutorController@view_info')->name('tutor_view_info');
 
     Route::view('/tutor_upload_certificate','tutor.upload_certificate')->name('tutor_upload_certificate_form');
