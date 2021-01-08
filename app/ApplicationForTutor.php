@@ -13,4 +13,7 @@ class ApplicationForTutor extends Model
     public function tutor(){
         return $this->belongsTo("App\Tutor",'tutor_id');
     }
+    public function job_offer_id(){
+        return $this->belongsTo("App\Tutor",'job_offer_id');
+    }
 }

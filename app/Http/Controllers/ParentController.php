@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+use App\User;
+use App\Parents;
+
 class ParentController extends Controller
 {
     public function dashboard(){
         return view('parent.dashboard');
+    }
+    public function registration(){
+        return view('parent.registration');
     }
     public function create(Request $request){
         // dd($request);
@@ -24,22 +30,19 @@ class ParentController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'sms_otp' => rand(99999,999999),
-            'cb_roles_id' => 2,
+            'cb_roles_id' => 4,
             'password' => Hash::make($request->password),
         ]);
-        $tutor=Tutor::create([
-            'user_id'  => $user->id
-        ]);
-        $tutor->save_tutor_id();
-        TutorPersonalInformation::create([
-            'tutor_id'  => $tutor->id
-            // 'tutor_id'  => 1
+        $parent=Parents::create([
+            'user_id'  => $user->id,
+            'heard_from'  => $request->heard_from,
         ]);
         $user->sendEmailVerificationNotification();
         auth()->attempt([
             'email' => $request->email,
             'password' => $request->password,
         ]);
+        return \redirect()->route('parent.dashboard');
         // return view('auth.verify');
         // return redirect(route('tutor_registration')."?tab=pi")->with('success','Tutor Account Created Successfully. Please Complete your profile');
     }

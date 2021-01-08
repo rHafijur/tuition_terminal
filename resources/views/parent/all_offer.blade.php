@@ -33,7 +33,7 @@
                             <td>
                                 <a href="{{route('parent.edit_offer',['id'=>$offer->id])}}"><button class="btn btn-primary">Edit</button></a>
                                 <a href="{{route('parent.view_offer',['id'=>$offer->id])}}"><button class="btn btn-info">View</button></a>
-                                <a href="{{route('parent.matched_tutors',['id'=>$offer->id])}}"><button class="btn btn-info">Matched Tutors</button></a>
+                                <a href="{{route('parent.matched_tutors',['id'=>$offer->id])}}"><button class="btn btn-info">Request for Tutor</button></a>
                             </td>
                         </tr>
                     @endforeach

@@ -124,6 +124,13 @@ class JobOffer extends Model
         }
         return false;
     }
+    public function already_applied_for_tutor($id){
+        $app = $this->tutor_applications()->where('tutor_id',$id)->first();
+        if($app==null){
+            return true;
+        }
+        return false;
+    }
     public function search_tutors_by_matching(){
         $tutors=Tutor::all();
         $offer=$this;

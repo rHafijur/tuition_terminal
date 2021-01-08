@@ -31,7 +31,7 @@
                     <img class="active-image-parent" src="https://tutor.iqsademo.com/tuition/assets/img/student_parent_active.png" alt="">
                     <h4>Students &amp; Parents</h4>
                     <p>Find tuition jobs, build your teaching career, teach online courses</p>
-                    <a href="{{ route('register') }}"><button type="button" class="btn gerat-teacher-btn">Sign up</button></a>
+                    <a href="{{ route('parent_registration') }}"><button type="button" class="btn gerat-teacher-btn">Sign up</button></a>
                 </div>
             </div>
             <div class="col-md-2">

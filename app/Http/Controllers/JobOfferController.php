@@ -10,10 +10,12 @@ use App\Course;
 use App\City;
 use App\Tutor;
 use App\Institute;
+use App\ApplicationForTutor;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\CityResource;
+
 
 use DB as DB;
 
@@ -33,6 +35,17 @@ class JobOfferController extends Controller
         // return $city_collection;
 
         return view('parent.create_offer',\compact('courses','categories','categories_collection','courses_collection','city_collection','institutes'));
+    }
+    public function init_offer_form(){
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+        // return $city_collection;
+
+        return view('parent.init_offer',\compact('courses','categories','categories_collection','courses_collection','city_collection','institutes'));
     }
     public function create(Request $request){
         // dd($request);
@@ -76,6 +89,9 @@ class JobOfferController extends Controller
             'tutor_department'=> $request->tutor_department,
         ]);
         $jobOffer->course_subjects()->sync($request->course_subject_ids);
+        if($request->from=="init"){
+            return redirect()->route('parent.dashboard')->with('success','Job offer has been created successfully');
+        }
         // $jobOffer->teaching_methods()->sync($request->teaching_method_ids);
         return redirect()->back()->with('success','Job offer has been created successfully');
     }
@@ -169,6 +185,13 @@ class JobOfferController extends Controller
         
         // dd($tutors->get());
         $tutors= $tutors->get();
-        return view('parent.matched_tutors',compact('tutors'));
+        return view('parent.matched_tutors',compact('tutors','offer'));
+    }
+    function apply_for_tutor(Request $request){
+        ApplicationForTutor::create([
+            'job_offer_id'=>$request->job_offer_id,
+            'tutor_id'=>$request->tutor_id,
+        ]);
+        return redirect()->back()->with('success','Successfully applied for the tutor');
     }
 }

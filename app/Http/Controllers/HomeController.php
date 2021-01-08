@@ -26,7 +26,7 @@ class HomeController extends Controller
         if(auth()->user()->cb_roles_id==3){
             return \redirect()->route('tutor_dashboard');
         }
-        if(auth()->user()->cb_roles_id==2){
+        if(auth()->user()->cb_roles_id==4){
             return \redirect()->route('parent.dashboard');
         }
         return view('home');
