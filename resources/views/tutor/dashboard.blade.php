@@ -59,7 +59,7 @@
       </div>
       <div class="tutor-post-footer text-right"> 
       {{-- <button type="button" class="btn btn3 btn-job-view" data-toggle="modal" data-target="#jobDetailsModalCenter">View details</button> --}}
-        @if ($offer->already_applied())
+        @if (!$offer->already_applied())
             <form action="{{route('apply_to_job_offer')}}" method="post">
               @csrf
               <input type="hidden" name="job_offer_id" value="{{$offer->id}}">

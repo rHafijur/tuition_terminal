@@ -21,12 +21,17 @@ Route::get('/login', function () {
 
 Route::get('/verify_email','Auth\VerificationController@verifyEmailPage')->name('verifyEmailPage');
 
+Route::get('/job-board','JobOfferController@index')->name('job_board');
+Route::get('/job-board-ajax','JobOfferController@jobBoardAjax')->name('job_board_ajax');
+
+
 Route::get('/otp','Auth\OtpVerificationController@index')->name('otp');
 Route::post('/otp/verify','Auth\OtpVerificationController@verify')->name('otp.verify');
 Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.resend');
 Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 Route::view('/register/user_types','register_type')->name('register_type');
+
 Route::prefix('parent')->group(function () {
     Route::get('/registration','ParentController@registration')->name('parent_registration');
     Route::post('/registration','ParentController@create')->name('create_parent');

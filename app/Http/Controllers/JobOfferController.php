@@ -21,6 +21,34 @@ use DB as DB;
 
 class JobOfferController extends Controller
 {
+    public function index(){
+        $city_collection=null;
+        $city_collection=CityResource::collection(City::all());
+        $categories=Category::all();
+        $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        // dd($categories);
+        return view('job_board',compact('job_offers','city_collection','categories'));
+    }
+    public function jobBoardAjax(Request $request){
+        $job_offers=JobOffer::where(function($q){
+            return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
+        });
+        if($request->city_id!=null){
+            $job_offers=$job_offers->where('city_id',$request->city_id);
+        }
+        if($request->location_id!=null){
+            $job_offers=$job_offers->where('location_id',$request->location_id);
+        }
+        if($request->category_ids!=null && count($request->category_ids)>0){
+            $job_offers=$job_offers->whereIn('category_id',$request->category_ids);
+        }
+        if($request->genders!=null && count($request->genders)>0){
+            $job_offers=$job_offers->whereIn('tutor_gender',$request->genders);
+        }
+        $job_offers=$job_offers->latest()->get();
+        
+        return view('job_board_ajax',compact('job_offers'));
+    }
     public function all(){
         $offers=auth()->user()->parents->job_offers()->paginate('10');
         return view('parent.all_offer',compact('offers'));

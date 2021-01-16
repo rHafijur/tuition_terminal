@@ -105,7 +105,7 @@ class TutorController extends Controller
         if($tutor->getProfileComplete() < 70){
             return redirect()->back();
         }
-        $job_offers=JobOffer::latest()->get();
+        $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
         // dd($job_offers);
         return view('tutor.dashboard',\compact('job_offers'));
     }

@@ -119,7 +119,7 @@ class JobOffer extends Model
     }
     public function already_applied(){
         $app = $this->applications()->where('tutor_id',auth()->user()->tutor->id)->first();
-        if($app==null){
+        if($app!=null){
             return true;
         }
         return false;
