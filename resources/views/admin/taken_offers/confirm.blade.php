@@ -39,6 +39,7 @@
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/meet")}}" class="nav-link @if($stage=="meet")active @endif">Meet</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/trial")}}" class="nav-link @if($stage=="trial")active @endif">Trial</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/confirm")}}" class="nav-link @if($stage=="confirm")active @endif">Confirm</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/due")}}" class="nav-link @if($stage=="due")active @endif">Due</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/payment")}}" class="nav-link @if($stage=="payment")active @endif">Payment</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/repost")}}" class="nav-link @if($stage=="repost")active @endif">Repost</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("taken_offers/cancel")}}" class="nav-link @if($stage=="cancel")active @endif">Cancel</a></li>
@@ -137,6 +138,7 @@
                                 </select>
                             </td>
                             <td>
+                                <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$application->job_offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
                                 @if ($is_sa)
                                     <button class="btn btn-danger btn-sm">Delete</button>
                                 @endif

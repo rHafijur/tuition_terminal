@@ -22,7 +22,7 @@
     <div class="form-row">
         <div class="form-group col">
             <label>Net Receivable Amount</label>
-            <input id="nra" type="number" value="{{$app->net_receivable_amount}}" readonly class="form-control">
+            <input id="nra" type="number" value="{{$app->net_receivable_amount - $app->received_amount}}" readonly class="form-control">
         </div>
         <div class="form-group col">
             <label>Received Amount</label>
