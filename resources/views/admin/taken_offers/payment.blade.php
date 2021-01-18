@@ -95,7 +95,7 @@
                         <th>Tutor's Name</th>
                         <th>Tutor's Phone</th>
                         <th>Remarks</th>
-                        <th>Stages</th>
+                        {{-- <th>Stages</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -128,14 +128,14 @@
                             <td>
                                 {{$application->tutor->reference_name}}
                             </td>
-                            <td>
+                            {{-- <td>
                                 <select onchange="stageOptionChanged(this,{{$application->id}})" class="form-control" style="max-width: 100px">
                                     <option value="">Select</option>
                                     @foreach ($stages as $st)
                                     <option value="{{$st}}" @if($st==$application->current_stage) selected @endif>{{ucfirst($st)}}</option>
                                     @endforeach
                                 </select>
-                            </td>
+                            </td> --}}
                             <td>
                                 <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$application->job_offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
                                 @if ($is_sa)

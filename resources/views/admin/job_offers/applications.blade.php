@@ -148,6 +148,8 @@
                             <input class="form-control required-input" name="reference_name" value="{{$request->reference_name}}" id="reference_name" type="text">
                         </div>
                     </div>
+                    <hr>
+                    <h4>Tutor</h4>
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="tutor_city_id">City</label>
@@ -209,48 +211,31 @@
                         <tr>
                             <th>Date</th>
                             <th>Time</th>
-                            <th>Application ID</th>
                             <th>Job ID</th>
-                            <th>Tutor Name</th>
-                            <th>Matched Rate</th>
-                            <th>Taken By</th>
+                            <th>Course</th>
+                            <th>Location</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($applications as $application)
+                        @foreach ($offers as $offer)
                             @php
-                                // dd($application->taken_by->name);
+                                // dd($offer->taken_by->name);
                             @endphp
                             <tr>
-                                <td>{{Carbon::parse($application->created_at)->toDateString()}}</td>
-                                <td>{{Carbon::parse($application->created_at)->toTimeString()}}</td>
-                                <td>{{$application->id}}</td>
+                                <td>{{Carbon::parse($offer->created_at)->toDateString()}}</td>
+                                <td>{{Carbon::parse($offer->created_at)->toTimeString()}}</td>
                                 <td>
-                                    <a href="{{cb()->getAdminUrl("job_offers/detail/".$application->job_offer_id)}}" target="_blank">{{$application->job_offer_id}}</a>
+                                    <a href="{{cb()->getAdminUrl("job_offers/detail/".$offer->id)}}" target="_blank">{{$offer->id}}</a>
                                 </td>
                                 <td>
-                                    <a href="{{cb()->getAdminUrl("tutors/single/".$application->tutor_id)}}" target="_blank">
-                                        {{$application->tutor->user->name}} {!!$application->tutor->getStatusIcon()!!}
-                                    </a>
-                                </td>
-                                <td>{{$application->matched_rate()}}</td>
-                                <td>
-                                    @if ($application->taken_by!=null)
-                                    {{$application->taken_by->name}}
-                                    @endif
+                                    {{$offer->course->title}}
                                 </td>
                                 <td>
-                                    <a href="{{cb()->getAdminUrl("job_offers/application-list/".$application->job_offer)}}" target="_blank" ><span>{{$application->job_offer->applications->count()}}</span> <span class="badge badge-pill badge-info">{{$application->job_offer->applications()->where('is_seen',0)->get()->count()}} Applications</span></a>
-                                    @if ($application->taken_by==null)
-                                        <a href="{{cb()->getAdminUrl("job_offers/application-take/".$application->id)}}"><button class="btn btn-info btn-sm">Take</button></a>
-                                    @else
-                                        <button class="btn btn-info btn-sm">Taken</button>
-                                    @endif
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToNoteModal(this)" data-note="{{$application->note}}" data-id="{{$application->id}}" data-toggle="modal" data-target="#noteModal">Note</button>
-                                    @if ($is_sa)
-                                    <a href="{{cb()->getAdminUrl("job_offers/application-delete/".$application->id)}}"><button class="btn btn-danger btn-sm">Delete</button></a>
-                                    @endif
+                                    {{$offer->city->name}}, {{$offer->location->name}}
+                                </td>
+                                <td>
+                                    <a href="{{cb()->getAdminUrl("job_offers/application-list/".$offer->id)}}" target="_blank" ><span>{{$offer->applications->count()}}</span> Applications <span class="badge badge-pill badge-info">{{$offer->applications()->where('is_seen',0)->get()->count()}} New</span></a>
                                 </td>
                             </tr>
                         @endforeach

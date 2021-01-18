@@ -1,23 +1,28 @@
 @extends(getThemePath('layout.layout'))
 @push('head')
 <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+<style>
+    .req{
+        color: red;
+    }
+</style>
 @endpush
 @section('content')
 <div class="card">
     <div class="card-header p-2">
       <ul id="tab_nav" class="nav nav-pills">
-        <li class="nav-item"><a class="nav-link active">Student Information</a></li>
-        <li class="nav-item"><a class="nav-link">Tutor Requirement</a></li>
-        <li class="nav-item"><a class="nav-link">Contact Information</a></li>
+        <li class="nav-item"><a onclick="goToTabIndex(0)" href="#" class="nav-link active">Student Information</a></li>
+        <li class="nav-item"><a onclick="goToTabIndex(1)" href="#" class="nav-link">Tutor Requirement</a></li>
+        <li class="nav-item"><a onclick="goToTabIndex(2)" href="#" class="nav-link">Contact Information</a></li>
       </ul>
     </div><!-- /.card-header -->
     <div class="card-body">
       <form id="offer_form" action="{{cb()->getAdminUrl("job_offers/save-new")}}" method="POST">
         @csrf
         <div id="tab_content" class="tab-content">
-            <div class="active tab-pane" id="student_information">
+            <div class="active tab-pane" data-index="0" id="student_information">
                 <div class="form-group">
-                    <label for="category_id">Category</label>
+                    <label for="category_id">Category <span class="req">*</span></label>
                     <select onchange="categoryChanged(this)" class="form-control required-input" name="category_id" id="category_id">
                         <option value="">Select Category</option>
                         @foreach ($categories_collection as $category)
@@ -29,7 +34,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="course_id">Course</label>
+                    <label for="course_id">Course <span class="req">*</span></label>
                     <select onchange="courseChanged(this)" class="form-control required-input" name="course_id" id="course_id">
                     </select>
                     <div class="invalid-feedback">
@@ -37,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="course_subject_ids">Subjects</label>
+                    <label for="course_subject_ids">Subjects <span class="req">*</span></label>
                     <select class="form-control required-input select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                     </select>
                     <div class="invalid-feedback">
@@ -46,20 +51,20 @@
                 </div>
                 <div class="form-group">
                     <label for="days_in_week">Days in Week</label>
-                    <input class="form-control required-input" name="days_in_week" id="days_in_week" type="number" max="7" min="1">
+                    <input class="form-control" name="days_in_week" id="days_in_week" type="number" max="7" min="1">
                     <div class="invalid-feedback">
                         Days field is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="time">Tutoring Time</label>
-                    <input class="form-control required-input" name="time" id="time" type="time">
+                    <input class="form-control" name="time" id="time" type="time">
                     <div class="invalid-feedback">
                         Tutoring Time is Required!
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="teaching_method_id">Teaching Method</label>
+                    <label for="teaching_method_id">Teaching Method <span class="req">*</span></label>
                     <select class="form-control required-input" name="teaching_method_id" id="teaching_method_id">
                         <option value="">Select Teaching Method</option>
                         @foreach (App\TeachingMethod::all() as $method)
@@ -72,14 +77,14 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
-                        <label for="min_salary">Minimum Salary</label>
-                        <input class="form-control required-input" name="min_salary" id="min_salary" type="number">
+                        <label for="min_salary">Minimum Salary <span class="req">*</span></label>
+                        <input class="form-control required-input" value="0" name="min_salary" id="min_salary" type="number">
                         <div class="invalid-feedback">
                             Minimum Salary is Required!
                         </div>
                     </div>
                     <div class="form-group col">
-                        <label for="max_salary">Maximum Salary</label>
+                        <label for="max_salary">Maximum Salary <span class="req">*</span></label>
                         <input class="form-control required-input" name="max_salary" id="max_salary" type="number">
                         <div class="invalid-feedback">
                             Maximum is Required!
@@ -88,21 +93,22 @@
                 </div>
                 <div class="form-group">
                     <label for="name_of_institute">Name Of Institute</label>
-                    <input class="form-control required-input" name="name_of_institute" id="name_of_institute" type="text">
+                    <input class="form-control" name="name_of_institute" id="name_of_institute" type="text">
                     <div class="invalid-feedback">
                         Name of Institute is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="number_of_students">Number of Students</label>
-                    <input class="form-control required-input" name="number_of_students" id="number_of_students" type="text">
+                    <input class="form-control" name="number_of_students" id="number_of_students" type="text">
                     <div class="invalid-feedback">
                         Number of Students is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="student_gender">Student's Gender</label>
-                    <select class="form-control required-input" name="student_gender" id="student_gender">
+                    <select class="form-control" name="student_gender" id="student_gender">
+                        <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -116,10 +122,10 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="tutor_requirement">
+            <div class="tab-pane" data-index="1" id="tutor_requirement">
                 <div class="form-group">
                     <label for="tutor_category_id">Medium</label>
-                    <select class="form-control required-input" name="tutor_category_id" id="tutor_category_id">
+                    <select class="form-control" name="tutor_category_id" id="tutor_category_id">
                         <option value="">Select Category</option>
                         @foreach ($categories_collection as $category)
                             <option value="{{$category->id}}">{{$category->title}}</option>
@@ -131,7 +137,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_university_id">University</label>
-                    <select class="form-control required-input select2 select2-hidden-accessible" name="tutor_university_id" id="tutor_university_id" data-placeholder="Select a University" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select class="form-control select2 select2-hidden-accessible" name="tutor_university_id" id="tutor_university_id" data-placeholder="Select a University" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                             <option value="">Select University</option>
                         @foreach ($institutes as $institute)
                             <option value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
@@ -143,7 +149,7 @@
                 </div>
                 <div class="form-group">
                     <label for="university_type">University Type</label>
-                    <select class="form-control required-input" name="university_type" id="university_type">
+                    <select class="form-control" name="university_type" id="university_type">
                         <option value="">Select University Type</option>
                         <option value="National University">National University</option>
                         <option value="Private University">Private University</option>
@@ -155,14 +161,14 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_department">Depertment</label>
-                    <input class="form-control required-input" name="tutor_department" id="tutor_department" type="text">
+                    <input class="form-control" name="tutor_department" id="tutor_department" type="text">
                     <div class="invalid-feedback">
                         Depertment is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="tutor_college_id">College</label>
-                    <select class="form-control required-input select2 select2-hidden-accessible" name="tutor_college_id" id="tutor_college_id" data-placeholder="Select a College" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select class="form-control select2 select2-hidden-accessible" name="tutor_college_id" id="tutor_college_id" data-placeholder="Select a College" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                             <option value="">Select College</option>
                         @foreach ($institutes as $institute)
                             <option value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
@@ -174,7 +180,7 @@
                 </div>
                 <div class="form-group">
                     <label for="group">Group</label>
-                    <select class="form-control required-input" name="group" id="group">
+                    <select class="form-control" name="group" id="group">
                         <option value="">Select Group</option>
                         <option value="Arts">Arts</option>
                         <option value="Commerce">Commerce</option>
@@ -186,7 +192,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_school_id">School</label>
-                    <select class="form-control required-input select2 select2-hidden-accessible" name="tutor_school_id" id="tutor_school_id" data-placeholder="Select a School" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select class="form-control select2 select2-hidden-accessible" name="tutor_school_id" id="tutor_school_id" data-placeholder="Select a School" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                             <option value="">Select School</option>
                         @foreach ($institutes as $institute)
                             <option value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
@@ -198,7 +204,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_study_type_id">Study Type</label>
-                    <select class="form-control required-input" name="tutor_study_type_id" id="tutor_study_type_id">
+                    <select class="form-control" name="tutor_study_type_id" id="tutor_study_type_id">
                         <option value="">Pleae Select a Study Type</option>
                         @foreach (App\StudyType::all() as $study_type)
                         <option value="{{$study_type->id}}">{{$study_type->title}}</option>
@@ -210,7 +216,8 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_gender">Tutor's Gender</label>
-                    <select class="form-control required-input" name="tutor_gender" id="tutor_gender">
+                    <select class="form-control" name="tutor_gender" id="tutor_gender">
+                        <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -220,7 +227,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_religion_id">Tutor's Religion</label>
-                    <select class="form-control required-input" name="tutor_religion_id" id="tutor_religion_id">
+                    <select class="form-control" name="tutor_religion_id" id="tutor_religion_id">
                         <option value="">Pleae Select a Religion</option>
                         @foreach (App\Religion::all() as $religion)
                         <option value="{{$religion->id}}">{{$religion->title}}</option>
@@ -232,14 +239,14 @@
                 </div>
                 <div class="form-group">
                     <label for="requirements">Tutor Requirements</label>
-                    <textarea class="form-control required-input" name="requirements" id="requirements"></textarea>
+                    <textarea class="form-control" name="requirements" id="requirements"></textarea>
                     <div class="invalid-feedback">
                         Tutor Requirements are Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="hiring_from">When are you looking to hire?</label>
-                    <input class="form-control required-input" name="hiring_from" id="hiring_from" type="date">
+                    <input class="form-control" name="hiring_from" id="hiring_from" type="date">
                     <div class="invalid-feedback">
                         The field is Required!
                     </div>
@@ -251,9 +258,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="contact_information">
+            <div class="tab-pane" data-index="2" id="contact_information">
                 <div class="form-group">
-                    <label for="parent_id">Select Parent</label>
+                    <label for="parent_id">Select Parent <span class="req">*</span></label>
                     <select class="form-control required-input select2" data-select2-id="" name="parent_id" id="parent_id">
                         <option value="">Select Parent</option>
                         @foreach (App\Parents::all() as $parent)
@@ -265,7 +272,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="city_id">City</label>
+                    <label for="city_id">City <span class="req">*</span></label>
                     <select onchange="cityChanged(this)" class="form-control required-input select2" data-select2-id="" name="city_id" id="city_id">
                         <option value="">Select City</option>
                         @foreach ($city_collection as $city)
@@ -277,7 +284,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="location_id">Location</label>
+                    <label for="location_id">Location <span class="req">*</span></label>
                     <select class="form-control required-input" name="location_id" id="location_id">
                     </select>
                     <div class="invalid-feedback">
@@ -286,35 +293,35 @@
                 </div>
                 <div class="form-group">
                     <label for="address">Full Address</label>
-                    <input class="form-control required-input" name="address" id="address" type="address">
+                    <input class="form-control" name="address" id="address" type="address">
                     <div class="invalid-feedback">
                         Full Address is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input class="form-control required-input" name="name" id="name" type="text">
+                    <input class="form-control" name="name" id="name" type="text">
                     <div class="invalid-feedback">
                         Name is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input class="form-control required-input" name="phone" id="phone" type="phone">
+                    <input class="form-control" name="phone" id="phone" type="phone">
                     <div class="invalid-feedback">
                         Phone is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Email">Email</label>
-                    <input class="form-control required-input" name="email" id="email" type="email">
+                    <input class="form-control" name="email" id="email" type="email">
                     <div class="invalid-feedback">
                         Email is Required!
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="additional_contact">Additional contact Number</label>
-                    <input class="form-control required-input" name="additional_contact" id="additional_contact" type="phone">
+                    <input class="form-control" name="additional_contact" id="additional_contact" type="phone">
                     <div class="invalid-feedback">
                         Additional contact Number is Required!
                     </div>
@@ -347,7 +354,7 @@
                 </div>
                 <div class="form-group">
                     <label for="source">Source</label>
-                    <select class="form-control required-input" name="source" id="source">
+                    <select class="form-control" name="source" id="source">
                         <option value="">Select Source</option>
                         <option value="Facebook">Facebook</option>
                         <option value="Google">Google</option>
@@ -477,9 +484,9 @@
                 }
             }
         }
-        if(invalid_count!=0){
-            return;
-        }
+        // if(invalid_count!=0){
+        //     return;
+        // }
         var i=0;
         for(i=0;i<3;i++){
             $(tabNav[i]).removeClass('active');
@@ -491,17 +498,21 @@
       function submitForm(){
         var tabContent=$("#tab_content").children();
         var invalid_count=0;
-        var tab_inps=$(tabContent[2]).find('.required-input');
+        var invalid_inputs=[];
+        var tab_inps=$('.required-input');
             for(var inp of tab_inps){
                 inp=$(inp);
                 if(inp.val()=="" || inp.val()==[] || inp.val()==null){
                     invalid_count++;
+                    invalid_inputs.push(inp);
                     inp.addClass('is-invalid');
                 }else{
                     inp.removeClass('is-invalid');
                 }
             }
             if(invalid_count!=0){
+                var index=$(invalid_inputs[0].closest('.tab-pane')).data('index');
+                goToTabIndex(index);
                 return;
             }
             $("#offer_form").submit();
