@@ -136,7 +136,7 @@ class TutorController extends Controller
         $tutor->prefered_locations()->sync($request->prefered_locations);
         $tutor->teaching_methods()->sync($request->teaching_methods);
 
-        return redirect(route('tutor_dashboard')."?tab=ti")->with('success','Information Updated Successfully');
+        return redirect(route('tutor_edit_info')."?tab=ti")->with('success','Information Updated Successfully');
     }
     public function update_ei(Request $request){
         // dd($request);
@@ -228,7 +228,7 @@ class TutorController extends Controller
                 $tutor->tutor_degrees()->create($masters_data);
             }
         }
-        return redirect(route('tutor_dashboard')."?tab=ei")->with('success','Information Updated Successfully');
+        return redirect(route('tutor_edit_info')."?tab=ei")->with('success','Information Updated Successfully');
     }
     public function update_pi(Request $request){
         // dd($request);
@@ -255,7 +255,7 @@ class TutorController extends Controller
         'overview' => $request->overview,
         ]);
 
-        return redirect(route('tutor_dashboard')."?tab=pi")->with('success','Information Updated Successfully');
+        return redirect(route('tutor_edit_info')."?tab=pi")->with('success','Information Updated Successfully');
     }
 
     public function ti(Request $request){

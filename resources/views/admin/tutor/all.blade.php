@@ -170,6 +170,9 @@ $is_superadmin=false;
                                 <a href="{{ action('AdminTutorsController@getEdit',[$tutor->id]) }}"><button class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </button></a>
+                                <a href="{{ action('AdminTutorsController@getEdit_info',[$tutor->id]) }}"><button class="btn btn-warning btn-sm">
+                                    <i class="fa fa-edit"></i>Edit Info
+                                </button></a>
                                 <a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}"><button class="btn btn-info btn-sm">
                                     <i class="fa fa-envelope"></i>
                                 </button></a>
