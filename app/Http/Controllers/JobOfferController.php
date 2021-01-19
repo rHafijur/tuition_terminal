@@ -8,6 +8,7 @@ use App\JobOffer;
 use App\Category;
 use App\Course;
 use App\City;
+use App\TeachingMethod;
 use App\Tutor;
 use App\Institute;
 use App\ApplicationForTutor;
@@ -22,14 +23,16 @@ use DB as DB;
 class JobOfferController extends Controller
 {
     public function index(){
-        $city_collection=null;
+        $teaching_methods=TeachingMethod::all();
         $city_collection=CityResource::collection(City::all());
-        $categories=Category::all();
+        $categories=CategoryResource::collection(Category::all());
+        // return $categories;
         $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
         // dd($categories);
-        return view('job_board',compact('job_offers','city_collection','categories'));
+        return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
     }
     public function jobBoardAjax(Request $request){
+        // dd($request);
         $job_offers=JobOffer::where(function($q){
             return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
         });
@@ -42,12 +45,23 @@ class JobOfferController extends Controller
         if($request->category_ids!=null && count($request->category_ids)>0){
             $job_offers=$job_offers->whereIn('category_id',$request->category_ids);
         }
+        if($request->course_ids!=null && count($request->course_ids)>0){
+            $job_offers=$job_offers->whereIn('course_id',$request->course_ids);
+        }
+        if($request->teaching_method_ids!=null && count($request->teaching_method_ids)>0){
+            $job_offers=$job_offers->whereIn('teaching_method_id',$request->teaching_method_ids);
+        }
         if($request->genders!=null && count($request->genders)>0){
             $job_offers=$job_offers->whereIn('tutor_gender',$request->genders);
         }
         $job_offers=$job_offers->latest()->get();
         
         return view('job_board_ajax',compact('job_offers'));
+    }
+    public function detail($id){
+        $offer = JobOffer::findOrFail($id);
+        // dd($job_offers);
+        return view('job_offer_detail',\compact('offer'));
     }
     public function all(){
         $offers=auth()->user()->parents->job_offers()->paginate('10');

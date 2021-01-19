@@ -22,6 +22,7 @@ Route::get('/login', function () {
 Route::get('/verify_email','Auth\VerificationController@verifyEmailPage')->name('verifyEmailPage');
 
 Route::get('/job-board','JobOfferController@index')->name('job_board');
+Route::get('/job-board/job-details/{id}','JobOfferController@detail')->name('job_detail');
 Route::get('/job-board-ajax','JobOfferController@jobBoardAjax')->name('job_board_ajax');
 
 

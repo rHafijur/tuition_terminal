@@ -4,9 +4,18 @@
       <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2/css/select2.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+  <style>
+     .courses{
+        margin-left: 15px;
+     }
+  </style>
 @endpush
 @push('js')
     <!-- Select2 -->
+<script src="{{asset('js/clipboard.min.js')}}"></script>
+<script>
+   new ClipboardJS('.cpy');
+</script>
 <script src="{{asset('admin_lte/plugins/select2/js/select2.full.min.js')}}"></script>
 @endpush
 @php
@@ -80,12 +89,17 @@
                            </div>
                         </div>
                         <div class="tutor-post-footer text-right"> 
-                        {{-- <button type="button" class="btn btn3 btn-job-view" data-toggle="modal" data-target="#jobDetailsModalCenter">View details</button> --}}
-                        <form action="{{route('apply_to_job_offer')}}" method="post">
-                           @csrf
-                           <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
-                           <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
-                        </form>
+                           <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}">
+                              Copy link
+                          </button>
+                           <a href="{{route('job_detail',['id'=>$offer->id])}}" target="_blank" style="float: left;margin-left:10px;">
+                              <button type="button" class="btn btn3 btn-job-view">View details</button>
+                           </a>
+                           <form action="{{route('apply_to_job_offer')}}" method="post">
+                              @csrf
+                              <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
+                              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
+                           </form>
                         </div>
                         <!-- Map Javascript Api -->
                         {{-- <div class="col-md-12 collapse" id="collapse_30">
@@ -149,10 +163,14 @@
                    <div class="row">
                       <div id="category_show" class="col-md-12">
                          @foreach ($categories as $category)
-                           <div class="checkbox">
-                              <label for="category_2" style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
-                              <input onchange="stateChanged()" type="checkbox" class="category styled" name="category[]" value="{{$category->id}}">                                                
-                              {{$category->title}}                                            </label>
+                           <div class="cat">
+                              <div class="checkbox">
+                                 <label for="category_2" style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
+                                 <input onchange="categoryChanged(this);stateChanged();" type="checkbox" class="category styled" name="category[]" value="{{$category->id}}">                                                
+                                 {{$category->title}}</label>
+                              </div>
+                              <div class="courses">
+                              </div>
                            </div>
                          @endforeach
                       </div>
@@ -183,6 +201,22 @@
                       </div>
                    </div>
                 </div>
+                <div class="filter-category-content">
+                  <h4>Teaching Methods</h4>
+                  <div class="row">
+                     <div id="category_show" class="col-md-12">
+                        @foreach ($teaching_methods as $teaching_method)
+                        <div class="checkbox">
+                           <label style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
+                           <input onchange="stateChanged();" type="checkbox" class="teaching_method styled" name="teaching_method[]" value="{{$teaching_method->id}}">                                                
+                           {{$teaching_method->title}}</label>
+                        </div>
+                        @endforeach
+                     </div>
+                     <div id="class_show" class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px;">
+                     </div>
+                  </div>
+               </div>
              </div>
           </div>
        </div>
@@ -228,12 +262,21 @@
    $("#s2_city").select2();
    $("#s2_city").select2();
    const city_resource=JSON.parse(`{!!json_encode($city_collection)!!}`);
+   const category_resource=JSON.parse(`{!!json_encode($categories)!!}`);
    $('#location_show').hide();
    $('#job-board-header').hide();
    function  getCity(id){
       for(var cit of city_resource){
          if(cit.id==id){
                return cit;
+         }
+      }
+      return null;
+   }
+   function  getCategory(id){
+      for(var cat of category_resource){
+         if(cat.id==id){
+               return cat;
          }
       }
       return null;
@@ -256,14 +299,44 @@
          $("#s2_location").select2();
 
    }
+   function categoryChanged(el){
+      if(el.checked){
+         var cat=getCategory(el.value);
+         var html="";
+         for(var course of cat.courses){
+            html+=`
+            <div class="checkbox">
+               <label for="" style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
+               <input checked onchange="stateChanged()" type="checkbox" class="course styled" name="course[]" value="`+course.id+`">                                                
+               `+course.title+`</label>
+            </div>
+            `;
+         }
+         $(el).closest('.cat').find('.courses').html(html);
+      }else{
+         $(el).closest('.cat').find('.courses').empty();
+      }
+   }
    function currentState(){
       var city_id= $('#s2_city').val();
       var location_id= $('#s2_location').val();
       var category_ids=[];
+      var course_ids=[];
+      var teaching_method_ids=[];
       var genders=[];
       for(var cat of $('.category')){
          if(cat.checked){
             category_ids.push(cat.value);
+         }
+      }
+      for(var cour of $('.course')){
+         if(cour.checked){
+            course_ids.push(cour.value);
+         }
+      }
+      for(var tm of $('.teaching_method')){
+         if(tm.checked){
+            teaching_method_ids.push(tm.value);
          }
       }
       for(var gender of $('.gender')){
@@ -275,6 +348,8 @@
          city_id:city_id,
          location_id:location_id,
          category_ids:category_ids,
+         course_ids:course_ids,
+         teaching_method_ids:teaching_method_ids,
          genders:genders
       };
    }
