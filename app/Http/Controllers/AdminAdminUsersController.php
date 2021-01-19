@@ -15,11 +15,15 @@ class AdminAdminUsersController extends CBController {
         $this->addText("Name","name")->strLimit(150)->maxLength(255);
 		$this->addEmail("Email","email");
 		$this->addPassword("Password","password");
-		$this->addText("Phone","phone")->strLimit(150)->maxLength(255);
+        $this->addText("Phone","phone")->strLimit(150)->maxLength(255);
+        $this->addRadio("Role","cb_roles_id")->options([
+            "1"  => "Super Admin",
+            "2" => "Admin"
+        ]);
 		
         $this->hookBeforeInsert(function($data) {
             // Todo: code here
-            $data['cb_roles_id'] = 2;
+            // $data['cb_roles_id'] = 2;
             $data['password'] = Hash::make($data['password']);
             // dd($data);
     
@@ -27,7 +31,7 @@ class AdminAdminUsersController extends CBController {
             return $data;
         });
         $this->hookIndexQuery(function($query) {
-            $query->where("cb_roles_id", 2);
+            $query->whereIn("cb_roles_id", [1,2]);
     
             return $query;
         });

@@ -44,7 +44,7 @@
                            <div class="d-flex justify-content-between">
                               <div class="p-2 p-r">
                                  <i class="fas fa-map-marker-alt"></i>
-                                 <span> {{$offer->city->name}}, {{$offer->city->location}}</span>
+                                 <span> {{$offer->location->name}}, {{$offer->city->name}}</span>
                               </div>
                               <div class="p-2 posted-date p-r">
                                  {{Carbon::parse($offer->created_at)->format('jS\\, F Y')}}                                        

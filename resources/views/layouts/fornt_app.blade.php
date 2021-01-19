@@ -52,7 +52,7 @@
             <a href="index.php" class="nav-link ">HOME</a>
           </li>
           <li class="nav-item">
-            <a href="job-board.php" class="nav-link">JOB BOARD</a>
+            <a href="{{route('job_board')}}" class="nav-link">JOB BOARD</a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">TUTORIAL</a>

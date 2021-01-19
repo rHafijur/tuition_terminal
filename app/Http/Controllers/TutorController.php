@@ -103,7 +103,7 @@ class TutorController extends Controller
     public function dashboard(){
         $tutor=auth()->user()->tutor;
         if($tutor->getProfileComplete() < 70){
-            return redirect()->back();
+            return redirect()->route('tutor_edit_info');
         }
         $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
         // dd($job_offers);
