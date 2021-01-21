@@ -1,6 +1,7 @@
 @extends(getThemePath('layout.layout'))
 @section('content')
 @php
+use Carbon\Carbon;
 $is_superadmin=false;
     if(auth()->user()->cb_roles_id==1){
         $is_superadmin=true;
@@ -140,29 +141,67 @@ $is_superadmin=false;
                             <th>
                                 <input onchange="chackboxChanged(this)" type="checkbox">
                             </th>
+                            <th>Date</th>
                             <th>Tutor ID</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>Rating</th>
+                            <th>University</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Completion</th>
                             <th>Phone</th>
-                            <th>City</th>
-                            <th>Location</th>
-                            <th>Verified</th>
-                            <th>Featured</th>
+                            <th>Last Active</th>
+                            <th>Status</th>
+                            <th>Channel</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tutors as $tutor)
                         <tr>
-                            <td><input class="selector" data-id="{{$tutor->id}}" type="checkbox"></td>
+                            <td><input class="selector" data-id="{{$tutor->user->id}}" type="checkbox"></td>
+                            <td>{{Carbon::parse($tutor->user->created_at)->toDateString()}}</td>
                             <td>{{$tutor->tutor_id}}</td>
-                            <td>{{$tutor->name}}</td>
-                            <td>{{$tutor->email}}</td>
-                            <td>{{$tutor->phone}}</td>
-                            <td>{{$tutor->city}}</td>
-                            <td>{{$tutor->location}}</td>
-                            <td>{{$tutor->is_verified==0?"No":"Yes"}}</td>
-                            <td>{{$tutor->is_featured==0?"No":"Yes"}}</td>
+                            <td>{{$tutor->user->name}}{!!$tutor->getStatusIcon()!!}</td>
+                            <td>{!!$tutor->getRating()!!}</td>
+                            <td>
+                                @php
+                                    $degrees=$tutor->tutor_degrees()->whereIn('degree_id',[3,4])->orderBy('degree_id','desc')->get();
+                                @endphp
+                                @if ($degrees->count()>0)
+                                    {{$degrees[0]->institute->title}}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($degrees->count()>0)
+                                    {{$degrees[0]->department}}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($degrees->count()>0)
+                                    {{$degrees[0]->year_or_semester}}
+                                @endif
+                            </td>
+                            <td>
+                                {{$tutor->getProfileComplete()}} %
+                            </td>
+                            <td>
+                                {{$tutor->user->phone}}
+                            </td>
+                            <td>
+                                @if ($lastDate=$tutor->user->login_at)
+                                    {{Carbon::parse($lastDate)->toDateString()}}
+                                @endif
+                            </td>
+                            <td>
+                                <select class="form-control" data-id="{{$tutor->id}}" onchange="statusChanged(this)">
+                                    <option @if($tutor->is_active==1) selected @endif value="1">Active</option>
+                                    <option @if($tutor->is_active==0) selected @endif value="0">Inactive</option>
+                                </select>
+                            </td>
+                            <td>
+                                {{$tutor->user->channel}}
+                            </td>
                             <td>
                                 <a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}"><button class="btn btn-info btn-sm">
                                     <i class="fa fa-eye"></i>
@@ -183,6 +222,28 @@ $is_superadmin=false;
                                     <button onclick="confirmDelete(this)" type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                 </form>
                                 @endif
+                                @if (!$tutor->isPremium())
+                                <form action="{{ action('AdminTutorsController@postMakePremium') }}" method="post" style="display: inline">
+                                    @csrf
+                                    <input type="hidden" value="{{$tutor->id}}" name="id">
+                                    <button class="btn btn-sm btn-primary">Make Premium</button>
+                                </form>
+                                @endif
+                                @if ($tutor->is_featured!=1)
+                                <form action="{{ action('AdminTutorsController@postMakeFeatured') }}" method="post" style="display: inline">
+                                    @csrf
+                                    <input type="hidden" value="{{$tutor->id}}" name="id">
+                                    <button class="btn btn-sm btn-primary">Make Featured</button>
+                                </form>
+                                @endif
+                                @if ($tutor->is_verified!=1)
+                                <form action="{{ action('AdminTutorsController@postMakeVerify') }}" method="post" style="display: inline">
+                                    @csrf
+                                    <input type="hidden" value="{{$tutor->id}}" name="id">
+                                    <button class="btn btn-sm btn-primary">Verify</button>
+                                </form>
+                                @endif
+                                <button data-toggle="modal" data-target="#noteModal" onclick="openNoteModal({{$tutor->id}},'{{$tutor->user->name}}')" class="btn btn-sm btn-primary">Note</button>
                             </td>
                         </tr>
                         @endforeach
@@ -196,6 +257,34 @@ $is_superadmin=false;
         @csrf
         <input type="hidden" id="ids" name="ids">
     </form>
+
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="noteModalLabel">Add Note for <span id="noteModalTutorName"></span></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="tutorNoteForm" action="{{ action('AdminTutorsController@postSaveNote') }}" method="post">
+                <input type="hidden" name="id" id="noteModalTutorId">
+                @csrf
+                <div class="form-group">
+                    <label>Note</label>
+                    <textarea name="note" class="form-control" required></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" onclick="$('#tutorNoteForm').submit()" class="btn btn-primary">Save Note</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <script>
         function confirmDelete(obj){
             if(confirm("Do you really want to delete this?")==true){
@@ -220,6 +309,23 @@ $is_superadmin=false;
             }
             $("#ids").val(JSON.stringify(ids));
             $("#bulk_sms_form").submit();
+        }
+        function statusChanged(el){
+            var id=$(el).data('id');
+            $.post(`{{ action('AdminTutorsController@postChangeActiveStatus') }}`,
+            {
+                id:id,
+                is_active:el.value,
+                _token:$('meta[name="csrf-token"]').attr('content')
+            },
+            function(data,status){
+
+            }
+            );
+        }
+        function openNoteModal(id,name){
+            $("#noteModalTutorName").text(name);
+            $("#noteModalTutorId").val(id);
         }
     </script>
 @endsection

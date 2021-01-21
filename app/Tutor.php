@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class Tutor extends Model
 {
     protected $fillable=[
@@ -20,6 +20,7 @@ class Tutor extends Model
         'premium_started_at',
         'available_to',
         'available_from',
+        'is_active',
     ];
 
     public function getProfileComplete(){
@@ -133,6 +134,9 @@ class Tutor extends Model
     public function user(){
         return $this->belongsTo("App\User",'user_id');
     }
+    public function notes(){
+        return $this->hasMany("App\TutorNote",'tutor_id');
+    }
     public function tutor_personal_information(){
         return $this->hasOne("App\TutorPersonalInformation",'tutor_id');
     }
@@ -184,20 +188,28 @@ class Tutor extends Model
     public function certificates(){
         return $this->hasMany("App\Certificate",'tutor_id');
     }
+    public function isPremium(){
+        if($this->is_premium==1){
+            if(Carbon::parse($this->premium_started_at)->diff(Carbon::now())->days<=30){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function getStatusIcon(){
+        $icons="";
         $tutor=$this;
-        // dd($tutor->is_premium);
-        if($tutor->is_premium==1){
-            return '<i style="color:#D9B351" class="fas fa-star"></i>';
+        if($tutor->isPremium()){
+            $icons.= '<i style="color:#D9B351" class="fas fa-star"></i>';
         }
         if($tutor->is_featured==1){
-            return '<i style="color:#86f780" class="fas fa-asterisk"></i>';
+            $icons.= '<i style="color:#86f780" class="fas fa-asterisk"></i>';
         }
         if($tutor->is_verified==1){
-            return '<i style="color:#007BFF" class="far fa-check-circle"></i>';
+            $icons.= '<i style="color:#007BFF" class="far fa-check-circle"></i>';
         }
-        return "";
+        return $icons;
     }
     public function getRating(){
         $rating=4;
@@ -301,5 +313,9 @@ class Tutor extends Model
         $this->save();
         return true;
     }
+    // function noteHistory(){
+    //     $rows='';
+    //     $notes=
+    // }
     
 }

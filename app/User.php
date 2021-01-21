@@ -29,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'cb_roles_id',
         'ip_address',
         'user_agent',
+        'channel',
     ];
     /**
      * The attributes that should be hidden for arrays.

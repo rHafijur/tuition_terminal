@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\User;
 use App\Tutor;
+use App\TutorNote;
 use App\TutorPersonalInformation;
 use App\Category;
 use App\Course;
@@ -96,32 +97,34 @@ class AdminTutorsController extends CBController {
 
 		$page_title="All Tutors";
 		// $tutors = Tutor::with('user')->with('city')->with('location')->where('city.name','Dhaka')->get();
-		$query=DB::table('tutors')->join('users','tutors.user_id','users.id')->leftJoin('cities','cities.id','tutors.city_id')->leftJoin('locations','locations.id','tutors.location_id')
-		->select('tutors.id','tutors.tutor_id','tutors.is_featured','tutors.is_verified','users.name','users.email','users.phone','locations.name as location','cities.name as city')
-		// ->where("is_premium", 0);
-		->whereNull('tutors.premium_started_at')->orWhere("tutors.premium_started_at","<", Carbon::now()->subMonths(6));
-		if($q!=null){
-			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
-						 ->orWhere('users.name','like','%'.$q.'%')
-						 ->orWhere('users.email','like','%'.$q.'%')
-						 ->orWhere('users.phone','like','%'.$q.'%');
-		}
-		if($city!=null){
-			$query=$query->where('tutors.city_id',$city);
-		}
-		if($location!=null){
-			$query=$query->where('tutors.location_id',$location);
-		}
-		if($is_verified!=null){
-			$query=$query->where('tutors.is_verified',$is_verified);
-		}
-		if($is_featured!=null){
-			$query=$query->where('tutors.is_featured',$is_featured);
-		}
+		// $query=DB::table('tutors')->join('users','tutors.user_id','users.id')->leftJoin('cities','cities.id','tutors.city_id')->leftJoin('locations','locations.id','tutors.location_id')
+		// ->select('tutors.id','tutors.tutor_id','tutors.is_featured','tutors.is_verified','users.name','users.email','users.phone','locations.name as location','cities.name as city')
+		// // ->where("is_premium", 0);
+		// ->whereNull('tutors.premium_started_at')->orWhere("tutors.premium_started_at","<", Carbon::now()->subMonths(6));
+		// if($q!=null){
+		// 	$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
+		// 				 ->orWhere('users.name','like','%'.$q.'%')
+		// 				 ->orWhere('users.email','like','%'.$q.'%')
+		// 				 ->orWhere('users.phone','like','%'.$q.'%');
+		// }
+		// if($city!=null){
+		// 	$query=$query->where('tutors.city_id',$city);
+		// }
+		// if($location!=null){
+		// 	$query=$query->where('tutors.location_id',$location);
+		// }
+		// if($is_verified!=null){
+		// 	$query=$query->where('tutors.is_verified',$is_verified);
+		// }
+		// if($is_featured!=null){
+		// 	$query=$query->where('tutors.is_featured',$is_featured);
+		// }
 		if($limit==null){
 			$limit=10;
-		}
-		$tutors=$query->paginate($limit);
+        }
+        $query= Tutor::latest();
+        $tutors=$query->paginate($limit);
+        // dd($tutors);
 		return view('admin.tutor.all',\compact('tutors','page_title'));
 	}
 	public function getPremium(){
@@ -352,5 +355,39 @@ class AdminTutorsController extends CBController {
         ]);
 
         return cb()->redirect(action('AdminTutorsController@getEdit_info',[$request->tutor_id])."?tab=pi",'Information Updated Successfully','success');
+    }
+    function postChangeActiveStatus(Request $request){
+        $tutor=Tutor::findOrFail($request->id);
+        $tutor->is_active=$request->is_active;
+        $tutor->save();
+        return "success";
+    }
+    function postMakePremium(Request $request){
+        $tutor=Tutor::findOrFail($request->id);
+        $tutor->is_premium=1;
+        $tutor->premium_by=auth()->id();
+        $tutor->premium_started_at=Carbon::now();
+        $tutor->save();
+        return cb()->redirectBack($tutor->user->name.' is added as premium tutor successfully','success');
+    }
+    function postMakeFeatured(Request $request){
+        $tutor=Tutor::findOrFail($request->id);
+        $tutor->is_featured=1;
+        $tutor->save();
+        return cb()->redirectBack($tutor->user->name.' is marked as featured tutor successfully','success');
+    }
+    function postMakeVerify(Request $request){
+        $tutor=Tutor::findOrFail($request->id);
+        $tutor->is_verified=1;
+        $tutor->save();
+        return cb()->redirectBack($tutor->user->name.' is marked as verified tutor successfully','success');
+    }
+    function postSaveNote(Request $request){
+        $tutor=Tutor::findOrFail($request->id);
+        $tutor->notes()->save(new TutorNote([
+            'user_id' => auth()->id(),
+            'note'=>$request->note
+        ]));
+        return cb()->redirectBack('Note added successfully','success');
     }
 }
