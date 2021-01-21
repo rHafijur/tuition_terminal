@@ -137,6 +137,9 @@ class Tutor extends Model
     public function notes(){
         return $this->hasMany("App\TutorNote",'tutor_id');
     }
+    public function job_applications(){
+        return $this->hasMany("App\JobApplication",'tutor_id');
+    }
     public function tutor_personal_information(){
         return $this->hasOne("App\TutorPersonalInformation",'tutor_id');
     }

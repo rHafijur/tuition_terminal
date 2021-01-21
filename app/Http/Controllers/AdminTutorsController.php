@@ -174,6 +174,15 @@ class AdminTutorsController extends CBController {
 		// dd($tutor);
 		return view('admin.tutor.single',compact('tutor','page_title'));
 	}
+	public function getSinglePresentPending($id){
+		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
+		$tutor=Tutor::findOrFail($id);
+        $page_title="Current Pending - ".$tutor->user->name;
+        $pending_applications=$tutor->job_applications()->whereNotNull('taken_by_id')->whereIn('current_stage',['waiting','meet','trial'])->get();
+        $payment_pending_applications=$tutor->job_applications()->whereNotNull('taken_by_id')->where('net_receivable_amount','>',DB::raw('received_amount'))->orWhereIn('current_stage',['confirm','payment'])->get();
+		// dd($pending_applications);
+		return view('admin.tutor.single_present_pending',compact('tutor','pending_applications','payment_pending_applications','page_title'));
+	}
 
 	public function getNew(){
 		$page_title="New Tutor";

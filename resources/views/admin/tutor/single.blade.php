@@ -7,6 +7,16 @@
         <div class="box-header with-border">
             <h1 class="box-title"><i class="fa fa-eye"></i> {{$tutor->tutor_id}}</h1>
         </div>
+        <div class="box-title bg-secondary" style="color: white">
+          <div class="row">
+            <ul id="tab_nav" class="nav nav-pills">
+              <li class="nav-item"><a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}" class="nav-link active">Tutor Information</a></li>
+              <li class="nav-item"><a href="{{ action('AdminTutorsController@getSinglePresentPending',[$tutor->id]) }}" class="nav-link">Present Pending</a></li>
+                <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/applications")}}" class="nav-link">Applications</a></li>
+                <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/add_new")}}" class="nav-link">Add New Tuiton</a></li>
+            </ul>
+        </div>
+        </div>
         <div class="box-body"> 
             <div class="row">
                 <div class="col-md-3">
