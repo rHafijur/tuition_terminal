@@ -38,9 +38,9 @@ $is_superadmin=false;
 
             <div class="row">
                 <ul id="tab_nav" class="nav nav-pills">
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("tutors")}}" class="nav-link active">All Tutors</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("tutors")}}" class="nav-link">All Tutors</a></li>
                     <li class="nav-item"><a href="{{cb()->getAdminUrl("tutors/premium")}}" class="nav-link">Primium Tutors</a></li>
-                    <li class="nav-item"><a href="{{cb()->getAdminUrl("tutors/featured")}}" class="nav-link">Featured Tutors</a></li>
+                    <li class="nav-item"><a href="{{cb()->getAdminUrl("tutors/featured")}}" class="nav-link active">Featured Tutors</a></li>
                 </ul>
             </div>
             <div class="row">

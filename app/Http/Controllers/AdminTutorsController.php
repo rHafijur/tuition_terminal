@@ -94,7 +94,25 @@ class AdminTutorsController extends CBController {
 	}
 	public function getIndex(){
 		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
-		$request=request();
+        $request=request();
+        // dd($request);
+        $reports=[];
+        $reports['total']=Tutor::all()->count();
+        $reports['premium']=Tutor::where('is_premium',1)->get()->count();
+        $reports['featured']=Tutor::where('is_featured',1)->get()->count();
+        $reports['male']=Tutor::whereHas('tutor_personal_information',function($q){
+            return $q->where('gender','male');
+        })->get()->count();
+        $reports['female']=Tutor::whereHas('tutor_personal_information',function($q){
+            return $q->where('gender','female');
+        })->get()->count();
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+
 		$q=$request->q;
 		$limit=$request->limit;
 		$city=$request->city;
@@ -103,76 +121,260 @@ class AdminTutorsController extends CBController {
 		$is_featured=$request->is_featured;
 
 		$page_title="All Tutors";
-		// $tutors = Tutor::with('user')->with('city')->with('location')->where('city.name','Dhaka')->get();
-		// $query=DB::table('tutors')->join('users','tutors.user_id','users.id')->leftJoin('cities','cities.id','tutors.city_id')->leftJoin('locations','locations.id','tutors.location_id')
-		// ->select('tutors.id','tutors.tutor_id','tutors.is_featured','tutors.is_verified','users.name','users.email','users.phone','locations.name as location','cities.name as city')
-		// // ->where("is_premium", 0);
-		// ->whereNull('tutors.premium_started_at')->orWhere("tutors.premium_started_at","<", Carbon::now()->subMonths(6));
-		// if($q!=null){
-		// 	$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
-		// 				 ->orWhere('users.name','like','%'.$q.'%')
-		// 				 ->orWhere('users.email','like','%'.$q.'%')
-		// 				 ->orWhere('users.phone','like','%'.$q.'%');
-		// }
-		// if($city!=null){
-		// 	$query=$query->where('tutors.city_id',$city);
-		// }
-		// if($location!=null){
-		// 	$query=$query->where('tutors.location_id',$location);
-		// }
-		// if($is_verified!=null){
-		// 	$query=$query->where('tutors.is_verified',$is_verified);
-		// }
-		// if($is_featured!=null){
-		// 	$query=$query->where('tutors.is_featured',$is_featured);
-		// }
+		
 		if($limit==null){
 			$limit=10;
         }
         $query= Tutor::latest();
+        if($q!=null){
+			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
+						 ->orWhere('users.name','like','%'.$q.'%')
+						 ->orWhere('users.email','like','%'.$q.'%')
+						 ->orWhere('users.phone','like','%'.$q.'%');
+		}
+        if($request->from!=null && $request->to!=null){
+            $query= $query->whereBetween('created_at',[$request->from,$request->to]);
+        }else{
+            if($request->from!=null){
+                $query= $query->whereBetween('created_at',[$request->from,now()]);
+            }
+        }
+        if($preferred_location_id= $request->preferred_location_id){
+            $query=$query->where('location_id',$preferred_location_id);
+        }
+        if($category_id= $request->category_id){
+            $query=$query->whereHas('categories',function($q) use($request){
+                return $q->where('category_id',$request->category_id);
+            });
+        }
+        if($channel= $request->channel){
+            $query=$query->whereHas('user',function($q) use($request){
+                return $q->where('channel',$request->channel);
+            });
+        }
+        $query = $query->whereHas('tutor_personal_information',function($q) use($request){
+            if($city_id= $request->city_id){
+                $q=$q->where('city_id',$city_id);
+            }
+            if($location_id= $request->location_id){
+                $q=$q->where('location_id',$location_id);
+            }
+            if($tutor_gender= $request->tutor_gender){
+                $q=$q->where('gender',$tutor_gender);
+            }
+            return $q;
+        });
+        if($request->year!=null || $request->university_type!=null || $request->study_type_id!=null || $request->institute_id!=null || $request->tutor_department!=null){
+            $query = $query->whereHas('tutor_degrees',function($q) use($request){
+                if($year= $request->year){
+                    $q=$q->where('year_or_semester',$year);
+                }
+                if($university_type= $request->university_type){
+                    $q=$q->where('university_type',$university_type);
+                }
+                if($study_type_id= $request->study_type_id){
+                    $q=$q->where('study_type_id',$study_type_id);
+                }
+                if($institute_id= $request->institute_id){
+                    $q=$q->where('institute_id',$institute_id);
+                }
+                if($tutor_department= $request->tutor_department){
+                    $q=$q->where('department',$tutor_department);
+                }
+            });
+        }
+        // dd($query);
         $tutors=$query->paginate($limit);
         // dd($tutors);
-		return view('admin.tutor.all',\compact('tutors','page_title'));
+		return view('admin.tutor.all',\compact('reports','tutors','institutes','categories_collection','city_collection','request','page_title'));
 	}
 	public function getPremium(){
 		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
-		$request=request();
+        $request=request();
+        // dd($request);
+        $reports=[];
+        $reports['total']=Tutor::where('is_premium',1)->get()->count();
+        $reports['todays']=Tutor::where('is_premium',1)->whereDate('premium_started_at',Carbon::now())->get()->count();
+        $reports['tuiton_received']=Tutor::whereHas('job_applications',function($q){
+            return $q->where('current_stage','payment');
+        })->get()->count();
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+
 		$q=$request->q;
 		$limit=$request->limit;
 		$city=$request->city;
 		$location=$request->location;
 		$is_verified=$request->is_verified;
 		$is_featured=$request->is_featured;
-		// return Carbon::now()->subMonths(6);
-		$page_title="Premium Tutors";
-		// $tutors = Tutor::with('user')->with('city')->with('location')->where('city.name','Dhaka')->get();
-		$query=DB::table('tutors')->join('users','tutors.user_id','users.id')->leftJoin('cities','cities.id','tutors.city_id')->leftJoin('locations','locations.id','tutors.location_id')
-		->select('tutors.id','tutors.tutor_id','tutors.is_featured','tutors.is_verified','users.name','users.email','users.phone','locations.name as location','cities.name as city')
-		// ->where("is_premium", 1)
-		->orwhere("tutors.premium_started_at",">", Carbon::now()->subMonths(6));
-		if($q!=null){
+
+		$page_title="All Tutors";
+		
+		if($limit==null){
+			$limit=10;
+        }
+        $query= Tutor::where('is_premium',1)->latest();
+        if($q!=null){
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
 						 ->orWhere('users.phone','like','%'.$q.'%');
 		}
-		if($city!=null){
-			$query=$query->where('tutors.city_id',$city);
-		}
-		if($location!=null){
-			$query=$query->where('tutors.location_id',$location);
-		}
-		if($is_verified!=null){
-			$query=$query->where('tutors.is_verified',$is_verified);
-		}
-		if($is_featured!=null){
-			$query=$query->where('tutors.is_featured',$is_featured);
-		}
+        if($request->from!=null && $request->to!=null){
+            $query= $query->whereBetween('created_at',[$request->from,$request->to]);
+        }else{
+            if($request->from!=null){
+                $query= $query->whereBetween('created_at',[$request->from,now()]);
+            }
+        }
+        if($preferred_location_id= $request->preferred_location_id){
+            $query=$query->where('location_id',$preferred_location_id);
+        }
+        if($category_id= $request->category_id){
+            $query=$query->whereHas('categories',function($q) use($request){
+                return $q->where('category_id',$request->category_id);
+            });
+        }
+        if($channel= $request->channel){
+            $query=$query->whereHas('user',function($q) use($request){
+                return $q->where('channel',$request->channel);
+            });
+        }
+        $query = $query->whereHas('tutor_personal_information',function($q) use($request){
+            if($city_id= $request->city_id){
+                $q=$q->where('city_id',$city_id);
+            }
+            if($location_id= $request->location_id){
+                $q=$q->where('location_id',$location_id);
+            }
+            if($tutor_gender= $request->tutor_gender){
+                $q=$q->where('gender',$tutor_gender);
+            }
+            return $q;
+        });
+        if($request->year!=null || $request->university_type!=null || $request->study_type_id!=null || $request->institute_id!=null || $request->tutor_department!=null){
+            $query = $query->whereHas('tutor_degrees',function($q) use($request){
+                if($year= $request->year){
+                    $q=$q->where('year_or_semester',$year);
+                }
+                if($university_type= $request->university_type){
+                    $q=$q->where('university_type',$university_type);
+                }
+                if($study_type_id= $request->study_type_id){
+                    $q=$q->where('study_type_id',$study_type_id);
+                }
+                if($institute_id= $request->institute_id){
+                    $q=$q->where('institute_id',$institute_id);
+                }
+                if($tutor_department= $request->tutor_department){
+                    $q=$q->where('department',$tutor_department);
+                }
+            });
+        }
+        // dd($query);
+        $tutors=$query->paginate($limit);
+        // dd($tutors);
+		return view('admin.tutor.premium',\compact('reports','tutors','institutes','categories_collection','city_collection','request','page_title'));
+	}
+	public function getFeatured(){
+		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
+        $request=request();
+        // dd($request);
+        $reports=[];
+        $reports['total']=Tutor::all()->count();
+        $reports['premium']=Tutor::where('is_premium',1)->get()->count();
+        $reports['featured']=Tutor::where('is_featured',1)->get()->count();
+        $reports['male']=Tutor::whereHas('tutor_personal_information',function($q){
+            return $q->where('gender','male');
+        })->get()->count();
+        $reports['female']=Tutor::whereHas('tutor_personal_information',function($q){
+            return $q->where('gender','female');
+        })->get()->count();
+        $categories=Category::all();
+        $courses=Course::all();
+        $institutes=Institute::all();
+        $categories_collection=CategoryResource::collection($categories);
+        $courses_collection=CourseResource::collection($courses);
+        $city_collection=CityResource::collection(City::all());
+
+		$q=$request->q;
+		$limit=$request->limit;
+		$city=$request->city;
+		$location=$request->location;
+		$is_verified=$request->is_verified;
+		$is_featured=$request->is_featured;
+
+		$page_title="All Tutors";
+		
 		if($limit==null){
 			$limit=10;
+        }
+        $query= Tutor::where('is_featured',1)->latest();
+        if($q!=null){
+			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
+						 ->orWhere('users.name','like','%'.$q.'%')
+						 ->orWhere('users.email','like','%'.$q.'%')
+						 ->orWhere('users.phone','like','%'.$q.'%');
 		}
-		$tutors=$query->paginate($limit);
-		return view('admin.tutor.premium',\compact('tutors','page_title'));
+        if($request->from!=null && $request->to!=null){
+            $query= $query->whereBetween('created_at',[$request->from,$request->to]);
+        }else{
+            if($request->from!=null){
+                $query= $query->whereBetween('created_at',[$request->from,now()]);
+            }
+        }
+        if($preferred_location_id= $request->preferred_location_id){
+            $query=$query->where('location_id',$preferred_location_id);
+        }
+        if($category_id= $request->category_id){
+            $query=$query->whereHas('categories',function($q) use($request){
+                return $q->where('category_id',$request->category_id);
+            });
+        }
+        if($channel= $request->channel){
+            $query=$query->whereHas('user',function($q) use($request){
+                return $q->where('channel',$request->channel);
+            });
+        }
+        $query = $query->whereHas('tutor_personal_information',function($q) use($request){
+            if($city_id= $request->city_id){
+                $q=$q->where('city_id',$city_id);
+            }
+            if($location_id= $request->location_id){
+                $q=$q->where('location_id',$location_id);
+            }
+            if($tutor_gender= $request->tutor_gender){
+                $q=$q->where('gender',$tutor_gender);
+            }
+            return $q;
+        });
+        if($request->year!=null || $request->university_type!=null || $request->study_type_id!=null || $request->institute_id!=null || $request->tutor_department!=null){
+            $query = $query->whereHas('tutor_degrees',function($q) use($request){
+                if($year= $request->year){
+                    $q=$q->where('year_or_semester',$year);
+                }
+                if($university_type= $request->university_type){
+                    $q=$q->where('university_type',$university_type);
+                }
+                if($study_type_id= $request->study_type_id){
+                    $q=$q->where('study_type_id',$study_type_id);
+                }
+                if($institute_id= $request->institute_id){
+                    $q=$q->where('institute_id',$institute_id);
+                }
+                if($tutor_department= $request->tutor_department){
+                    $q=$q->where('department',$tutor_department);
+                }
+            });
+        }
+        // dd($query);
+        $tutors=$query->paginate($limit);
+        // dd($tutors);
+		return view('admin.tutor.featured',\compact('reports','tutors','institutes','categories_collection','city_collection','request','page_title'));
 	}
 	public function getSingle($id){
 		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));

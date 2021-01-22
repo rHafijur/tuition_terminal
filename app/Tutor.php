@@ -21,6 +21,7 @@ class Tutor extends Model
         'available_to',
         'available_from',
         'is_active',
+        'premium_by',
     ];
 
     public function getProfileComplete(){
@@ -133,6 +134,9 @@ class Tutor extends Model
 
     public function user(){
         return $this->belongsTo("App\User",'user_id');
+    }
+    public function premiumBy(){
+        return $this->belongsTo("App\User",'premium_by');
     }
     public function notes(){
         return $this->hasMany("App\TutorNote",'tutor_id');
