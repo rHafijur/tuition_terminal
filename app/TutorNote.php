@@ -12,6 +12,6 @@ class TutorNote extends Model
         return $this->belongsTo('App\User','user_id');
     }
     public function takenBy(){
-        return $this->user->name;
+        return $this->user;
     }
 }

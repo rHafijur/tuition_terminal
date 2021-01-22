@@ -11,9 +11,9 @@
           <div class="row">
             <ul id="tab_nav" class="nav nav-pills">
               <li class="nav-item"><a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}" class="nav-link active">Tutor Information</a></li>
+              <li class="nav-item"><a href="{{ action('AdminTutorsController@getEdit',[$tutor->id]) }}" class="nav-link">Login</a></li>
               <li class="nav-item"><a href="{{ action('AdminTutorsController@getSinglePresentPending',[$tutor->id]) }}" class="nav-link">Present Pending</a></li>
-                <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/applications")}}" class="nav-link">Applications</a></li>
-                <li class="nav-item"><a href="{{cb()->getAdminUrl("job_offers/add_new")}}" class="nav-link">Add New Tuiton</a></li>
+              <li class="nav-item"><a href="{{ action('AdminTutorsController@getSingleHistory',[$tutor->id]) }}" class="nav-link">History</a></li>
             </ul>
         </div>
         </div>
