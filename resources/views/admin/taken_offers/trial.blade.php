@@ -90,7 +90,7 @@
                                 <button onclick="dateButtonClicked({{$application->id}})" class="btn btn-info btn-sm">View</button>
                             </td>
                             <td>
-                                {{$application->job_offer_id}}
+                             <a href="{{cb()->getAdminUrl("job_offers/detail/".$application->job_offer_id)}}" target="_blank">{{$application->job_offer_id}}</a>    
                             </td>
                             <td>
                                 {{Carbon::parse($application->trial_date)->toDateString()}}

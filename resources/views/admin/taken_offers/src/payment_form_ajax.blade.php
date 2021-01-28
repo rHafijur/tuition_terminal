@@ -52,7 +52,7 @@
         </div>
         <div class="form-group col">
             <label>Reason</label>
-            <input type="date" id="payment_turned_off_reason" name="payment_turned_off_reason" class="form-control turn-off_fs">
+            <input type="text" id="payment_turned_off_reason" name="payment_turned_off_reason" class="form-control turn-off_fs">
         </div>
     </div>
     <span style="display: block">

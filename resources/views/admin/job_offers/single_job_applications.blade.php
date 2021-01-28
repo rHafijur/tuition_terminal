@@ -90,7 +90,10 @@
                             <td>{{Carbon::parse($application->created_at)->toTimeString()}}</td>
                             <td>{{$application->id}}</td>
                             <td>{{$application->job_offer_id}}</td>
-                            <td>{{$application->tutor->user->name}} {!!$application->tutor->getStatusIcon()!!}</td>
+                            <td> <a href="{{cb()->getAdminUrl("tutors/single/".$application->tutor->id)}}" target="_blank">
+                                    {{$application->tutor->user->name}}
+                                </a>
+                                 {!!$application->tutor->getStatusIcon()!!}</td>
                             <td>{{$application->matched_rate()}}</td>
                             <td>
                                 @if ($application->taken_by!=null)
