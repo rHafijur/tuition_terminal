@@ -75,6 +75,33 @@ only screen and (max-width: 767px) {
         display: block;
     }
 }
+
+
+
+@media(max-width: 767px) {
+    .demo-wrap.upload-demo {
+    text-align: center;
+}
+
+.demo-wrap.upload-demo .upload-msg {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.card-footer {
+    text-align: center;
+}
+
+.card-footer a.btn.file-btn {
+    width: 100%;
+}
+
+.card-footer a.btn.file-btn input#upload {}
+
+.card-footer {
+    padding: 30px;
+}
+}
 </style>
 @endpush
 @section('content')

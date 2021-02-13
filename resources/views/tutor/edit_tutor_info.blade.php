@@ -1,7 +1,43 @@
 @extends('tutor.layouts.master',['title'=>'Edit Tutor Information'])
 
 @section('content')
+<style>
+@media(max-width: 767px){
+        ul.nav.nav-pills {
+    position: relative;
+}
+
+ul.nav.nav-pills li {
+    width: 100%;
+    text-align: center;  
+    border-radius: 5px;
+}
+.sidebar {}
+
+.sidebar ul.nav.nav-pills li {
+    text-align: revert;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #28a745;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.progress-bar {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.card-primary.card-outline {
+    border-color: #28a745;
+}
+}
+</style>
 <div class="row">
+    
     <div class="col-md-3">
 
       <!-- Profile Image -->

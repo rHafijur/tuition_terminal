@@ -10,15 +10,21 @@
               <div class="row">
                 <div class="col">
                   <div class="hero-content text-center">
-                    <button class="btn btn-custom-a mr-4">Hire a Tutor</button>
-                    <button class="btn btn-custom-a">Become a Tutor</button>
+                     
                   </div>
                 </div>
               </div>
             </div>
             <div class="hero-footer text-center py-4 mt-4">
               <div class="container">
-                <h1 class="">Call 01864 748 381 For Instant Support</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="hf-btn">
+                            <button class="btn btn-custom-a mr-4">Hire a Tutor</button>
+                    <button class="btn btn-custom-a">Become a Tutor</button></div>
+                    </div>
+                    <div class="col-md-8"><h1 class="">Your Learning Assistant</h1></div>
+                </div>
               </div>
             </div>
           </section>

@@ -1597,3 +1597,357 @@ a.sch-btn:before {}
 /*================================================== 
 	JOB BOARD PAGE CSS END
 ==================================================== */
+section.signup-area {
+    position: relative;
+    padding-top: 160px;
+    padding-bottom: 80px;
+}
+
+section.signup-area .signup-header {
+    margin-bottom: 40px;
+}
+
+.hero-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.hf-btn {
+    position: relative;
+    margin: 10px auto;
+}
+
+.hf-btn button.btn {
+    padding: 15px 28px;
+    border: 1px solid #fff;
+    border-radius: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: #000;
+    color: #fff;
+}
+
+.hf-btn button.btn:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/*Responsive CSS*/
+
+@media only screen and (max-width: 767px) {
+    .rm-btn {
+    display: none;
+}
+    section.popular-category-area {
+    padding-bottom: 10px;
+}
+  #hiw-section, .hiw-section {
+    padding-bottom: 35px;
+}
+    .hero-footer h1 {
+    font-size: 30px;
+    line-height: 38px;
+}
+
+.hf-btn button.btn {
+    padding: 10px 25px;
+}
+
+#opinion-section, .opinion-section {
+    padding: 60px 0px;
+}
+
+#opinion-section h2, .opinion-section h2 {
+    font-size: 36px;
+    line-height: 44px;
+    padding-bottom: 30px;
+}
+
+#hero-section, .hero-section {
+    margin-bottom: 0px;
+}
+
+.single-info-content img {
+    margin-left: 233px;
+}
+
+.tutor-opinion-slider {
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.single-info-top {
+    margin-bottom: -55px;
+}
+
+.single-info-top h3 {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.single-info-top p {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.hiw-section h2 {
+    font-size: 26px;
+}
+
+.hiw-section h2 {
+    margin-bottom: 30px;
+}
+
+.hiw-section .col-md-3 {
+    width: 50%;
+}
+
+.hiw-content h5 {
+    font-size: 12px;
+    line-height: 16px;
+    padding-bottom: 0px;
+    margin-bottom: 10px !important;
+}
+
+.hiw-logo {
+    height: 60px;
+    width: 60px;
+    padding: 12px 14px;
+    margin-left: -8px;
+}
+
+.hiw-content p {
+    font-size: 10px;
+}
+
+.hiw-content p {
+    margin-bottom: 0px !important;
+}
+
+.hiw-single {
+    margin-bottom: 30px;
+}
+
+.hiw-single-content {
+    padding: 15px;
+}
+
+a.mrd-btn {
+    font-size: 13px;
+    padding: 9px  20px;
+}
+
+.counter-area-strat .section-title h3 {
+    font-size: 22px;
+}
+
+.counter-content {}
+
+.counter-content .col-md-3.col-sm-12 {
+    width: 50%;
+}
+
+.counter-content .counters h3 {
+    font-size: 14px !important;
+    text-align: left;
+    padding-left: 54px;
+}
+
+.counters h3 b {
+    font-size: 36px;
+}
+
+.counters h3 span {
+    font-size: 15px !important;
+}
+
+.counters img {
+    width: 30px;
+    bottom: -4px;
+}
+
+.bat-text h4 {
+    font-size: 20px;
+    line-height: 28px;
+}
+
+section#bat-section {
+    display: none;
+}
+
+.popular-category-area .col-md-3 {
+    width: 50%;
+}
+
+.subject-bg-course>h5 {
+    font-size: 12px;
+}
+
+.subject-bg-course>i {
+    font-size: 28px;
+}
+
+.sub-cat-hover {
+    padding: 20px 10px;
+}
+
+.sub-cat-hover p {
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 5px;
+}
+
+a.sch-btn {
+    font-size: 12px;
+    padding: 5px 15px;
+    line-height: 18px;
+}
+
+.subject-bg-wrap {
+    border-radius: 10px;
+}
+
+.app-content-top h2 {
+    font-size: 15px;
+    line-height: 22px;
+    margin-bottom: 0px;
+}
+
+.app-content-top {}
+
+.app-content-top p {
+    font-size: 14px;
+    max-width: 180px;
+}
+
+.app-footer {
+    margin-top: 9px !important;
+}
+
+.app-footer  img {
+    max-width: 90px;
+}
+
+.app-section .col-md-5 img {
+    margin-top: -100px;
+    max-width: 250px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.app-content {
+    position: relative;
+    z-index: 1;
+}
+
+#app-section, .app-section {
+    padding-bottom: 95px;
+}
+a#navSlideBox {
+    display: none;
+}
+    .reg-form-content.p-5 {
+        padding: 10px !important;
+    }
+    
+    .form-footer {}
+    
+    .reg-form-content button {
+        float: unset !important;
+    }
+    
+    section#footer-section {
+        text-align: center;
+    }
+    
+    section#footer-section .useful-content {}
+    
+    section#footer-section .useful-content  li a {
+        display: block;
+        text-align: center;
+        position: relative;
+    }
+    
+    .useful-content h4 {
+        text-align: center;
+    }
+    
+    #footer-section .card-body {
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    
+    #footer-section .card-body li {
+        text-align: center;
+    }
+    
+    .useful-content h4 {
+        margin-bottom: 10px !important;
+    }
+    .signup-content {
+        position: relative;
+        border: 1px solid #a8a8a8;
+        margin-bottom: 30px;
+        padding: 25px;
+        border-radius: 10px;
+    }
+    .tutor-post-header {
+        position: relative;
+    }
+    
+    .tutor-post-header .d-flex.justify-content-between {
+        display: block !important;
+        margin-bottom: 10px;
+    }
+    
+    .tutor-post-header .p-2.p-r {
+        padding-left: 0px !important;
+    }
+    
+    .tutor-post-body-content {
+        position: relative;
+        padding: 12px 0px;
+    }
+    
+    .tutor-footer-top {
+        position: relative;
+    }
+    
+    .tutor-footer-top .d-flex.justify-content-between {
+        display: block !important;
+    }
+    
+    .tutor-post-footer {
+        position: relative;
+        display: block;
+    }
+    
+    .tutor-post-footer button {
+        display: block !important;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .tutor-post-footer>a {
+        display: block !important;
+        width: 100%;
+        margin-left: 0px !important;
+    }
+    .login-reg-area {
+        width: 100%;
+    }
+    
+    .login-reg-area {
+        padding: 20px !important;
+    }
+    
+    .login-reg-area h3 {
+        font-size: 18px;
+    }
+  
+}

@@ -1,6 +1,13 @@
 @extends('tutor.layouts.master',['title'=>'Payments'])
 
 @section('content')
+<style>
+@media(max-width: 767px){
+        .card-body.box-profile {
+        overflow-x: scroll;
+    }
+}
+</style>
 <div class="row">
     <div class="col-md-12">
 

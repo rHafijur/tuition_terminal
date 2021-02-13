@@ -1,6 +1,13 @@
 @extends('parent.layouts.master',['title'=>'All Job Offers'])
 
 @section('content')
+<style>
+@media(max-width: 767px){
+        .card-body {
+        overflow-x: scroll;
+    }
+}
+</style>
 <div class="row">
     <div class="col-md-12">
 

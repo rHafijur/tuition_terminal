@@ -49,17 +49,17 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href="index.php" class="nav-link ">HOME</a>
+            <a href="{{url('/')}}" class="nav-link ">HOME</a>
           </li>
           <li class="nav-item">
             <a href="{{route('job_board')}}" class="nav-link">JOB BOARD</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">TUTORIAL</a>
           </li>
           <li class="nav-item">
             <a href="tutor-hub.php" class="nav-link"> TUTORS HUB</a>
-          </li>
+          </li> -->
           @if (!auth()->check())
           <li class="nav-item">
             <a href="{{route('register_type')}}" class="nav-link"> REGISTRATION</a>
