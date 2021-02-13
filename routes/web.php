@@ -18,6 +18,11 @@ Route::get('/import-tutor', 'AdminTutorsController@import');
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+Route::prefix('admin')->group(function () {
+    Route::post('/sms/editor','SmsController@sms_editor')->name('sms_editor');
+    Route::get('/sms/editor/{ids}','SmsController@sms_editor_page')->name('sms_editor_page');
+    Route::post('/sms/send','SmsController@send_sms')->name('send_sms');
+});
 
 Route::get('/verify_email','Auth\VerificationController@verifyEmailPage')->name('verifyEmailPage');
 

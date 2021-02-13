@@ -67,9 +67,23 @@
             </table>
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box-tools pull-left" style="position: relative;margin-top: 5px;margin-left: 10px">
+                        <button onclick="sendSms()" class="btn btn-primary btn-sm">Send Bulk SMS</button>
+                    </div>
+                    <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
+                        @csrf
+                        <input type="hidden" id="ids" name="ids">
+                    </form>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
+                        <th>
+                            <input onchange="chackboxChanged(this)" type="checkbox">
+                        </th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Application ID</th>
@@ -86,6 +100,7 @@
                             // dd($application->taken_by->name);
                         @endphp
                         <tr>
+                            <td><input class="selector" data-id="{{$application->tutor->user_id}}" type="checkbox"></td>
                             <td>{{Carbon::parse($application->created_at)->toDateString()}}</td>
                             <td>{{Carbon::parse($application->created_at)->toTimeString()}}</td>
                             <td>{{$application->id}}</td>
@@ -175,6 +190,25 @@
     </div>
   </div>
   <script>
+        function chackboxChanged(obj){
+            for(var selector of $('.selector')){
+                selector.checked=obj.checked;
+            }
+        }
+        function sendSms(){
+            var ids=[];
+            for(var selector of $('.selector')){
+                if(selector.checked){
+                    ids.push($(selector).data('id'));
+                }
+            } 
+            if(ids.length<1){
+                alert("Please select atleast one tutor");
+                return;
+            }
+            $("#ids").val(JSON.stringify(ids));
+            $("#bulk_sms_form").submit();
+        }
       function loadDataToNoteModal(el){
         el=$(el);
         $("#inputNoteId").val(el.data('id'));

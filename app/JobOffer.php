@@ -132,15 +132,24 @@ class JobOffer extends Model
         return false;
     }
     public function search_tutors_by_matching(){
-        $tutors=Tutor::all();
+        $t=microtime(true);
+        // $tutors=Tutor::with(['tutor_personal_information','courses','prefered_locations','categories','course_subjects','tutor_degrees'=>function($q){
+        //     return $q->whereIn('degree_id',[3,4]);
+        // }])->get();
+        $tutors=Tutor::with(['courses','pref_locations','course_subjects'])->get();
+        // $tutors=Tutor::with(['course_subjects'])->remember(60)->get();
+        // dd($tutors);
+        // dd(microtime(true)-$t);
         $offer=$this;
         $applications=$this->applications;
         $offer_cat=$offer->category;
+        $offer_course_subjects=$offer->course_subjects;
         $tutor_array=[];
         foreach($tutors as $tutor){
             $parcent=0;
-            $personal=$tutor->tutor_personal_information;
-            $u_degrees=$tutor->tutor_degrees()->whereIn('degree_id',[3,4])->get();
+            // $personal=$tutor->tutor_personal_information;
+            // $u_degrees=$tutor->tutor_degrees()->whereIn('degree_id',[3,4])->get();
+            // $u_degrees=$tutor->tutor_degrees;
             $cat_matched=false;
             $gender_matched=false;
             $university_matched=false;
@@ -148,66 +157,69 @@ class JobOffer extends Model
             $department_matched=false;
             $study_type_matched=false;
             $university_type_matched=false;
-            foreach($tutor->categories as $category){
-                if($offer_cat->id==$category->id){
-                    $cat_matched=true;
-                    break;
-                }
-            }
-            if($personal->gender==$offer->tutor_gender){
-                $gender_matched=true;
-            }
-            foreach($u_degrees as $degree){
-                if($degree->institute_id==$offer->tutor_university_id){
-                    $university_matched=true;
-                    break;
-                }
-            }
-            if($tutor->city_id==$offer->city_id){
-                $city_matched=true;
-            }
-            foreach($u_degrees as $degree){
-                if($degree->department==$offer->tutor_department){
-                    $department_matched=true;
-                }
-            }
-            if($offer->tutor_department==null){
-                $department_matched=true;
-            }
-            foreach($u_degrees as $degree){
-                if($degree->study_type_id==$offer->tutor_study_type_id){
-                    $study_type_matched=true;
-                }
-            }
-            if($offer->tutor_study_type_id==null){
-                $study_type_matched=true;
-            }
-            foreach($u_degrees as $degree){
-                if($degree->university_type==$offer->university_type){
-                    $university_type_matched=true;
-                }
-            }
-            if($offer->university_type==null){
-                $university_type_matched=true;
-            }
-            if($cat_matched && $gender_matched && $university_matched && $city_matched && $department_matched && $study_type_matched && $university_type_matched){
-                $parcent+=50;
-            }
-            if($offer->location_id==$tutor->location_id){
-                $parcent+=20;
-            }
-            foreach($tutor->prefered_locations as $pref_loc){
-                if($offer->location_id==$pref_loc->id){
-                    $parcent+=15;
+
+            // foreach($tutor->categories as $category){
+            //     if($offer_cat->id==$category->id){
+            //         $cat_matched=true;
+            //         break;
+            //     }
+            // }
+
+            // if($personal!=null && $personal->gender==$offer->tutor_gender){
+            //     $gender_matched=true;
+            // }
+
+            // foreach($u_degrees as $degree){
+            //     if($degree->institute_id==$offer->tutor_university_id){
+            //         $university_matched=true;
+            //         break;
+            //     }
+            //     if($degree->university_type==$offer->university_type){
+            //         $university_type_matched=true;
+            //     }
+            //     if($degree->study_type_id==$offer->tutor_study_type_id){
+            //         $study_type_matched=true;
+            //     }
+            //     if($degree->department==$offer->tutor_department){
+            //         $department_matched=true;
+            //     }
+            // }
+
+
+            // if($tutor->city_id==$offer->city_id){
+            //     $city_matched=true;
+            // }
+            // if($offer->tutor_department==null){
+            //     $department_matched=true;
+            // }
+            // if($offer->tutor_study_type_id==null){
+            //     $study_type_matched=true;
+            // }
+            // if($offer->university_type==null){
+            //     $university_type_matched=true;
+            // }
+            // if($cat_matched && $gender_matched && $university_matched && $city_matched && $department_matched && $study_type_matched && $university_type_matched){
+            //     $parcent+=50;
+            // }
+
+
+            // if($offer->location_id==$tutor->location_id){
+            //     $parcent+=20;
+            // }
+
+
+            foreach($tutor->pref_locations as $pref_loc){
+                if($offer->location_id==$pref_loc->location_id){
+                    $parcent+=20;
                     break;
                 }
             }
             foreach($tutor->courses as $cs){
                 if($cs->id==$offer->course_id){
-                    $parcent+=5;
+                    $parcent+=45;
                 }
             }
-            $ocs=$offer->course_subjects;
+            $ocs=$offer_course_subjects;
             $ocs_count=$ocs->count();
             $ocs_match_found=0;
             $tcs= $tutor->course_subjects;
@@ -220,10 +232,14 @@ class JobOffer extends Model
                 }
             }
             $ocs_percent=($ocs_match_found / $ocs_count) * 100;
-            $parcent+= (5/100) * $ocs_percent;
-            if($personal->gender==$offer->student_gender){
-                $parcent+=5;
+            $parcent+= (25/100) * $ocs_percent;
+            // if($personal!=null && $personal->gender==$offer->student_gender){
+            //     $parcent+=5;
+            // }
+            if($tutor->tutoring_experience!=null){
+                $parcent+=8;
             }
+            $parcent+=2;
             if($parcent>=50){
                 $tutor->mathcing_rate=$parcent;
                 foreach($applications as $app){
@@ -235,8 +251,9 @@ class JobOffer extends Model
                 $tutor_array[]=$tutor;
             }
         }
-        
         $tutor_count=count($tutor_array);
+        // \dump($tutor_count);
+        // dd(microtime(true)-$t);
         for($i=0;$i<$tutor_count;$i++){
             for($j=$i+1; $j < $tutor_count;$j++){
                 if($tutor_array[$i]->mathcing_rate < $tutor_array[$j]->mathcing_rate){

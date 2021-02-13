@@ -177,10 +177,11 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::latest();
         if($q!=null){
+            $query= Tutor::join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
-						 ->orWhere('users.phone','like','%'.$q.'%');
+						 ->orWhere('users.phone','like','%'.$q.'%'); 
 		}
         if($request->from!=null && $request->to!=null){
             $query= $query->whereBetween('created_at',[$request->from,$request->to]);
@@ -234,7 +235,7 @@ class AdminTutorsController extends CBController {
             });
         }
         // dd($query);
-        $tutors=$query->paginate($limit);
+        $tutors=$query->orderBy('is_premium','desc')->paginate($limit);
         // dd($tutors);
 		return view('admin.tutor.all',\compact('reports','tutors','institutes','categories_collection','city_collection','request','page_title'));
 	}
@@ -269,6 +270,7 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::where('is_premium',1)->latest();
         if($q!=null){
+            $query= Tutor::join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
@@ -365,6 +367,7 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::where('is_featured',1)->latest();
         if($q!=null){
+            $query= Tutor::join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')

@@ -56,6 +56,12 @@ class AdminJobOffersController extends CBController {
         $todays_offer_cnt=JobOffer::whereDate('created_at',Carbon::today())->get()->count();
 
         $job_offers = JobOffer::select("*");
+        $q=$request->q;
+        if($q!=null){
+			$job_offers=$job_offers->where('id',$q)
+						 ->orWhere('phone',$q)
+						 ->orWhere('name','like','%'.$q.'%');
+		}
         if($request->from!=null && $request->to!=null){
             $job_offers= $job_offers->whereBetween('created_at',[$request->from,$request->to]);
         }else{
@@ -105,7 +111,7 @@ class AdminJobOffersController extends CBController {
         }
         // dd($job_offers->get(),$job_offers,$request);
         // $job_offers = JobOffer::all();
-        $job_offers = $job_offers->get();
+        $job_offers = $job_offers->latest()->get();
         // dd($categories_collection);
         return view('admin.job_offers.all',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
     }
@@ -131,6 +137,12 @@ class AdminJobOffersController extends CBController {
         $job_offers = JobOffer::where(function($q){
             return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
         });
+        $q=$request->q;
+        if($q!=null){
+			$job_offers=$job_offers->where('id',$q)
+						 ->orWhere('phone',$q)
+						 ->orWhere('name','like','%'.$q.'%');
+		}
         if($request->from!=null && $request->to!=null){
             $job_offers= $job_offers->whereBetween('created_at',[$request->from,$request->to]);
         }else{
@@ -180,7 +192,7 @@ class AdminJobOffersController extends CBController {
         }
         // dd($job_offers->get(),$job_offers,$request);
         // $job_offers = JobOffer::all();
-        $job_offers = $job_offers->get();
+        $job_offers = $job_offers->latest()->get();
         // dd($categories_collection);
         return view('admin.job_offers.available',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
     }

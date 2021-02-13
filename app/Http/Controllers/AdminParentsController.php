@@ -37,7 +37,7 @@ class AdminParentsController extends CBController {
 		$page_title="All Parents";
 		// $tutors = Tutor::with('user')->with('city')->with('location')->where('city.name','Dhaka')->get();
 		$query=DB::table('parents')->join('users','parents.user_id','users.id')
-		->select('parents.id','parents.heard_from','users.name','users.email','users.phone');
+		->select('parents.id','parents.heard_from','users.name','users.email','users.phone','users.id as user_id');
 		// ->where("is_premium", 0);
 		if($q!=null){
 			$query=$query->where('parents.id','like','%'.$q.'%')

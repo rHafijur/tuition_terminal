@@ -300,20 +300,20 @@ $is_superadmin=false;
                             @endif
                         
             
-            <div class="input-group">
-                <select onchange="$('#form-limit-paging').submit()" name="limit" style="width: 56px;" class="form-control input-sm">
-                    @php
-                        $limit=request()->limit;
-                    @endphp
-                    <option value="10">10</option>
-                    <option @if($limit==20) selected @endif value="20">20</option>
-                    <option @if($limit==25) selected @endif value="25">25</option>
-                    <option @if($limit==50) selected @endif value="50">50</option>
-                    <option @if($limit==100) selected @endif value="100">100</option>
-                    <option @if($limit==200) selected @endif value="200">200</option>
-                </select>
-            </div>
-        </form>
+                            <div class="input-group">
+                                <select onchange="$('#form-limit-paging').submit()" name="limit" style="width: 56px;" class="form-control input-sm">
+                                    @php
+                                        $limit=request()->limit;
+                                    @endphp
+                                    <option value="10">10</option>
+                                    <option @if($limit==20) selected @endif value="20">20</option>
+                                    <option @if($limit==25) selected @endif value="25">25</option>
+                                    <option @if($limit==50) selected @endif value="50">50</option>
+                                    <option @if($limit==100) selected @endif value="100">100</option>
+                                    <option @if($limit==200) selected @endif value="200">200</option>
+                                </select>
+                            </div>
+                        </form>
         
         </div>
                 </div>
@@ -396,9 +396,13 @@ $is_superadmin=false;
                                 <a href="{{ action('AdminTutorsController@getEdit_info',[$tutor->id]) }}"><button class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>Edit Info
                                 </button></a>
-                                <a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}"><button class="btn btn-info btn-sm">
-                                    <i class="fa fa-envelope"></i>
-                                </button></a>
+                                <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
+                                    @csrf
+                                    <input type="hidden" id="ids" name="ids" value="[{{$tutor->user_id}}]">
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-envelope"></i>
+                                    </button>
+                                </form>
                                 @if ($is_superadmin)
                                 <form style="display: inline" action="{{ action('AdminTutorsController@postDelete') }}" method="POST">
                                     @csrf
@@ -437,7 +441,7 @@ $is_superadmin=false;
             </div>
         </div>
     </div>
-    <form id="bulk_sms_form" method="POST" action="{{ action('AdminTutorsController@postBulkSms') }}">
+    <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
         @csrf
         <input type="hidden" id="ids" name="ids">
     </form>

@@ -396,9 +396,13 @@ $is_superadmin=false;
                                 <a href="{{ action('AdminTutorsController@getEdit_info',[$tutor->id]) }}"><button class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>Edit Info
                                 </button></a>
-                                <a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}"><button class="btn btn-info btn-sm">
-                                    <i class="fa fa-envelope"></i>
-                                </button></a>
+                                <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
+                                    @csrf
+                                    <input type="hidden" id="ids" name="ids" value="[{{$tutor->user_id}}]">
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-envelope"></i>
+                                    </button>
+                                </form>
                                 @if ($is_superadmin)
                                 <form style="display: inline" action="{{ action('AdminTutorsController@postDelete') }}" method="POST">
                                     @csrf
@@ -437,7 +441,7 @@ $is_superadmin=false;
             </div>
         </div>
     </div>
-    <form id="bulk_sms_form" method="POST" action="{{ action('AdminTutorsController@postBulkSms') }}">
+    <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}">
         @csrf
         <input type="hidden" id="ids" name="ids">
     </form>

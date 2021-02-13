@@ -87,7 +87,7 @@ $is_superadmin=false;
                     <tbody>
                         @foreach ($parents as $parent)
                         <tr>
-                            <td><input class="selector" data-id="{{$parent->id}}" type="checkbox"></td>
+                            <td><input class="selector" data-id="{{$parent->user_id}}" type="checkbox"></td>
                             <td>{{$parent->id}}</td>
                             <td>{{$parent->name}}</td>
                             <td>{{$parent->email}}</td>
@@ -100,9 +100,13 @@ $is_superadmin=false;
                                 <a href="{{ action('AdminParentsController@getEdit',[$parent->id]) }}"><button class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </button></a>
-                                <a href="{{ action('AdminTutorsController@getSingle',[$parent->id]) }}"><button class="btn btn-info btn-sm">
-                                    <i class="fa fa-envelope"></i>
-                                </button></a>
+                                <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
+                                    @csrf
+                                    <input type="hidden" id="ids" name="ids" value="[{{$parent->user_id}}]">
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-envelope"></i>
+                                    </button>
+                                </form>
                                 @if ($is_superadmin)
                                 <form style="display: inline" action="{{ action('AdminParentsController@postDelete') }}" method="POST">
                                     @csrf
@@ -119,7 +123,7 @@ $is_superadmin=false;
             </div>
         </div>
     </div>
-    <form id="bulk_sms_form" method="POST" action="{{ action('AdminTutorsController@postBulkSms') }}">
+    <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}">
         @csrf
         <input type="hidden" id="ids" name="ids">
     </form>
