@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +14,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/import-tutor', 'AdminTutorsController@import');
 Route::get('/login', function () {
     return view('login');
 })->name('login');

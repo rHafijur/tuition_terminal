@@ -12,6 +12,8 @@ use App\Category;
 use App\Course;
 use App\City;
 use App\Institute;
+use App\Curriculum;
+use App\Location;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\SubjectResource;
 use App\Http\Resources\CourseResource;
@@ -19,7 +21,7 @@ use App\Http\Resources\CityResource;
 use Carbon\Carbon;
 
 class AdminTutorsController extends CBController {
-
+    
 	protected function institute_id($institute){
         if(is_numeric($institute)){
             return $institute;
@@ -32,6 +34,54 @@ class AdminTutorsController extends CBController {
             'title' => $institute,
             'type' => 'school'
         ])->id;
+    }
+	protected function curriculum_id($curriculum){
+        if(is_numeric($curriculum)){
+            return $curriculum;
+        }
+        $ins=Curriculum::where('title',$curriculum)->first();
+        if($ins != null){
+            return $ins->id;
+        }
+        return Curriculum::create([
+            'title' => $curriculum,
+        ])->id;
+    }
+	protected function city_id($city){
+        if(is_numeric($city)){
+            return $city;
+        }
+        $ins=City::where('name',$city)->first();
+        if($ins != null){
+            return $ins->id;
+        }
+        return City::create([
+            'country_id' => 1,
+            'name' => \ucfirst($city),
+        ])->id;
+    }
+	protected function location_id($location,$city){
+        if(is_numeric($location)){
+            return $location;
+        }
+        $city_id=$this->city_id($city);
+        $loc=Location::where('name',$location)->where('city_id',$city_id)->first();
+        if($loc != null){
+            return $loc->id;
+        }
+        return Location::create([
+            'city_id' => $city_id,
+            'name' => \ucfirst($location),
+        ])->id;
+    }
+
+    protected function prefered_location_ids($str,$city){
+        $ids=[];
+        $locs= \explode(',',$str);
+        foreach($locs as $loc){
+            $ids[]=$this->location_id($loc,$city);
+        }
+        return $ids;
     }
 
     public function cbInit()
@@ -438,7 +488,77 @@ class AdminTutorsController extends CBController {
             // 'tutor_id'  => 1
 		]);
 		return redirect()->back()->with('success','New Tutor Account has been registered successfully');
-	}
+    }
+    public function import(){
+        $file = fopen(public_path('tutors.csv'),'r');
+        $i=0;
+        $err_count=0;
+        while (!feof($file)) {
+            $line = fgetcsv($file);            
+            if(++$i<=2){
+                continue;
+            }
+            try{
+                $user = User::create([
+                    'name' => $line[0],
+                    'email' => $line[3],
+                    'phone' => $line[2],
+                    'sms_otp' => rand(99999,999999),
+                    'cb_roles_id' => 3,
+                    'phone_verified_at' => now(),
+                    'email_verified_at' => now(),
+                    'password' => Hash::make("Tuition123#"),
+                    'channel' => 'System'
+                ]);
+                $tutor=Tutor::create([
+                    'user_id'  => $user->id,
+                    'location_id' => $this->location_id($line[10],$line[12]),
+                    'city_id' => $this->city_id($line[12]),
+                ]);
+                $tutor->save_tutor_id();
+                TutorPersonalInformation::create([
+                    'tutor_id'  => $tutor->id,
+                    'gender' => strtolower($line[1]),
+                    'id_number' => $line[16],
+                    'fathers_phone' => $line[15],
+                    'emergency_phone' => $line[19],
+                    'facebook_profile' => $line[18],
+                    'location_id' => $this->location_id($line[10],$line[12]),
+                    'city_id' => $this->city_id($line[12]),
+                ]);
+                $tutor->prefered_locations()->sync($this->prefered_location_ids($line[11],$line[12]));
+                if(isset($line[14]) && $line[14]!=null){
+                    $tutor->tutor_degrees()->create([
+                        "degree_id" => 6,
+                        "institute_id" => $this->institute_id($line[14]),
+                        "group_or_major" => $line[5],
+                        "curriculum_id" => $this->curriculum_id($line[4]),
+                        ]);
+                }
+                if(isset($line[13]) && $line[13]!=null){
+                    $tutor->tutor_degrees()->create([
+                        "degree_id" => 5,
+                        "institute_id" => $this->institute_id($line[13]),
+                    ]);
+                }
+                if(isset($line[8]) && $line[8]!=null){
+                    $tutor->tutor_degrees()->create([
+                        "degree_id" => 4,
+                        "institute_id" => $this->institute_id($line[8]),
+                        'department' => $line[6],
+                        'university_type' => $line[9],
+                        'year_or_semester' => $line[7],
+                    ]);
+                }
+            }catch(\Exception $e){
+                $err_count+=1;
+            }
+            // if($i>9){
+            //     break;
+            // }
+        }
+        echo $err_count;
+    }
 	public function getEdit_info($id){
 		$page_title="Edit Tutor Info";
         $tutor=Tutor::findOrFail($id);
