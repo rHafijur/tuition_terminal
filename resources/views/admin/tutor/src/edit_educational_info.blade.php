@@ -277,7 +277,21 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Department</label>
-                      <input required type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control">
+                      {{-- <input required type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control"> --}}
+                      <select required name="department[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Study Type</option>
+                        @foreach (App\Department::OrderBy('title','asc')->get() as $department)
+                        @php
+                            $selected="";
+                            if($bachelors!=null && $bachelors->department==$department->title){
+                                $selected="selected";
+                            }else{
+                                $selected="";
+                            }
+                        @endphp 
+                          <option {{$selected}} value="{{$department->title}}" data-select2-id="{{$department->title}}">{{$department->title}}</option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -379,7 +393,21 @@
                   <div class="col">
                     <div class="form-group">
                       <label>Department</label>
-                      <input required type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control">
+                      {{-- <input required type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control"> --}}
+                      <select required name="department[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Study Type</option>
+                        @foreach (App\Department::OrderBy('title','asc')->get() as $department)
+                        @php
+                            $selected="";
+                            if($masters!=null && $masters->department==$department->title){
+                                $selected="selected";
+                            }else{
+                                $selected="";
+                            }
+                        @endphp 
+                          <option {{$selected}} value="{{$department->title}}" data-select2-id="{{$department->title}}">{{$department->title}}</option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
                 </div>

@@ -138,7 +138,21 @@ $is_superadmin=false;
                         </div>
                         <div class="form-group col">
                             <label for="tutor_department">Depertment</label>
-                            <input class="form-control required-input" name="tutor_department" value="{{$request->tutor_department}}" id="tutor_department" type="text">
+                            {{-- <input class="form-control required-input" name="tutor_department" value="{{$request->tutor_department}}" id="tutor_department" type="text"> --}}
+                            <select required name="tutor_department"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                                <option value="">Select Study Type</option>
+                                @foreach (App\Department::OrderBy('title','asc')->get() as $department)
+                                @php
+                                    $selected="";
+                                    if($request->tutor_department!=null && $request->tutor_department==$department->title){
+                                        $selected="selected";
+                                    }else{
+                                        $selected="";
+                                    }
+                                @endphp 
+                                  <option {{$selected}} value="{{$department->title}}" data-select2-id="{{$department->title}}">{{$department->title}}</option>
+                                @endforeach
+                              </select>
                         </div>
                         <div class="form-group col">
                             <label for="category_id">Category</label>

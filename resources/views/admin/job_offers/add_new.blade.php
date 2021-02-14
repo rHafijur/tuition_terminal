@@ -161,7 +161,13 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_department">Depertment</label>
-                    <input class="form-control" name="tutor_department" id="tutor_department" type="text">
+                    {{-- <input class="form-control" name="tutor_department" id="tutor_department" type="text"> --}}
+                    <select name="tutor_department"   class="select2 select2-hidden-accessible form-control" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Study Type</option>
+                        @foreach (App\Department::OrderBy('title','asc')->get() as $department)
+                          <option value="{{$department->title}}" data-select2-id="{{$department->title}}">{{$department->title}}</option>
+                        @endforeach
+                      </select>
                     <div class="invalid-feedback">
                         Depertment is Required!
                     </div>

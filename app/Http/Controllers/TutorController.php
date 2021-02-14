@@ -58,6 +58,7 @@ class TutorController extends Controller
         // $courses_collection=null;
         // $city_collection=null;
         $tutor=auth()->user()->tutor;
+        // dd($tutor);
         $categories=Category::all();
         $categories_collection=CategoryResource::collection($categories);
         $courses_collection=CourseResource::collection(Course::all());
@@ -91,7 +92,7 @@ class TutorController extends Controller
             'tutor_id'  => $tutor->id
             // 'tutor_id'  => 1
         ]);
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
         $user->sendOtpSms();
         auth()->attempt([
             'email' => $request->email,
