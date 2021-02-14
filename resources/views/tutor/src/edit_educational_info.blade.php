@@ -76,6 +76,9 @@
                           <option @if($ssc!=null && $ssc->education_board=="Dinajpur") selected @endif value="Dinajpur">Dinajpur</option>
                           <option @if($ssc!=null && $ssc->education_board=="Technical") selected @endif value="Technical">Technical</option>
                           <option @if($ssc!=null && $ssc->education_board=="Madrasah") selected @endif value="Madrasah">Madrasah</option>
+                          <option @if($ssc!=null && $ssc->education_board=="Cambridge") selected @endif value="Cambridge">Cambridge</option>
+                          <option @if($ssc!=null && $ssc->education_board=="Ed-excel") selected @endif value="Ed-excel">Ed-excel</option>
+                          <option @if($ssc!=null && $ssc->education_board=="IB") selected @endif value="IB">IB</option>
                         </select>
                     </div>
                   </div>
@@ -180,6 +183,9 @@
                           <option @if($hsc!=null && $hsc->education_board=="Dinajpur") selected @endif value="Dinajpur">Dinajpur</option>
                           <option @if($hsc!=null && $hsc->education_board=="Technical") selected @endif value="Technical">Technical</option>
                           <option @if($hsc!=null && $hsc->education_board=="Madrasah") selected @endif value="Madrasah">Madrasah</option>
+                          <option @if($hsc!=null && $hsc->education_board=="Cambridge") selected @endif value="Cambridge">Cambridge</option>
+                          <option @if($hsc!=null && $hsc->education_board=="Ed-excel") selected @endif value="Ed-excel">Ed-excel</option>
+                          <option @if($hsc!=null && $hsc->education_board=="IB") selected @endif value="IB">IB</option>
                         </select>
                     </div>
                   </div>
