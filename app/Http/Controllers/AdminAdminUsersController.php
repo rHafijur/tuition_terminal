@@ -18,18 +18,18 @@ class AdminAdminUsersController extends CBController {
         $this->addText("Phone","phone")->strLimit(150)->maxLength(255);
         $this->addRadio("Role","cb_roles_id")->options([
             "1"  => "Super Admin",
-            "2" => "Admin"
+            "2" => "Employee"
         ]);
 		
-        $this->hookBeforeInsert(function($data) {
-            // Todo: code here
-            // $data['cb_roles_id'] = 2;
-            $data['password'] = Hash::make($data['password']);
-            // dd($data);
+        // $this->hookBeforeInsert(function($data) {
+        //     // Todo: code here
+        //     // $data['cb_roles_id'] = 2;
+        //     $data['password'] = Hash::make($data['password']);
+        //     // dd($data);
     
-            // Don't forget to return back
-            return $data;
-        });
+        //     // Don't forget to return back
+        //     return $data;
+        // });
         $this->hookIndexQuery(function($query) {
             $query->whereIn("cb_roles_id", [1,2]);
     
