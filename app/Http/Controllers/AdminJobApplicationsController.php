@@ -13,103 +13,168 @@ class AdminJobApplicationsController extends CBController {
 
     public function cbInit()
     {
+		$this->middleware('admin');
+		
         $this->setTable("job_applications");
         $this->setPermalink("taken_offers");
         $this->setPageTitle("Taken Offers");
 	}
 	public function getIndex(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers";
 		$stage="";
-		$applications=JobApplication::whereNotNull('taken_by_id')->whereNull('current_stage')->get();
+		$applications=$query->whereNull('current_stage')->get();
 		// dd($applications);
-		$waiting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'waiting')->get()->count();
-		$meeting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'meet')->get()->count();
-		$trial_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'trial')->get()->count();
-		$confirm_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'confirm')->get()->count();
-		$revenue=JobApplication::whereNotNull('taken_by_id')->sum('net_receivable_amount');
+		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
+		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
+		$trial_cnt=$query->where("current_stage",'trial')->get()->count();
+		$confirm_cnt=$query->where("current_stage",'confirm')->get()->count();
+		$revenue=$query->sum('net_receivable_amount');
 		// dd($waiting_cnt,$meeting_cnt,$trial_cnt,$confirm_cnt,$revenue);
 		return view('admin.taken_offers.dashboard',\compact('stage','page_title','applications','waiting_cnt','meeting_cnt','trial_cnt','confirm_cnt','revenue'));
 	}
 	public function getWaiting(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Waiting";
 		$stage="waiting";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','waiting')->get();
+		$applications=$query->where('current_stage','waiting')->get();
 		// dd($applications);
-		$waiting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'waiting')->get()->count();
-		$new_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'waiting')->whereDate('waiting_stage', Carbon::today())->get()->count();
-		$today_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'waiting')->whereDate('waiting_date', Carbon::today())->get()->count();
+		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
+		$new_cnt=$query->where("current_stage",'waiting')->whereDate('waiting_stage', Carbon::today())->get()->count();
+		$today_cnt=$query->where("current_stage",'waiting')->whereDate('waiting_date', Carbon::today())->get()->count();
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.waiting',\compact('stage','page_title','applications','waiting_cnt','new_cnt','today_cnt'));
 	}
 	public function getMeet(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Meeting";
 		$stage="meet";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','meet')->get();
+		$applications=$query->where('current_stage','meet')->get();
 		// dd($applications);
-		$meeting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'meet')->get()->count();
-		$new_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'meet')->whereDate('meeting_stage', Carbon::today())->get()->count();
-		$today_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'meet')->whereDate('meeting_date', Carbon::today())->get()->count();
+		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
+		$new_cnt=$query->where("current_stage",'meet')->whereDate('meeting_stage', Carbon::today())->get()->count();
+		$today_cnt=$query->where("current_stage",'meet')->whereDate('meeting_date', Carbon::today())->get()->count();
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.meeting',\compact('stage','page_title','applications','meeting_cnt','new_cnt','today_cnt'));
 	}
 	public function getTrial(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Trial";
 		$stage="trial";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','trial')->get();
+		$applications=$query->where('current_stage','trial')->get();
 		// dd($applications);
-		$trial_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'trial')->get()->count();
-		$new_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'trial')->whereDate('trial_stage', Carbon::today())->get()->count();
-		$today_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'trial')->whereDate('trial_date', Carbon::today())->get()->count();
+		$trial_cnt=$query->where("current_stage",'trial')->get()->count();
+		$new_cnt=$query->where("current_stage",'trial')->whereDate('trial_stage', Carbon::today())->get()->count();
+		$today_cnt=$query->where("current_stage",'trial')->whereDate('trial_date', Carbon::today())->get()->count();
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.trial',\compact('stage','page_title','applications','trial_cnt','new_cnt','today_cnt'));
 	}
 	public function getConfirm(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Confirm";
 		$stage="confirm";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','confirm')->get();
+		$applications=$query->where('current_stage','confirm')->get();
 		// dd($applications);
-		$confirm_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'confirm')->get()->count();
-		$new_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'confirm')->whereDate('confirm_stage', Carbon::today())->get()->count();
-		$today_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'confirm')->whereDate('confirm_date', Carbon::today())->get()->count();
-		$revenue=JobApplication::whereNotNull('taken_by_id')->sum('net_receivable_amount');
+		$confirm_cnt=$query->where("current_stage",'confirm')->get()->count();
+		$new_cnt=$query->where("current_stage",'confirm')->whereDate('confirm_stage', Carbon::today())->get()->count();
+		$today_cnt=$query->where("current_stage",'confirm')->whereDate('confirm_date', Carbon::today())->get()->count();
+		$revenue=$query->sum('net_receivable_amount');
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.confirm',\compact('stage','page_title','applications','confirm_cnt','new_cnt','today_cnt','revenue'));
 	}
 	public function getDue(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Due";
 		$stage="due";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get();
+		$applications=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get();
 		// dd($applications);
-		$due_cnt=JobApplication::whereNotNull('taken_by_id')->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get()->count();
-		$new_cnt=JobApplication::whereNotNull('taken_by_id')->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->whereDate('confirm_stage', Carbon::today())->get()->count();
-		$today_cnt=JobApplication::whereNotNull('taken_by_id')->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->whereDate('due_date', Carbon::today())->get()->count();
-		$revenue=JobApplication::whereNotNull('taken_by_id')->sum('net_receivable_amount');
+		$due_cnt=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get()->count();
+		$new_cnt=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->whereDate('confirm_stage', Carbon::today())->get()->count();
+		$today_cnt=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->whereDate('due_date', Carbon::today())->get()->count();
+		$revenue=$query->sum('net_receivable_amount');
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.due',\compact('stage','page_title','applications','due_cnt','new_cnt','today_cnt','revenue'));
 	}
 	public function getPayment(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers";
 		$stage="payment";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','payment')->get();
+		$applications=$query->where('current_stage','payment')->get();
 		// dd($applications);
-		$waiting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'waiting')->get()->count();
-		$meeting_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'meet')->get()->count();
-		$trial_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'trial')->get()->count();
-		$confirm_cnt=JobApplication::whereNotNull('taken_by_id')->where("current_stage",'confirm')->get()->count();
-		$revenue=JobApplication::whereNotNull('taken_by_id')->sum('net_receivable_amount');
+		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
+		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
+		$trial_cnt=$query->where("current_stage",'trial')->get()->count();
+		$confirm_cnt=$query->where("current_stage",'confirm')->get()->count();
+		$revenue=$query->sum('net_receivable_amount');
 		// dd($waiting_cnt,$meeting_cnt,$trial_cnt,$confirm_cnt,$revenue);
 		return view('admin.taken_offers.payment',\compact('stage','page_title','applications','waiting_cnt','meeting_cnt','trial_cnt','confirm_cnt','revenue'));
 	}
 	public function getRepost(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Repost";
 		$stage="repost";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','repost')->get();
+		$applications=$query->where('current_stage','repost')->get();
 		return view('admin.taken_offers.repost',\compact('stage','page_title','applications'));
 	}
 	public function getCancel(){
+		$user=auth()->user();
+		$role= $user->cb_roles_id;
+		if($role==1){
+			$query=JobApplication::whereNotNull('taken_by_id');
+		}else{
+			$query=JobApplication::where('taken_by_id',$user->id);
+		}
 		$page_title="Taken Offers - Cancel";
 		$stage="cancel";
-		$applications=JobApplication::whereNotNull('taken_by_id')->where('current_stage','cancel')->get();
+		$applications=$query->where('current_stage','cancel')->get();
 		return view('admin.taken_offers.cancel',\compact('stage','page_title','applications'));
 	}
 	public function postSetWaiting(Request $request){

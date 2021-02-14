@@ -10,6 +10,8 @@ class AdminCourseSubjectsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("course_subjects");
         $this->setPermalink("course_subjects");
         $this->setPageTitle("Course Subjects");

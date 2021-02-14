@@ -7,6 +7,8 @@ class AdminLocationsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("locations");
         $this->setPermalink("locations");
         $this->setPageTitle("Locations");

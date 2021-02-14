@@ -8,6 +8,8 @@ class AdminPremiumMembershipRequestsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("premium_membership_requests");
         $this->setPermalink("premium_membership_requests");
         $this->setPageTitle("Premium Membership_requests");

@@ -7,6 +7,8 @@ class AdminCitiesController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("cities");
         $this->setPermalink("cities");
         $this->setPageTitle("Cities");

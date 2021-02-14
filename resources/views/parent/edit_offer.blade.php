@@ -66,7 +66,7 @@
                                     }
                                 }
                             @endphp
-                            <option {{$isSelected}} value="{{$cs->id}}">{{$cs->course->title}}</option>
+                            <option {{$isSelected}} value="{{$cs->id}}">{{$cs->subject->title}}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback">

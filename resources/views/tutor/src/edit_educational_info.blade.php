@@ -283,8 +283,8 @@
                     <div class="form-group">
                       <label>Department</label>
                       {{-- <input required type="text" name="department[4]" value="{{$bachelors!=null?$bachelors->department:''}}"  class="form-control"> --}}
-                      <select required name="department[4]"   class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                        <option value="">Select Study Type</option>
+                      <select required name="department[4]"   class="select2 form-control select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Department</option>
                         @foreach (App\Department::OrderBy('title','asc')->get() as $department)
                         @php
                             $selected="";
@@ -399,8 +399,8 @@
                     <div class="form-group">
                       <label>Department</label>
                       {{-- <input required type="text" name="department[3]" value="{{$masters!=null?$masters->department:''}}"  class="form-control"> --}}
-                      <select required name="department[3]"   class="select2_masters select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                        <option value="">Select Study Type</option>
+                      <select required name="department[3]"   class="select2_masters form-control select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Department</option>
                         @foreach (App\Department::OrderBy('title','asc')->get() as $department)
                         @php
                             $selected="";

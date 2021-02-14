@@ -7,6 +7,8 @@ class AdminDepartmentsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("departments");
         $this->setPermalink("departments");
         $this->setPageTitle("Departments");

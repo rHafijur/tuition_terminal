@@ -7,6 +7,8 @@ class AdminStudyTypesController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("study_types");
         $this->setPermalink("study_types");
         $this->setPageTitle("Study Types");

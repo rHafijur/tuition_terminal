@@ -7,6 +7,8 @@ class AdminCountriesController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');     
+    
         $this->setTable("countries");
         $this->setPermalink("countries");
         $this->setPageTitle("Countries");

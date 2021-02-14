@@ -25,6 +25,8 @@ class AdminJobOffersController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("job_offers");
         $this->setPermalink("job_offers");
         $this->setPageTitle("Job Offers");

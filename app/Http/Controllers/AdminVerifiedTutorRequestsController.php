@@ -9,6 +9,8 @@ class AdminVerifiedTutorRequestsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("verified_tutor_requests");
         $this->setPermalink("verified_tutor_requests");
         $this->setPageTitle("Verified Tutor Requests");

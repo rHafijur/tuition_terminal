@@ -86,6 +86,8 @@ class AdminTutorsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("tutors");
         $this->setPermalink("tutors");
         $this->setPageTitle("Tutors");

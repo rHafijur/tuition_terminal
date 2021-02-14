@@ -8,6 +8,8 @@ class AdminFeaturedTutorRequestsController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("featured_tutor_requests");
         $this->setPermalink("featured_tutor_requests");
         $this->setPageTitle("Featured Tutor_requests");

@@ -14,6 +14,8 @@ class AdminParentsController extends CBController {
 
     public function cbInit()
     {
+		$this->middleware('admin');
+		
         $this->setTable("parents");
         $this->setPermalink("parents");
         $this->setPageTitle("Parents");

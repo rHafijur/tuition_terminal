@@ -8,6 +8,8 @@ class AdminPaymentsController extends CBController {
 
     public function cbInit()
     {
+		$this->middleware('admin');
+		
         $this->setTable("payments");
         $this->setPermalink("payments");
         $this->setPageTitle("Payments");

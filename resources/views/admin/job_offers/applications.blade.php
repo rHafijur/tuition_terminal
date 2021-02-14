@@ -387,7 +387,6 @@
             for(var loc of city.locations){
                 html+=`<option value="`+loc.id+`" data-select2-id="`+loc.id+`">`+loc.name+`</option>`;
             }
-            console.log(html);
             $("#location_id").html(html);
             $("#location_id").select2();
             $("#location_id").select2();
@@ -399,12 +398,11 @@
             for(var loc of city.locations){
                 html+=`<option value="`+loc.id+`" data-select2-id="`+loc.id+`">`+loc.name+`</option>`;
             }
-            console.log(html);
             $("#tutor_location_id").html(html);
             $("#tutor_location_id").select2();
             $("#tutor_location_id").select2();
-
         }
+            $(".select2").select2();
 
 </script>
     

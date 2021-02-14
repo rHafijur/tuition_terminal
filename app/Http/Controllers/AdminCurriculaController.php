@@ -7,6 +7,8 @@ class AdminCurriculaController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+        
         $this->setTable("curricula");
         $this->setPermalink("curricula");
         $this->setPageTitle("Curricula");

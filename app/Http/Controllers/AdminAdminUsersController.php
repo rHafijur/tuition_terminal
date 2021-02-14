@@ -8,6 +8,9 @@ class AdminAdminUsersController extends CBController {
 
     public function cbInit()
     {
+        $this->middleware('admin');
+
+        
         $this->setTable("users");
         $this->setPermalink("admin_users");
         $this->setPageTitle("Admin Users");
