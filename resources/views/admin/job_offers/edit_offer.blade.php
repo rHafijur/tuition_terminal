@@ -40,9 +40,11 @@
                         @php
                             $ocs=$offer->course_subjects;
                         @endphp
+                        @if ($offer->category!=null)
                         @foreach ($offer->category->courses as $course)
                             <option @if($course->id==$offer->course_id) selected @endif value="{{$course->id}}">{{$course->title}}</option>
                         @endforeach
+                        @endif
                     </select>
                     <div class="invalid-feedback">
                         Course is Required!
@@ -54,6 +56,7 @@
                         $ocs=$offer->course_subjects;
                     @endphp
                     <select class="form-control select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        @if ($offer->course!=null)
                         @foreach ($offer->course->course_subjects as $cs)
                             @php
                                 $isSelected="";
@@ -66,6 +69,7 @@
                             @endphp
                             <option {{$isSelected}} value="{{$cs->id}}">{{$cs->subject->title}}</option>
                         @endforeach
+                        @endif
                     </select>
                     <div class="invalid-feedback">
                         Subjects are Required!

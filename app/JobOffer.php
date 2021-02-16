@@ -167,12 +167,11 @@ class JobOffer extends Model
                 }
             });
         }
-        if($offer->category_id=!null){
+        if($offer->category_id!=null){
             $tutors=$tutors->whereHas('categories',function($q){
                 return $q->where('id',$this->category_id);
             });
         }
-
         $tutors= $tutors->whereHas('tutor_degrees',function($q){
             if($this->group!=null){
                 $q=$q->where(function($q){
@@ -317,7 +316,11 @@ class JobOffer extends Model
                     }
                 }
             }
-            $ocs_percent=($ocs_match_found / $ocs_count) * 100;
+            if($ocs_count>0){
+                $ocs_percent=($ocs_match_found / $ocs_count) * 100;
+            }else{
+                $ocs_percent=0;
+            }
             $parcent+= (25/100) * $ocs_percent;
             // if($personal!=null && $personal->gender==$offer->student_gender){
             //     $parcent+=5;
