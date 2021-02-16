@@ -323,8 +323,16 @@
                             <td>
                                 <a href="{{cb()->getAdminUrl("job_offers/detail/".$offer->id)}}" target="_blank">{{$offer->id}}</a>
                             </td>
-                            <td>{{$offer->category->title}}</td>
-                            <td>{{$offer->course->title}}</td>
+                            <td>
+                                @if ($offer->category!=null)
+                                {{$offer->category->title}}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($offer->course!=null)
+                                {{$offer->course->title}}
+                                @endif
+                            </td>
                             <td>{{$offer->location->name}}, {{$offer->city->name}}</td>
                             <td>{{$offer->min_salary}} - {{$offer->max_salary}}</td>
                             <td>{{$offer->phone}}</td>
