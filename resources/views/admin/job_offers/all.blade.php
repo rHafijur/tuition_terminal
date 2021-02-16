@@ -394,8 +394,8 @@
         </div>
       </div>
     
-      <div class="modal fade" id="searchTutorModal" tabindex="-1" aria-labelledby="searchTutorModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      <div class="modal fade" id="searchTutorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="searchTutorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="searchTutorModalLabel">Search Tutors</h5>

@@ -137,9 +137,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_university_id">University</label>
-                    <select class="form-control required-input select2 select2-hidden-accessible" name="tutor_university_id" id="tutor_university_id" data-placeholder="Select a University" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                            <option value="">Select University</option>
+                    <label for="tutor_university_id">Universities</label>
+                    <select class="form-control required-input select2 select2-hidden-accessible" name="tutor_university_ids[]" multiple="" id="tutor_university_id" data-placeholder="Select a University" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                            <option value="">Select Universities</option>
                         @foreach ($institutes as $institute)
                             <option value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
                         @endforeach
@@ -161,16 +161,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_department">Depertment</label>
+                    <label for="tutor_department">Departments</label>
                     {{-- <input class="form-control required-input" name="tutor_department" id="tutor_department" type="text"> --}}
-                    <select name="tutor_department"   class="select2 select2-hidden-accessible form-control" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                        <option value="">Select Study Type</option>
+                    <select name="tutor_department_ids[]"   class="select2 select2-hidden-accessible form-control required-input" data-placeholder="Select a State" multiple="" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Departments</option>
                         @foreach (App\Department::OrderBy('title','asc')->get() as $department)
-                          <option value="{{$department->title}}" data-select2-id="{{$department->title}}">{{$department->title}}</option>
+                          <option value="{{$department->id}}" data-select2-id="{{$department->id}}">{{$department->title}}</option>
                         @endforeach
                       </select>
                     <div class="invalid-feedback">
                         Depertment is Required!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="year_or_semester">Year or Semester</label>
+                    <input type="text" id="year_or_semester" name="year_or_semester" class="form-control required-input">
+                    <div class="invalid-feedback">
+                        Year or Semester is Required!
                     </div>
                 </div>
                 <div class="form-group">
@@ -210,11 +217,43 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_study_type_id">Study Type</label>
-                    <select class="form-control required-input" name="tutor_study_type_id" id="tutor_study_type_id">
-                        <option value="">Pleae Select a Study Type</option>
+                    <label>Board </label>
+                    <select required name="board" class="form-control required-input">
+                    <option value="">Select Board</option>
+                    <option value="Barisal">Barisal</option>
+                    <option value="Chittagong">Chittagong</option>
+                    <option value="Comilla">Comilla</option>
+                    <option value="Dhaka">Dhaka</option>
+                    <option value="Jessore">Jessore</option>
+                    <option value="Mymensingh">Mymensingh</option>
+                    <option value="Rajshahi">Rajshahi</option>
+                    <option value="Sylhet">Sylhet</option>
+                    <option value="Dinajpur">Dinajpur</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Madrasah">Madrasah</option>
+                    <option value="Cambridge">Cambridge</option>
+                    <option value="Ed-excel">Ed-excel</option>
+                    <option value="IB">IB</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="curriculum_id">Curriculum</label>
+                    <select class="form-control required-input" name="curriculum_id" id="curriculum_id">
+                        <option value="">Select Curriculum</option>
+                        @foreach (App\Curriculum::all() as $curriculum)
+                        <option value="{{$curriculum->id}}">{{$curriculum->title}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        Curriculum is Required!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tutor_study_type_id">Study Types</label>
+                    <select class="select2 select2-hidden-accessible form-control required-input" data-placeholder="Select a State" multiple="" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true" name="tutor_study_type_ids[]" multiple="" id="tutor_study_type_id">
+                        <option value="">Select a Study Type</option>
                         @foreach (App\StudyType::all() as $study_type)
-                        <option value="{{$study_type->id}}">{{$study_type->title}}</option>
+                        <option value="{{$study_type->id}}" data-select2-id="{{$study_type->id}}">{{$study_type->title}}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback">
@@ -223,7 +262,8 @@
                 </div>
                 <div class="form-group">
                     <label for="tutor_gender">Tutor's Gender</label>
-                    <select class="form-control required-input" name="tutor_gender" id="tutor_gender">
+                    <select class="form-control" name="tutor_gender" id="tutor_gender">
+                        <option value="">Any</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
@@ -513,6 +553,7 @@
 <script>
     $("#course_subject_ids").select2();
     // $("#city_id").select2();
+    $(".select2").select2();
     $(".select2").select2();
 
 </script>

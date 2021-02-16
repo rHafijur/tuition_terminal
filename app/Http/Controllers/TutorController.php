@@ -236,6 +236,7 @@ class TutorController extends Controller
         $tutor = auth()->user()->tutor;
         $tutor->tutor_personal_information()->update([
         'city_id' => $request->city,
+        'religion_id'=>$request->religion_id,
         'location_id' => $request->location,
         'gender' => $request->gender,
         'additional_phone' => $request->additional_phone,
@@ -376,6 +377,7 @@ class TutorController extends Controller
         $tutor = auth()->user()->tutor;
         $tutor->tutor_personal_information()->update([
         'city_id' => $request->city,
+        'religion_id'=>$request->religion_id,
         'location_id' => $request->location,
         'gender' => $request->gender,
         'additional_phone' => $request->additional_phone,

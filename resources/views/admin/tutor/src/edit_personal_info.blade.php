@@ -72,6 +72,15 @@
                 <textarea name="full_address" class="form-control" cols="30" rows="2">{{$personal_info->full_address}}</textarea>
             </div>
             <div class="form-group">
+              <label for="religion_id">Religion</label>
+              <select class="form-control" name="religion_id" id="religion_id">
+                  <option value="">Pleae Select a Religion</option>
+                  @foreach (App\Religion::all() as $religion)
+                  <option @if($personal_info->religion_id==$religion->id) selected @endif value="{{$religion->id}}">{{$religion->title}}</option>
+                  @endforeach
+              </select>
+            </div>
+            <div class="form-group">
                 <div class="col">
                     <div  class="form-group">
                         <label>Nationality</label>

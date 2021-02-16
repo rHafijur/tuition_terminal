@@ -158,11 +158,23 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_university_id">University</label>
-                    <select class="form-control select2 select2-hidden-accessible" name="tutor_university_id" id="tutor_university_id" data-placeholder="Select a University" data-select2-id="" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                            <option value="">Select University</option>
+                    <label for="tutor_university_id">Universities</label>
+                    @php
+                        $tus=$offer->tutor_universities;
+                    @endphp
+                    <select class="form-control select2 select2-hidden-accessible" name="tutor_university_ids[]" multiple="" id="tutor_university_id" data-placeholder="Select a University" data-select2-id="" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                            <option value="">Select Universities</option>
                         @foreach ($institutes as $institute)
-                            <option @if($offer->tutor_university_id==$institute->id) selected @endif value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
+                        @php
+                            $isSelected="";
+                            foreach ($tus as $tu) {
+                                if($tu->id==$institute->id){
+                                    $isSelected="selected";
+                                break;
+                                }
+                            }
+                        @endphp
+                            <option {{$isSelected}} value="{{$institute->id}}" data-select2-id="{{$institute->id}}">{{$institute->title}}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback">
@@ -182,10 +194,34 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_department">Depertment</label>
-                    <input class="form-control" name="tutor_department" value="{{$offer->tutor_department}}" id="tutor_department" type="text">
+                    <label for="tutor_department">Departments</label>
+                    @php
+                        $tds=$offer->tutor_departments;
+                    @endphp
+                    <select name="tutor_department_ids[]"   class="select2 select2-hidden-accessible form-control" data-placeholder="Select a State" multiple="" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                        <option value="">Select Departments</option>
+                        @foreach (App\Department::OrderBy('title','asc')->get() as $department)
+                        @php
+                            $isSelected="";
+                            foreach ($tds as $td) {
+                                if($td->id==$department->id){
+                                    $isSelected="selected";
+                                break;
+                                }
+                            }
+                        @endphp
+                          <option {{$isSelected}} value="{{$department->id}}" data-select2-id="{{$department->id}}">{{$department->title}}</option>
+                        @endforeach
+                      </select>
                     <div class="invalid-feedback">
                         Depertment is Required!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="year_or_semester">Year or Semester</label>
+                    <input type="text" id="year_or_semester" value="{{$offer->year_or_semester}}" name="year_or_semester" class="form-control">
+                    <div class="invalid-feedback">
+                        Year or Semester is Required!
                     </div>
                 </div>
                 <div class="form-group">
@@ -225,11 +261,55 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tutor_study_type_id">Study Type</label>
-                    <select class="form-control" name="tutor_study_type_id" id="tutor_study_type_id">
-                        <option value="">Pleae Select a Study Type</option>
+                    <label>Board </label>
+                    <select required name="board" class="form-control">
+                      <option value="">Select Board</option>
+                      <option @if($offer->board=="Barisal") selected @endif value="Barisal">Barisal</option>
+                      <option @if($offer->board=="Chittagong") selected @endif value="Chittagong">Chittagong</option>
+                      <option @if($offer->board=="Comilla") selected @endif value="Comilla">Comilla</option>
+                      <option @if($offer->board=="Dhaka") selected @endif value="Dhaka">Dhaka</option>
+                      <option @if($offer->board=="Jessore") selected @endif value="Jessore">Jessore</option>
+                      <option @if($offer->board=="Mymensingh") selected @endif value="Mymensingh">Mymensingh</option>
+                      <option @if($offer->board=="Rajshahi") selected @endif value="Rajshahi">Rajshahi</option>
+                      <option @if($offer->board=="Sylhet") selected @endif value="Sylhet">Sylhet</option>
+                      <option @if($offer->board=="Dinajpur") selected @endif value="Dinajpur">Dinajpur</option>
+                      <option @if($offer->board=="Technical") selected @endif value="Technical">Technical</option>
+                      <option @if($offer->board=="Madrasah") selected @endif value="Madrasah">Madrasah</option>
+                      <option @if($offer->board=="Cambridge") selected @endif value="Cambridge">Cambridge</option>
+                      <option @if($offer->board=="Ed-excel") selected @endif value="Ed-excel">Ed-excel</option>
+                      <option @if($offer->board=="IB") selected @endif value="IB">IB</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="curriculum_id">Curriculum</label>
+                    <select class="form-control" name="curriculum_id" id="curriculum_id">
+                        <option value="">Select Curriculum</option>
+                        @foreach (App\Curriculum::all() as $curriculum)
+                        <option @if($offer->curriculum_id==$curriculum->id) selected @endif value="{{$curriculum->id}}">{{$curriculum->title}}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        Curriculum is Required!
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tutor_study_type_id">Study Types</label>
+                    <select class="select2 select2-hidden-accessible form-control" data-placeholder="Select a State" multiple="" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true" name="tutor_study_type_ids[]" multiple="" id="tutor_study_type_id">
+                        <option value="">Select a Study Type</option>
+                        @php
+                            $tsts=$offer->tutor_study_types;
+                        @endphp
                         @foreach (App\StudyType::all() as $study_type)
-                        <option @if($offer->tutor_study_type_id==$study_type->id) selected @endif value="{{$study_type->id}}">{{$study_type->title}}</option>
+                        @php
+                            $isSelected="";
+                            foreach ($tsts as $tst) {
+                                if($tst->id==$study_type->id){
+                                    $isSelected="selected";
+                                break;
+                                }
+                            }
+                        @endphp
+                        <option {{$isSelected}} value="{{$study_type->id}}" data-select2-id="{{$study_type->id}}">{{$study_type->title}}</option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback">
@@ -239,7 +319,7 @@
                 <div class="form-group">
                     <label for="tutor_gender">Tutor's Gender</label>
                     <select class="form-control" name="tutor_gender" id="tutor_gender">
-                        <option value="">Select Gender</option>
+                        <option value="">Any</option>
                         <option @if($offer->tutor_gender=='male') selected @endif value="male">Male</option>
                         <option @if($offer->tutor_gender=='female') selected @endif value="female">Female</option>
                     </select>

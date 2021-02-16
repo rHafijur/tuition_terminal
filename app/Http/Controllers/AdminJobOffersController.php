@@ -272,6 +272,7 @@ class AdminJobOffersController extends CBController {
     }
     public function postSaveNew(){
         $request=\request();
+        // dd($request);
         $jobOffer= JobOffer::create([
             'parent_id'=> $request->parent_id,
             'category_id'=> $request->category_id,
@@ -298,6 +299,9 @@ class AdminJobOffersController extends CBController {
             'tutor_religion_id'=> $request->tutor_religion_id,
             'tutor_university_id'=> $request->tutor_university_id,
             'tutor_school_id'=> $request->tutor_school_id,
+            'board'=> $request->board,
+            'year_or_semester'=> $request->year_or_semester,
+            'curriculum_id'=> $request->curriculum_id,
             'tutor_college_id'=> $request->tutor_college_id,
             'tutor_category_id'=> $request->tutor_category_id,
             'university_type'=> $request->university_type,
@@ -312,6 +316,9 @@ class AdminJobOffersController extends CBController {
             'tutor_department'=> $request->tutor_department,
         ]);
         $jobOffer->course_subjects()->sync($request->course_subject_ids);
+        $jobOffer->tutor_study_types()->sync($request->tutor_study_type_ids);
+        $jobOffer->tutor_universities()->sync($request->tutor_university_ids);
+        $jobOffer->tutor_departments()->sync($request->tutor_department_ids);
         return cb()->redirect(cb()->getAdminUrl("job_offers/available-offers"),'Job offer saved successfully','success');
     }
     public function getDetail($id){
@@ -332,6 +339,7 @@ class AdminJobOffersController extends CBController {
         return view('admin.job_offers.edit_offer',compact('page_title','offer','courses','categories','categories_collection','courses_collection','city_collection','institutes'));
     }
     public function postUpdate(Request $request){
+        // dd($request);
         $offer=JobOffer::findOrFail($request->id);
         $offer->category_id = $request->category_id;
         $offer->course_id = $request->course_id;
@@ -354,6 +362,9 @@ class AdminJobOffersController extends CBController {
         $offer->tutor_study_type_id = $request->tutor_study_type_id;
         $offer->tutor_religion_id = $request->tutor_religion_id;
         $offer->tutor_university_id = $request->tutor_university_id;
+        $offer->board = $request->board;
+        $offer->year_or_semester = $request->year_or_semester;
+        $offer->curriculum_id = $request->curriculum_id;
         $offer->tutor_school_id = $request->tutor_school_id;
         $offer->tutor_college_id = $request->tutor_college_id;
         $offer->tutor_category_id = $request->tutor_category_id;
@@ -369,6 +380,9 @@ class AdminJobOffersController extends CBController {
         $offer->tutor_department = $request->tutor_department;
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
+        $offer->tutor_study_types()->sync($request->tutor_study_type_ids);
+        $offer->tutor_universities()->sync($request->tutor_university_ids);
+        $offer->tutor_departments()->sync($request->tutor_department_ids);
         return cb()->redirectBack('Job offer has been deleted successfully','success');
     }
     public function getDelete($id){

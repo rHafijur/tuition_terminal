@@ -24,9 +24,9 @@ class Parents
         if(auth()->user()->phone_verified_at==null){
             return redirect()->route('otp');
         }
-        if(auth()->user()->email_verified_at==null){
-            return redirect()->route('verifyEmailPage');
-        }
+        // if(auth()->user()->email_verified_at==null){
+        //     return redirect()->route('verifyEmailPage');
+        // }
         return $next($request);
     }
 }

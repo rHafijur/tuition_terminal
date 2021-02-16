@@ -117,6 +117,9 @@ class JobOfferController extends Controller
             'tutor_religion_id'=> $request->tutor_religion_id,
             'tutor_university_id'=> $request->tutor_university_id,
             'tutor_school_id'=> $request->tutor_school_id,
+            'board'=> $request->board,
+            'year_or_semester'=> $request->year_or_semester,
+            'curriculum_id'=> $request->curriculum_id,
             'tutor_college_id'=> $request->tutor_college_id,
             'tutor_category_id'=> $request->tutor_category_id,
             'university_type'=> $request->university_type,
@@ -131,6 +134,9 @@ class JobOfferController extends Controller
             'tutor_department'=> $request->tutor_department,
         ]);
         $jobOffer->course_subjects()->sync($request->course_subject_ids);
+        $jobOffer->tutor_study_types()->sync($request->tutor_study_type_ids);
+        $jobOffer->tutor_universities()->sync($request->tutor_university_ids);
+        $jobOffer->tutor_departments()->sync($request->tutor_department_ids);
         if($request->from=="init"){
             return redirect()->route('parent.dashboard')->with('success','Job offer has been created successfully');
         }
@@ -181,6 +187,9 @@ class JobOfferController extends Controller
         $offer->tutor_study_type_id = $request->tutor_study_type_id;
         $offer->tutor_religion_id = $request->tutor_religion_id;
         $offer->tutor_university_id = $request->tutor_university_id;
+        $offer->board = $request->board;
+        $offer->year_or_semester = $request->year_or_semester;
+        $offer->curriculum_id = $request->curriculum_id;
         $offer->tutor_school_id = $request->tutor_school_id;
         $offer->tutor_college_id = $request->tutor_college_id;
         $offer->tutor_category_id = $request->tutor_category_id;
@@ -196,6 +205,9 @@ class JobOfferController extends Controller
         $offer->tutor_department = $request->tutor_department;
         $offer->save();
         $offer->course_subjects()->sync($request->course_subject_ids);
+        $offer->tutor_study_types()->sync($request->tutor_study_type_ids);
+        $offer->tutor_universities()->sync($request->tutor_university_ids);
+        $offer->tutor_departments()->sync($request->tutor_department_ids);
         return redirect()->back()->with('success','Job offer has been updated successfully');
     }
     public function matched_tutors($id){

@@ -29,6 +29,7 @@ class TutorPersonalInformation extends Model
         'short_description',
         'reasones_to_get_hired',
         'overview',
+        'religion_id',
     ];
     protected $touches = ['tutor'];
     
@@ -40,5 +41,8 @@ class TutorPersonalInformation extends Model
     }
     public function location(){
         return $this->belongsTo("App\Location",'location_id');
+    }
+    public function religion(){
+        return $this->belongsTo("App\Religion",'religion_id');
     }
 }
