@@ -193,7 +193,9 @@ class AdminTutorsController extends CBController {
             }
         }
         if($preferred_location_id= $request->preferred_location_id){
-            $query=$query->where('location_id',$preferred_location_id);
+            $query=$query->whereHas('pref_locations',function($q)use($preferred_location_id){
+                return $q->where('location_id',$preferred_location_id);
+            });
         }
         if($category_id= $request->category_id){
             $query=$query->whereHas('categories',function($q) use($request){
@@ -286,7 +288,9 @@ class AdminTutorsController extends CBController {
             }
         }
         if($preferred_location_id= $request->preferred_location_id){
-            $query=$query->where('location_id',$preferred_location_id);
+            $query=$query->whereHas('pref_locations',function($q)use($preferred_location_id){
+                return $q->where('location_id',$preferred_location_id);
+            });
         }
         if($category_id= $request->category_id){
             $query=$query->whereHas('categories',function($q) use($request){
@@ -383,7 +387,9 @@ class AdminTutorsController extends CBController {
             }
         }
         if($preferred_location_id= $request->preferred_location_id){
-            $query=$query->where('location_id',$preferred_location_id);
+            $query=$query->whereHas('pref_locations',function($q)use($preferred_location_id){
+                return $q->where('location_id',$preferred_location_id);
+            });
         }
         if($category_id= $request->category_id){
             $query=$query->whereHas('categories',function($q) use($request){

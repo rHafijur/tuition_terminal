@@ -22,7 +22,7 @@
          <div class="d-flex justify-content-between">
             <div class="p-2 p-r">
                <i class="fas fa-map-marker-alt"></i>
-               <span> {{$offer->city->name}}, {{$offer->city->location}}</span>
+               <span> {{$offer->city->name}}, {{$offer->location->name}}</span>
             </div>
             <div class="p-2 posted-date p-r">
                {{Carbon::parse($offer->created_at)->format('jS\\, F Y')}}                                        
@@ -59,15 +59,25 @@
       </div>
       <div class="tutor-post-footer text-right"> 
       {{-- <button type="button" class="btn btn3 btn-job-view" data-toggle="modal" data-target="#jobDetailsModalCenter">View details</button> --}}
-        @if (!$offer->already_applied())
-            <form action="{{route('apply_to_job_offer')}}" method="post">
-              @csrf
-              <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
-              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
-            </form>
-        @else
-        <button class="btn btn-success  applyJobSignInButton" disabled data-job_id="30" style="padding: 3px 12px" type="button">Apply Now</button>    
-        @endif
+        <div class="row">
+           <div class="col-md-10"></div>
+            <div class="col-md-1">
+               <a href="{{route('tutor.job_detail',['id'=>$offer->id])}}">
+                  <button class="btn btn-info  applyJobSignInButton"style="padding: 3px 12px" type="button">Detail</button>    
+               </a>
+            </div>
+            <div class="col-md-1">
+               @if (!$offer->already_applied())
+                     <form action="{{route('apply_to_job_offer')}}" method="post">
+                     @csrf
+                     <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
+                     <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
+                     </form>
+               @else
+               <button class="btn btn-success  applyJobSignInButton" disabled data-job_id="30" style="padding: 3px 12px" type="button">Apply Now</button>    
+               @endif
+            </div>
+        </div>
       </div>
       <!-- Map Javascript Api -->
       {{-- <div class="col-md-12 collapse" id="collapse_30">

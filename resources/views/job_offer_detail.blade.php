@@ -198,6 +198,12 @@
                                     {{$offer->location->name}}
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">Full Address</th>
+                                <td>
+                                    {{$offer->address}}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

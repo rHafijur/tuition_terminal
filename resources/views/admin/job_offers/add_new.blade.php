@@ -23,7 +23,7 @@
             <div class="active tab-pane" data-index="0" id="student_information">
                 <div class="form-group">
                     <label for="category_id">Category <span class="req">*</span></label>
-                    <select onchange="categoryChanged(this)" class="form-control" name="category_id" id="category_id">
+                    <select onchange="categoryChanged(this)" class="form-control required-input" name="category_id" id="category_id">
                         <option value="">Select Category</option>
                         @foreach ($categories_collection as $category)
                             <option value="{{$category->id}}">{{$category->title}}</option>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="course_id">Course <span class="req">*</span></label>
-                    <select onchange="courseChanged(this)" class="form-control" name="course_id" id="course_id">
+                    <select onchange="courseChanged(this)" class="form-control required-input" name="course_id" id="course_id">
                     </select>
                     <div class="invalid-feedback">
                         Course is Required!
@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="course_subject_ids">Subjects <span class="req">*</span></label>
-                    <select class="form-control select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select class="form-control select2 select2-hidden-accessible required-input" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                     </select>
                     <div class="invalid-feedback">
                         Subjects are Required!
