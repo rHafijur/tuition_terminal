@@ -63,6 +63,11 @@ class JobOfferController extends Controller
         // dd($job_offers);
         return view('job_offer_detail',\compact('offer'));
     }
+    public function t_detail($id){
+        $offer = JobOffer::findOrFail($id);
+        // dd($job_offers);
+        return view('tutor.job_offer_details',\compact('offer'));
+    }
     public function all(){
         $offers=auth()->user()->parents->job_offers()->paginate('10');
         return view('parent.all_offer',compact('offers'));

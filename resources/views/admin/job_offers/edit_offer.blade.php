@@ -21,10 +21,10 @@
         @csrf
         <input type="hidden" name="id" value="{{$offer->id}}">
         <div id="tab_content" class="tab-content">
-            <div class="active tab-pane" id="student_information">
+            <div class="active tab-pane" data-index="0" id="student_information">
                 <div class="form-group">
                     <label for="category_id">Category <span class="req">*</span></label>
-                    <select onchange="categoryChanged(this)" class="form-control" name="category_id" id="category_id">
+                    <select onchange="categoryChanged(this)" class="form-control required-input" name="category_id" id="category_id">
                         <option value="">Select Category</option>
                         @foreach ($categories_collection as $category)
                             <option @if($category->id==$offer->category_id) selected @endif value="{{$category->id}}">{{$category->title}}</option>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="course_id">Course <span class="req">*</span></label>
-                    <select onchange="courseChanged(this)" class="form-control" name="course_id" id="course_id">
+                    <select onchange="courseChanged(this)" class="form-control required-input" name="course_id" id="course_id">
                         @php
                             $ocs=$offer->course_subjects;
                         @endphp
@@ -55,7 +55,7 @@
                     @php
                         $ocs=$offer->course_subjects;
                     @endphp
-                    <select class="form-control select2 select2-hidden-accessible" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                    <select class="form-control select2 select2-hidden-accessible required-input" name="course_subject_ids[]" id="course_subject_ids"  multiple="" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
                         @if ($offer->course!=null)
                         @foreach ($offer->course->course_subjects as $cs)
                             @php
@@ -148,7 +148,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="tutor_requirement">
+            <div class="tab-pane" data-index="1" id="tutor_requirement">
                 <div class="form-group">
                     <label for="tutor_category_id">Medium</label>
                     <select class="form-control" name="tutor_category_id" id="tutor_category_id">
@@ -364,7 +364,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="contact_information">
+            <div class="tab-pane" data-index="2" id="contact_information">
                 <div class="form-group">
                     <label for="city_id">City <span class="req">*</span></label>
                     <select onchange="cityChanged(this)" class="form-control required-input select2" name="city_id" id="city_id">

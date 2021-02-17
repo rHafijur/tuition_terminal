@@ -74,6 +74,8 @@ Route::middleware(['tutor'])->prefix('tutor')->group(function () {
     Route::post('/educational_info','TutorController@ei')->name('educational_info');
     Route::post('/personal_info','TutorController@pi')->name('personal_info');
 
+    Route::get('/job-board/job-details/{id}','JobOfferController@t_detail')->name('tutor.job_detail');
+
     Route::get('/notification','NotificationController@tutorIndex')->name('tutor.notification');
     
     Route::get('/dashboard','TutorController@dashboard')->name('tutor_dashboard');
