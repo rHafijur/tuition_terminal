@@ -36,13 +36,17 @@
                             <tr>
                                 <th scope="row">Category</th>
                                 <td>
-                                    {{$offer->category->title}}
+                                    @if ($offer->category_id!=null)
+                                        {{$offer->category->title}}
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="row">Course</th>
                                 <td>
-                                    {{$offer->course->title}}
+                                    @if ($offer->course_id!=null)
+                                        {{$offer->course->title}}
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
@@ -68,7 +72,9 @@
                             <tr>
                                 <th scope="row">Teaching Method</th>
                                 <td>
-                                    {{$offer->teaching_method->title}}
+                                    @if ($offer->teaching_method_id!=null)
+                                        {{$offer->teaching_method->title}}
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
@@ -109,11 +115,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">University</th>
+                                <th scope="row">Universities</th>
                                 <td>
-                                    @if ($offer->tutor_university!=null)
+                                    @foreach ($offer->tutor_universities as $uni)
+                                        {{$uni->title}}
+                                        @if (!$loop->last)
+                                          ,  
+                                        @endif
+                                    @endforeach
+                                    {{-- @if ($offer->tutor_university!=null)
                                         {{$offer->tutor_university->title}}
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>
@@ -123,8 +135,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">Depertment</th>
+                                <th scope="row">Depertments</th>
                                 <td>
+                                    @foreach ($offer->tutor_departments as $dep)
+                                        {{$dep->title}}
+                                        @if (!$loop->last)
+                                            ,
+                                        @endif
+                                    @endforeach
                                     {{$offer->tutor_department}}
                                 </td>
                             </tr>
@@ -151,11 +169,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row">Study Type</th>
+                                <th scope="row">Study Types</th>
                                 <td>
-                                    @if ($offer->tutor_study_type!=null)
+                                    @foreach ($offer->tutor_study_types as $st)
+                                        {{$st->title}} @if(!$loop->last),@endif 
+                                    @endforeach
+                                    {{-- @if ($offer->tutor_study_type!=null)
                                         {{$offer->tutor_study_type->title}}
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>

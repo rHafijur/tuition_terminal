@@ -9,7 +9,7 @@
             @foreach ($tutors as $tutor)
             <tr>
                 <td>
-                    <a href="#"><strong>{{$tutor->user->name}}</strong></a> {!!$tutor->getStatusIcon()!!} @if($tutor->applied)<span class="badge badge-success">P</span>@endif <br>
+                    <a href="{{ action('AdminTutorsController@getSingle',[$tutor->id]) }}"><strong>{{$tutor->user->name}}</strong></a> {!!$tutor->getStatusIcon()!!} @if($tutor->applied)<span class="badge badge-success">P</span>@endif <br>
                     {!!$tutor->getRating()!!} <br>
                     @php
                         $uni = $tutor->tutor_degrees()->whereIn('degree_id',[4,3])->orderBy('degree_id','desc')->first();

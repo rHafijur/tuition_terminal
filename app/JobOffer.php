@@ -169,54 +169,56 @@ class JobOffer extends Model
         }
         if($offer->category_id!=null){
             $tutors=$tutors->whereHas('categories',function($q){
-                return $q->where('id',$this->category_id);
+                return $q->where('id',$this->tutor_category_id);
             });
         }
-        $tutors= $tutors->whereHas('tutor_degrees',function($q){
-            if($this->group!=null){
-                $q=$q->where(function($q){
-                    return $q->where('degree_id',6)->where('group_or_major','like',"%".$this->group."%");
-                });
-            }
-            if($this->tutor_school_id!=null){
-                $q=$q->where(function($q){
-                    return $q->where('degree_id',6)->where('institute_id',$this->tutor_school_id);
-                });
-            }
-            if($this->curriculum_id!=null){
-                $q=$q->where(function($q){
-                    return $q->where('degree_id',6)->where('curriculum_id',$this->curriculum_id);
-                });
-            }
-            if($this->tutor_college_id!=null){
-                $q=$q->where(function($q){
-                    return $q->where('degree_id',5)->where('institute_id',$this->tutor_college_id);
-                });
-            }
-            if($this->tutor_departments->count()>0){
-                $q=$q->where(function($q){
-                    $ids=[];
-                    foreach($this->tutor_departments as $td){
-                        $ids[]=$td->id;
-                    }
-                    return $q->where('degree_id',4)->whereIn('institute_id',$ids);
-                });
-            }
-            if($this->tutor_universities->count()>0){
-                $q=$q->where(function($q){
-                    $ids=[];
-                    foreach($this->tutor_universities as $tu){
-                        $ids[]=$tu->id;
-                    }
-                    return $q->where('degree_id',4)->whereIn('institute_id',$ids);
-                });
-            }
-            if($this->university_type!=null){
-                $q=$q->where(function($q){
-                    return $q->where('degree_id',4)->where('university_type',$this->university_type);
-                });
-            }
-        });
+        if($this->group!=null || $this->tutor_school_id!=null || $this->curriculum_id!=null || $this->tutor_college_id!=null || $this->tutor_departments->count()>0 || $this->tutor_universities->count()>0 || $this->university_type!=null){
+            $tutors= $tutors->whereHas('tutor_degrees',function($q){
+                if($this->group!=null){
+                    $q=$q->where(function($q){
+                        return $q->where('degree_id',6)->where('group_or_major','like',"%".$this->group."%");
+                    });
+                }
+                if($this->tutor_school_id!=null){
+                    $q=$q->where(function($q){
+                        return $q->where('degree_id',6)->where('institute_id',$this->tutor_school_id);
+                    });
+                }
+                if($this->curriculum_id!=null){
+                    $q=$q->where(function($q){
+                        return $q->where('degree_id',6)->where('curriculum_id',$this->curriculum_id);
+                    });
+                }
+                if($this->tutor_college_id!=null){
+                    $q=$q->where(function($q){
+                        return $q->where('degree_id',5)->where('institute_id',$this->tutor_college_id);
+                    });
+                }
+                if($this->tutor_departments->count()>0){
+                    $q=$q->where(function($q){
+                        $ids=[];
+                        foreach($this->tutor_departments as $td){
+                            $ids[]=$td->id;
+                        }
+                        return $q->where('degree_id',4)->whereIn('institute_id',$ids);
+                    });
+                }
+                if($this->tutor_universities->count()>0){
+                    $q=$q->where(function($q){
+                        $ids=[];
+                        foreach($this->tutor_universities as $tu){
+                            $ids[]=$tu->id;
+                        }
+                        return $q->where('degree_id',4)->whereIn('institute_id',$ids);
+                    });
+                }
+                if($this->university_type!=null){
+                    $q=$q->where(function($q){
+                        return $q->where('degree_id',4)->where('university_type',$this->university_type);
+                    });
+                }
+            });
+        }
         // $tutors=Tutor::with(['pref_locations','courses','course_subjects'])->limit(500)->get();
         // $tutors=Tutor::with(['course_subjects'])->remember(60)->get();
         $tutors=$tutors->with(['courses','course_subjects','teaching_methods'])->get();
@@ -284,9 +286,9 @@ class JobOffer extends Model
             // }
 
 
-            // if($offer->location_id==$tutor->location_id){
-            //     $parcent+=20;
-            // }
+            if($offer->location_id==$tutor->location_id){
+                $parcent+=20;
+            }
             
             
             
@@ -297,8 +299,8 @@ class JobOffer extends Model
             //     }
             // }
 
-            //Parcent for location;
-            $parcent+=20;
+            // //Parcent for location;
+            // $parcent+=20;
             foreach($tutor->courses as $cs){
                 if($cs->id==$offer->course_id){
                     $parcent+=45;

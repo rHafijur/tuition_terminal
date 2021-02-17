@@ -179,7 +179,7 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::latest();
         if($q!=null){
-            $query= Tutor::join('users','users.id','tutors.user_id');
+            $query= Tutor::select("tutors.*")->join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
@@ -272,7 +272,7 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::where('is_premium',1)->latest();
         if($q!=null){
-            $query= Tutor::join('users','users.id','tutors.user_id');
+            $query= Tutor::select("tutors.*")->join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
@@ -369,7 +369,7 @@ class AdminTutorsController extends CBController {
         }
         $query= Tutor::where('is_featured',1)->latest();
         if($q!=null){
-            $query= Tutor::join('users','users.id','tutors.user_id');
+            $query= Tutor::select("tutors.*")->join('users','users.id','tutors.user_id');
 			$query=$query->where('tutors.tutor_id','like','%'.$q.'%')
 						 ->orWhere('users.name','like','%'.$q.'%')
 						 ->orWhere('users.email','like','%'.$q.'%')
@@ -434,6 +434,7 @@ class AdminTutorsController extends CBController {
 	public function getSingle($id){
 		if(!module()->canBrowse()) return cb()->redirect(cb()->getAdminUrl(),cbLang("you_dont_have_privilege_to_this_area"));
 		$tutor=Tutor::findOrFail($id);
+        // dd($tutor->user);
 		$page_title="Tutor Profile - ".$tutor->user->name;
 		// dd($tutor);
 		return view('admin.tutor.single',compact('tutor','page_title'));
