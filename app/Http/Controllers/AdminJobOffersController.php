@@ -49,7 +49,7 @@ class AdminJobOffersController extends CBController {
         $courses_collection=CourseResource::collection($courses);
         $city_collection=CityResource::collection(City::all());
         $all_offer_cnt=JobOffer::all()->count();
-        $available_offer_cnt=JobOffer::where(function($q){
+        $available_offer_cnt=JobOffer::where('is_active',1)->where(function($q){
             return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
         })->get()->count();
         $pending_offer_cnt=JobOffer::whereHas('applications',function($q){
@@ -128,7 +128,7 @@ class AdminJobOffersController extends CBController {
         $city_collection=CityResource::collection(City::all());
 
         $all_offer_cnt=JobOffer::all()->count();
-        $available_offer_cnt=JobOffer::where(function($q){
+        $available_offer_cnt=JobOffer::where('is_active',1)->where(function($q){
             return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
         })->get()->count();
         $pending_offer_cnt=JobOffer::whereHas('applications',function($q){
@@ -136,7 +136,8 @@ class AdminJobOffersController extends CBController {
         })->get()->count();
         $todays_offer_cnt=JobOffer::whereDate('created_at',Carbon::today())->get()->count();
 
-        $job_offers = JobOffer::where(function($q){
+        $job_offers = JobOffer::where('is_active',1);
+        $job_offers = $job_offers->where(function($q){
             return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
         });
         $q=$request->q;
@@ -285,6 +286,7 @@ class AdminJobOffersController extends CBController {
             'address'=> $request->address,
             'days_in_week'=> $request->days_in_week,
             'time'=> $request->time,
+            'tutoring_duration'=> $request->tutoring_duration,
             'min_salary'=> $request->min_salary,
             'max_salary'=> $request->max_salary,
             'student_gender'=> $request->student_gender,
@@ -351,6 +353,7 @@ class AdminJobOffersController extends CBController {
         $offer->address = $request->address;
         $offer->days_in_week = $request->days_in_week;
         $offer->time = $request->time;
+        $offer->tutoring_duration = $request->tutoring_duration;
         $offer->min_salary = $request->min_salary;
         $offer->max_salary = $request->max_salary;
         $offer->student_gender = $request->student_gender;

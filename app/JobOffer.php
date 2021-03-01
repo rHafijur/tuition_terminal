@@ -19,6 +19,7 @@ class JobOffer extends Model
         'address',
         'days_in_week',
         'time',
+        'tutoring_duration',
         'min_salary',
         'max_salary',
         'student_gender',
@@ -121,6 +122,12 @@ class JobOffer extends Model
         }
         return 'No';
     }
+    public function isLive(){
+        if($this->is_active==0 || ($this->taken_by_1_id!=null && $this->taken_by_2_id!=null)){
+            return false;
+        }
+        return true;
+    }
     public function getStatus(){
         if($this->status== -1){
             return 'Pending';
@@ -134,7 +141,7 @@ class JobOffer extends Model
             return false;
             
         }
-        if(cb()->session()->roleId('1','2')){
+        if(in_array(auth()->user()->cb_roles_id,[1,2])){
           return true;  
         }
         

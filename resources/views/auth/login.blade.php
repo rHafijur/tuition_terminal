@@ -106,7 +106,7 @@
           <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} class="mr-2 mt-3">Remember me
         </div>
         <button class="btn btn-custom btn-block btn-login mt-3">Login</button>
-        <a class="float-right mt-2" href="#">Forget Password</a>
+        <a class="float-right mt-2" href="{{route('forgot_password')}}">Forget Password</a>
         <br>
         <div class="form-footer py-5 text-center">
           <p>Don't have an account? <a href="#">Create Account</a></p>

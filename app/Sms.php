@@ -20,7 +20,7 @@ class Sms extends Model
         $cURLConnection = curl_init();
         //$text=\urlencode($text);
         $url='https://easybulksmsbd.com/sms/api?action=send-sms&api_key=VHVpdGlvbiBUZXJtaW5hbDoxMjM0NTY3&to='.$numbers_string.'&from=SenderID&sms='.$text;
-       // dd($url);
+    //    dd($url);
         curl_setopt($cURLConnection, CURLOPT_URL, $url);
         curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
 
@@ -48,7 +48,7 @@ class Sms extends Model
         }
         $numbers=implode(',',$numbers);
         $res= self::smsApiRequest($numbers,$text);
-        //dd($res);
+        // dd($res);
         foreach($users as $user){
             self::create([
                 'sent_by'=>$auth_id,

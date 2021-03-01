@@ -70,6 +70,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row">Tutoring Duration</th>
+                    <td>
+                        {{$offer->tutoring_duration}}  Hour
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row">Teaching Method</th>
                     <td>
                         {{$offer->teaching_method->title}}

@@ -23,8 +23,17 @@ class SmsController extends Controller
     public function send_sms(Request $request){
         $ids=\json_decode($request->ids);
         $users = User::whereIn('id',$ids)->get();
-        // dd($users);
         Sms::sendSameSmsToAll($users,$request->body);
+        // dd($users->chunk(100));
+        // $ch=$users->chunk(10);
+        // $len=count($ch);
+        // $i=1;
+        // foreach($ch as $us){
+        //     Sms::sendSameSmsToAll($us,$request->body);
+        //     echo ($i*10)."/".$len."<br>";
+        //     $i++;
+        //     break;
+        // }
         return cb()->redirectBack('SMS has been sent Successfully','success');
     }
 }

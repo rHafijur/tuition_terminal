@@ -37,6 +37,14 @@ Route::post('/otp/resend','Auth\OtpVerificationController@resend')->name('otp.re
 Route::get('/login/google','Auth\LoginController@google_login')->name('google_login');
 Route::get('/login/google/callback','Auth\LoginController@google_login_callback')->name('google_login_callback');
 Route::view('/register/user_types','register_type')->name('register_type');
+Route::view('/forgot_password','auth.forgot_password')->name('forgot_password');
+Route::post('/forgot_password','Auth\OtpVerificationController@send_forgot_otp')->name('send_forgot_otp');
+Route::get('/forgot_password/otp/{id}',function($id){return view('auth.forgot_password_otp',compact('id'));})->name('forgot_password_otp');
+Route::post('/forgot_password/otp/resend','Auth\OtpVerificationController@forgot_password_resend_otp')->name('otp.forgot_password_resend_otp');
+Route::post('/forgot_password/otp/verify','Auth\OtpVerificationController@verify_forgot_password_otp')->name('otp.verify_forgot_password_otp');
+Route::get('/forgot_password/reset_password/{id}',function($id){return view('auth.forgot_reset_password',compact('id'));})->name('forgot_reset_password');
+Route::post('/forgot_password/reset_password','Auth\LoginController@reset_password')->name('forgot_password_reset_password');
+
 
 Route::prefix('parent')->group(function () {
     Route::get('/registration','ParentController@registration')->name('parent_registration');
