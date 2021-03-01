@@ -33,7 +33,7 @@
          <div class="row">
             <div class="col-md-6">
                <p class=" class">Class: <span> {{$offer->course->title}}</span></p>
-               <p>tutoring duration : <span>1 hour</span></p>
+               <p>tutoring duration : <span>{{$offer->tutoring_duration}} hour</span></p>
                <p>{{$offer->days_in_week}} days per week</p>
                <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
             </div>

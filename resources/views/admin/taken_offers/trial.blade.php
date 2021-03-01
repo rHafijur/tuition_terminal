@@ -126,7 +126,11 @@
                             <td>
                                 <button type="button" class="btn btn-info btn-sm" onclick="loadDataToCurrentConditoinModal({{$application->job_offer->id}})" data-toggle="modal" data-target="#currentConditionModal">Condition</button>
                                 @if ($is_sa)
-                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                    <form action="{{cb()->getAdminUrl("taken_offers/delete")}}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$application->id}}">
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
                                 @endif
                                 <button type="button" class="btn btn-primary btn-sm" onclick="loadDataToNoteModal(this)" data-note="{{$application->note}}" data-id="{{$application->id}}" data-toggle="modal" data-target="#noteModal">Note</button>
                             </td>

@@ -57,6 +57,10 @@ class AdminJobApplicationsController extends CBController {
 		// dd($new_cnt,$today_cnt);
 		return view('admin.taken_offers.waiting',\compact('stage','page_title','applications','waiting_cnt','new_cnt','today_cnt'));
 	}
+	public function postDelete(Request $request){
+		JobApplication::findOrFail($request->id)->delete();
+		return cb()->redirectBack('Application deleted successfully','success');
+	}
 	public function getMeet(){
 		$user=auth()->user();
 		$role= $user->cb_roles_id;
@@ -203,6 +207,15 @@ class AdminJobApplicationsController extends CBController {
 	}
 	public function postSetRepost(Request $request){
 		$app=JobApplication::findOrFail($request->id);
+		$offer=$app->job_offer;
+		$auth_id= auth()->id();
+		if($offer->taken_by_1_id==$auth_id){
+			$offer->taken_by_1_id=null;
+			$offer->save();
+		}elseif($offer->taken_by_2_id==$auth_id){
+			$offer->taken_by_2_id=null;
+			$offer->save();
+		}
 		$app->repost_date=now();
 		$app->repost_note=$request->repost_note;
 		$app->current_stage="repost";

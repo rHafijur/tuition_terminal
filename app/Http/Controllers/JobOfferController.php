@@ -27,17 +27,27 @@ class JobOfferController extends Controller
         $city_collection=CityResource::collection(City::all());
         $categories=CategoryResource::collection(Category::all());
         // return $categories;
-        //$job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
-        $job_offers=JobOffer::orderBy('is_active', 'DESC')->latest()->get();
-        
+        // $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        $job_offers=JobOffer::latest()->get();
+        $deads=[];
+        $alives=[];
+        foreach($job_offers as $jo){
+            if($jo->isLive()){
+                $alives[]=$jo;
+            }else{
+                $deads[]=$jo;
+            }
+        }
+        $job_offers= array_merge($alives,$deads);
         // dd($categories);
         return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
     }
     public function jobBoardAjax(Request $request){
         // dd($request);
-        $job_offers=JobOffer::where(function($q){
-            return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
-        });
+        // $job_offers=JobOffer::where(function($q){
+        //     return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
+        // });
+        $job_offers=JobOffer::select("*");
         if($request->city_id!=null){
             $job_offers=$job_offers->where('city_id',$request->city_id);
         }
@@ -57,7 +67,16 @@ class JobOfferController extends Controller
             $job_offers=$job_offers->whereIn('tutor_gender',$request->genders);
         }
         $job_offers=$job_offers->latest()->get();
-        
+        $deads=[];
+        $alives=[];
+        foreach($job_offers as $jo){
+            if($jo->isLive()){
+                $alives[]=$jo;
+            }else{
+                $deads[]=$jo;
+            }
+        }
+        $job_offers= array_merge($alives,$deads);
         return view('job_board_ajax',compact('job_offers'));
     }
     public function detail($id){
@@ -110,6 +129,7 @@ class JobOfferController extends Controller
             'address'=> $request->address,
             'days_in_week'=> $request->days_in_week,
             'time'=> $request->time,
+            'tutoring_duration'=> $request->tutoring_duration,
             'min_salary'=> $request->min_salary,
             'max_salary'=> $request->max_salary,
             'student_gender'=> $request->student_gender,
@@ -183,6 +203,7 @@ class JobOfferController extends Controller
         $offer->address = $request->address;
         $offer->days_in_week = $request->days_in_week;
         $offer->time = $request->time;
+        $offer->tutoring_duration = $request->tutoring_duration;
         $offer->min_salary = $request->min_salary;
         $offer->max_salary = $request->max_salary;
         $offer->student_gender = $request->student_gender;

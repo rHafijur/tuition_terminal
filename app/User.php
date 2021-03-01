@@ -87,6 +87,14 @@ class User extends Authenticatable implements MustVerifyEmail
         //     ]));
             return $response; //response data type is json
     }
+    public function sendRestOTP(){
+        $user=$this;
+        $user->sms_otp = rand(99999,999999);
+        $user->save();
+        $otp=$user->sms_otp;
+        $response=Sms::otpApiRequest("88".$user->phone,$otp." is your reset password code.\n Tuition Terminal");
+        return $response; //response data type is json
+    }
     public function sendNotification($subject,$details,$link){
         Notification::create([
             'user_id' => $this->id,

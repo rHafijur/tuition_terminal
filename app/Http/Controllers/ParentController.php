@@ -37,7 +37,7 @@ class ParentController extends Controller
             'user_id'  => $user->id,
             'heard_from'  => $request->heard_from,
         ]);
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
         auth()->attempt([
             'email' => $request->email,
             'password' => $request->password,

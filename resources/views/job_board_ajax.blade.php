@@ -2,9 +2,9 @@
     use Carbon\Carbon;
 @endphp
 @if (count($job_offers)>0)
-@foreach ($job_offers->sortByDesc('is_active') as $offer)
+@foreach ($job_offers as $offer)
 
-@if($offer->is_active == 1)
+@if($offer->isLive())
 <div class="tutor-post-block">
    <div class="tutor-post-header">
       <div class="d-flex justify-content-between">
@@ -29,7 +29,7 @@
       <div class="row">
          <div class="col-md-6">
             <p class=" class">Class: <span> {{$offer->course->title}}</span></p>
-            <p>tutoring duration : <span>1 hour</span></p>
+            <p>tutoring duration : <span>{{$offer->tutoring_duration}} hour</span></p>
             <p>{{$offer->days_in_week}} days per week</p>
             <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
          </div>
@@ -54,7 +54,7 @@
       </div>
    </div>
    <div class="tutor-post-footer text-right"> 
-      <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}">
+      <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}" onclick="alert('The link is copied!')">
          Copy link
      </button>
       <a href="{{route('job_detail',['id'=>$offer->id])}}" target="_blank" style="float: left;margin-left:10px;">
@@ -108,7 +108,7 @@
                            <div class="row">
                               <div class="col-md-6">
                                  <p class=" class">Class: <span> {{$offer->course->title}}</span></p>
-                                 <p>tutoring duration : <span>1 hour</span></p>
+                                 <p>tutoring duration : <span>{{$offer->tutoring_duration}} hour</span></p>
                                  <p>{{$offer->days_in_week}} days per week</p>
                                  <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
                               </div>

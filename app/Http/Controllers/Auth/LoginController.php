@@ -50,6 +50,16 @@ class LoginController extends Controller
         }
         return false;
     }
+    public function reset_password(Request $request){
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed']
+        ]);
+        $user=User::findOrFail(\decrypt($request->id));
+        $user->password=Hash::make($request->password);
+        $user->save();
+        auth()->login($user);
+        return \redirect('home');
+    }
     public function login(Request $request)
     {
         $this->validateLogin($request);

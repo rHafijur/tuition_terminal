@@ -40,7 +40,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12" id="landing_job_list_div" style="padding-left: 0px !important;">
 
                   @foreach ($job_offers as $offer)
-                     @if($offer->is_active == 1)
+                     @if($offer->isLive())
                  
                      <div class="tutor-post-block" >
                         <div class="tutor-post-header">
@@ -66,7 +66,7 @@
                            <div class="row">
                               <div class="col-md-6">
                                  <p class=" class">Class: <span> {{$offer->course->title}}</span></p>
-                                 <p>tutoring duration : <span>1 hour</span></p>
+                                 <p>tutoring duration : <span>{{$offer->tutoring_duration}} hour</span></p>
                                  <p>{{$offer->days_in_week}} days per week</p>
                                  <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
                               </div>
@@ -91,7 +91,7 @@
                            </div>
                         </div>
                          <div class="tutor-post-footer text-right"> 
-                           <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}">
+                           <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}" onclick="alert('The link is copied!')">
                               Copy link
                           </button>
                           
@@ -146,7 +146,7 @@
                            <div class="row">
                               <div class="col-md-6">
                                  <p class=" class">Class: <span> {{$offer->course->title}}</span></p>
-                                 <p>tutoring duration : <span>1 hour</span></p>
+                                 <p>tutoring duration : <span>{{$offer->tutoring_duration}} hour</span></p>
                                  <p>{{$offer->days_in_week}} days per week</p>
                                  <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
                               </div>
@@ -171,7 +171,7 @@
                            </div>
                         </div>
                         <div class="tutor-post-footer text-right"> 
-                           <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}">
+                           <button class="btn btn-secondary cpy" style="float:left" data-clipboard-text="{{route('job_detail',['id'=>$offer->id])}}" onclick="alert('The link is copied!')">
                               Copy link
                           </button>
                            <a href="{{route('job_detail',['id'=>$offer->id])}}" target="_blank" style="float: left;margin-left:10px;">
@@ -337,7 +337,7 @@
    const category_resource=JSON.parse(`{!!json_encode($categories)!!}`);
    $('#location_show').hide();
    $('#job-board-header').hide();
-   function  getCity(id){
+   function getCity(id){
       for(var cit of city_resource){
          if(cit.id==id){
                return cit;

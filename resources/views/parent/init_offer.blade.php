@@ -91,6 +91,13 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="tutoring_duration">Tutoring Duration (Hours)</label>
+                        <input class="form-control required-input" name="tutoring_duration" id="tutoring_duration" type="number">
+                        <div class="invalid-feedback">
+                            Tutoring Duration is Required!
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="teaching_method_id">Teaching Method</label>
                         <select class="form-control required-input" name="teaching_method_id" id="teaching_method_id">
                             <option value="">Select Teaching Method</option>
