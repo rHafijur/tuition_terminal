@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group">
                     <label for="teaching_method_id">Teaching Method <span class="req">*</span></label>
-                    <select class="form-control" name="teaching_method_id" id="teaching_method_id">
+                    <select class="form-control required-input" name="teaching_method_id" id="teaching_method_id">
                         <option value="">Select Teaching Method</option>
                         @foreach (App\TeachingMethod::all() as $method)
                             <option value="{{$method->id}}">{{$method->title}}</option>
@@ -154,6 +154,11 @@
                         <option value="National University">National University</option>
                         <option value="Private University">Private University</option>
                         <option value="Public University">Public University</option>
+                        <option value="7 college">7 college</option>
+                        <option value="Public Medical">Public Medical</option>
+                        <option value="Private Medical">Private Medical</option>
+                        <option value="Mardasha">Mardasha</option>
+                        <option value="Polytechnic Institute">Polytechnic Institute</option>
                     </select>
                     <div class="invalid-feedback">
                         University Type is Required!

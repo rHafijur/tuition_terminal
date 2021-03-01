@@ -358,7 +358,7 @@ $is_superadmin=false;
                         @foreach ($tutors as $tutor)
                         <tr>
                             <td><input class="selector" data-id="{{$tutor->user->id}}" type="checkbox"></td>
-                            <td>{{Carbon::parse($tutor->user->created_at)->toDateString()}}</td>
+                            <td>{{Carbon::parse($tutor->created_at)->toDateString()}}</td>
                             <td>{{$tutor->tutor_id}}</td>
                             <td>{{$tutor->user->name}}{!!$tutor->getStatusIcon()!!}</td>
                             <td>{!!$tutor->getRating()!!}</td>

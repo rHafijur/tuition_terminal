@@ -27,7 +27,9 @@ class JobOfferController extends Controller
         $city_collection=CityResource::collection(City::all());
         $categories=CategoryResource::collection(Category::all());
         // return $categories;
-        $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        //$job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        $job_offers=JobOffer::orderBy('is_active', 'DESC')->latest()->get();
+        
         // dd($categories);
         return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
     }

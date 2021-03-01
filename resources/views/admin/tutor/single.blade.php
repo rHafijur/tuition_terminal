@@ -27,11 +27,11 @@
                       <div class="text-center">
                         {{-- <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> --}}
                       </div>
-            
+                
                       <h3 class="profile-username text-center">{{$tutor->user->name}}</h3>
-            
-                      <p class="text-muted text-center">{{$tutor->user->phone}}</p>
-                      <p class="text-muted text-center">{{$tutor->user->email}}</p>
+                      <p class="text-muted text-center">Phone: {{$tutor->user->phone}}</p>
+                      <p class="text-muted text-center">ID: {{$tutor->tutor_id}}</p>
+                      <p class="text-muted text-center"> Email: {{$tutor->user->email}}</p>
                       <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
                           <b>Verified</b> <a class="float-right">{{$tutor->is_verified==0?"No":"Yes"}}</a>
@@ -63,11 +63,12 @@
                       @endphp
                       @if ($t_degree!=null)
                       <strong> Education</strong>
-            
+                  
                       <p class="text-muted">
-                        {{$t_degree->degree_title}} from the {{$t_degree->institute->title}}
+                       <i class="fa fa-graduation-cap" aria-hidden="true"></i> {{$t_degree->degree->title}} <br>&nbsp; ::: {{$t_degree->institute->title}}
+                       
                       </p>
-            
+                      
                       <hr>
                       @endif
             

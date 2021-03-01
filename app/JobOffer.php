@@ -130,10 +130,21 @@ class JobOffer extends Model
         return 'Approved';
     }
     public function already_applied(){
+        if(!auth()->check()){
+            return false;
+            
+        }
+        if(cb()->session()->roleId('1','2')){
+          return true;  
+        }
+        
         $app = $this->applications()->where('tutor_id',auth()->user()->tutor->id)->first();
         if($app!=null){
             return true;
-        }
+            
+           }
+
+        
         return false;
     }
     public function already_applied_for_tutor($id){

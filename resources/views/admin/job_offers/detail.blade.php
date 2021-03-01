@@ -147,6 +147,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th scope="row">Year or semester</th>
+                                <td>
+                                    {{$offer->year_or_semester}}
+                                </td>
+                            </tr>
+                            <tr>
                                 <th scope="row">College</th>
                                 <td>
                                     @if ($offer->tutor_college!=null)

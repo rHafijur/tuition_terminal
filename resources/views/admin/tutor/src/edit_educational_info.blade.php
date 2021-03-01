@@ -256,6 +256,11 @@
                         <option @if($bachelors!=null && $bachelors->university_type=="National University") selected @endif value="National University">National University</option>
                         <option @if($bachelors!=null && $bachelors->university_type=="Private University") selected @endif value="Private University">Private University</option>
                         <option @if($bachelors!=null && $bachelors->university_type=="Public University") selected @endif value="Public University">Public University</option>
+                        <option @if($bachelors!=null && $bachelors->university_type=="7 college") selected @endif value="7 college">7 college</option>
+                        <option @if($bachelors!=null && $bachelors->university_type=="Public Medical") selected @endif value="Public Medical">Public Medical</option>
+                        <option @if($bachelors!=null && $bachelors->university_type=="Private Medical") selected @endif value="Private Medical">Private Medical</option>
+                        <option @if($bachelors!=null && $bachelors->university_type=="Mardasha") selected @endif value="Mardasha">Mardasha</option>
+                        <option @if($bachelors!=null && $bachelors->university_type=="Polytechnic Institute") selected @endif value="Polytechnic Institute">Polytechnic Institute</option>
                       </select>
                     </div>
                   </div>

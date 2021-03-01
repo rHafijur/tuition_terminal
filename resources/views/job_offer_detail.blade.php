@@ -9,12 +9,16 @@
                         Job Id: {{$offer->id}}
                     </h3>
                     <div class="card-tools float-right">
-                        <form action="{{route('apply_to_job_offer')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
-                            <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
-                         </form>
-                    </div>
+            @if (!$offer->already_applied())
+            <form action="{{route('apply_to_job_offer')}}" method="post">
+              @csrf
+              <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
+              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
+            </form>
+            @else
+            <button class="btn btn-success  applyJobSignInButton" disabled data-job_id="30" style="padding: 3px 12px" type="button">Apply Now</button>    
+            @endif
+        </div>
                 </div>
                 <div class="card-body">
                     <table class="table borderless">
@@ -59,7 +63,7 @@
                             <tr>
                                 <th scope="row">Tutoring Time</th>
                                 <td>
-                                    {{$offer->time}}
+                                    {{date('g:i a', strtotime($offer->time)) }}  
                                 </td>
                             </tr>
                             <tr>
@@ -108,9 +112,15 @@
                             <tr>
                                 <th scope="row">University</th>
                                 <td>
-                                    @if ($offer->tutor_university!=null)
+                                    @foreach ($offer->tutor_universities as $uni)
+                                        {{$uni->title}}
+                                        @if (!$loop->last)
+                                          ,  
+                                        @endif
+                                    @endforeach
+                                  {{--  @if ($offer->tutor_university!=null)
                                         {{$offer->tutor_university->title}}
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>
@@ -122,7 +132,19 @@
                             <tr>
                                 <th scope="row">Depertment</th>
                                 <td>
+                                   @foreach ($offer->tutor_departments as $dep)
+                                        {{$dep->title}}
+                                        @if (!$loop->last)
+                                            ,
+                                        @endif
+                                    @endforeach
                                     {{$offer->tutor_department}}
+                                </td>
+                            </tr>
+                             <tr>
+                                <th scope="row">Year or semester</th>
+                                <td>
+                                    {{$offer->year_or_semester}}
                                 </td>
                             </tr>
                             <tr>
@@ -150,9 +172,12 @@
                             <tr>
                                 <th scope="row">Study Type</th>
                                 <td>
-                                    @if ($offer->tutor_study_type!=null)
+                                    @foreach ($offer->tutor_study_types as $st)
+                                        {{$st->title}} @if(!$loop->last),@endif 
+                                    @endforeach
+                                    {{-- @if ($offer->tutor_study_type!=null)
                                         {{$offer->tutor_study_type->title}}
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>
