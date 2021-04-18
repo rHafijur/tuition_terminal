@@ -4,6 +4,9 @@
       <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2/css/select2.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin_lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{asset('admin_lte/plugins/sweetalert2/sweetalert2.min.css')}}">
+  <script src="{{asset('admin_lte/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
+
   <style>
      .courses{
         margin-left: 15px;
@@ -17,6 +20,54 @@
    new ClipboardJS('.cpy');
 </script>
 <script src="{{asset('admin_lte/plugins/select2/js/select2.full.min.js')}}"></script>
+<script type:"text/javascipt">
+    
+   
+     $(document).on('click', '#npsucess', function(e) {
+            swal.fire(
+                'You are applied for the job!',
+                'Thanks for applying',
+                'success'
+            )
+        });
+     $(document).on('click', '#nperror', function(e) {
+            swal.fire(
+                'You are already applied!',
+                'Apply For Another Job',
+                'error'
+            )
+        }); 
+    $(document).on('click', '#npcomplete', function(e) {
+            swal.fire(
+                'Profile Incomplete!',
+                'Complete your profile to 80%',
+                'error'
+            )
+        }); 
+     $(document).on('click', '#npgender', function(e) {
+            swal.fire(
+                'Profile Gender Mismatch',
+                'This offer is for specific gender, you cannot apply this offer',
+                'error'
+            )
+        });
+     $(document).on('click', '#nplogin', function(e) {
+            swal.fire(
+                'Login First!',
+                'Please Login as a tutor to apply this job!',
+                'error'
+            )
+        });
+    $(document).on('click', '#inactive', function(e) {
+            swal.fire(
+                'Inactive Profile!',
+                'Please contact with administrator to active your profile.',
+                'error'
+            )
+        });
+
+    
+</script>
 @endpush
 @php
     use Carbon\Carbon;
@@ -71,8 +122,8 @@
                                  <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
                               </div>
                               <div class="col-md-6">
-                                 <p class="tutor-gender">Tutor gender requrement : <span> {{$offer->tutor_gender}}</span> </p>
-                                 <p>Requirements : {{$offer->requirementsrequirements}}<span></span></p>
+                                 <p class="tutor-gender">Tutor gender requrement : <span> @if($offer->tutor_gender == null)  Any  @else {{$offer->tutor_gender}} @endif</span> </p>
+                                 <p>Requirements : <span>{{$offer->requirements}}</span></p>
                                  <p>Special notes : <span>{{$offer->spicial_note}}</span></p>
                               </div>
                            </div>
@@ -98,11 +149,38 @@
                            <a href="{{route('job_detail',['id'=>$offer->id])}}" target="_blank" style="float: left;margin-left:10px;">
                               <button type="button" class="btn btn3 btn-job-view">View details</button>
                            </a>
-                           <form action="{{route('apply_to_job_offer')}}" method="post">
-                              @csrf
-                              <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
-                              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
-                           </form>
+                           
+                           @if (!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2]))
+                                <form action="#">
+                                  <button class="btn btn-success"  id="nplogin" style="padding: 3px 12px" type="button">Apply Now</button>
+                                </form>
+                           @else
+                                @php
+                                 $personal_info=$tutor->tutor_personal_information;
+                                @endphp
+                                @if ($tutor->is_active == 1)
+                                        @if ($tutor->getProfileComplete() >= 80)
+                                                @if (!$offer->already_applied())
+                                                <form action="{{route('apply_to_job_offer')}}" method="post">
+                                                  @csrf
+                                                  <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
+                                                  @if ( $offer->tutor_gender == $personal_info->gender || $offer->tutor_gender == null)
+                                                 
+                                                  <button class="btn btn-success  applyJobSignInButton" data-job_id="30" id="npsucess" style="padding: 3px 12px" type="submit">Apply Now</button>
+                                                  @else
+                                                  <button class="btn btn-success" id="npgender" style="padding: 3px 12px" type="button">Apply Now</button>
+                                                  @endif
+                                                </form>
+                                                @else
+                                                <button class="btn btn-success" id="nperror" style="padding: 3px 12px" type="button">Already Applied</button> 
+                                                @endif
+                                            @else    
+                                              <button class="btn btn-success" id="npcomplete" style="padding: 3px 12px" type="button">Apply Now</button>   
+                                        @endif
+                                     @else
+                                    <button class="btn btn-success" id="inactive" style="padding: 3px 12px" type="button">Apply Now</button> 
+                                @endif
+                           @endif
                         </div>
                         <!-- Map Javascript Api -->
                         {{-- <div class="col-md-12 collapse" id="collapse_30">
@@ -151,8 +229,8 @@
                                  <p>Salary: <span class="sallery-text">{{$offer->min_salary}} - {{$offer->max_salary}},</span> </p>
                               </div>
                               <div class="col-md-6">
-                                 <p class="tutor-gender">Tutor gender requrement : <span> {{$offer->tutor_gender}}</span> </p>
-                                 <p>Requirements : {{$offer->requirementsrequirements}}<span></span></p>
+                                 <p class="tutor-gender">Tutor gender requrement : <span> @if($offer->tutor_gender == null)  Any  @else {{$offer->tutor_gender}} @endif</span> </p>
+                                 <p>Requirements : {{$offer->requirements}}<span></span></p>
                                  <p>Special notes : <span>{{$offer->spicial_note}}</span></p>
                               </div>
                            </div>

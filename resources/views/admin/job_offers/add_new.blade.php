@@ -5,7 +5,7 @@
     .req{
         color: red;
     }
-</style>
+</style> 
 @endpush
 @section('content')
 <div class="card">
@@ -65,7 +65,18 @@
                 </div>
                 <div class="form-group">
                     <label for="tutoring_duration">Tutoring Duration (Hours)</label>
-                    <input class="form-control" name="tutoring_duration" id="tutoring_duration" type="number">
+                    
+                    <!--<input class="form-control" name="tutoring_duration" id="tutoring_duration" type="number">-->
+                    <select class="form-control" name="tutoring_duration" id="tutoring_duration">
+                        <option value="1">1 Hour</option>
+                        <option value="1.30">1.30 Hour</option>
+                        <option value="2">2 Hour</option>
+                        <option value="2.30">2.30 Hour</option>
+                        <option value="3">3 Hour</option>
+                        <option value="3.30">3.30 Hour</option>
+                        <option value="4">4 Hour</option>
+                        <option value="5">5 Hour</option>
+                    </select>
                     <div class="invalid-feedback">
                         Tutoring Duration is Required!
                     </div>
@@ -92,7 +103,7 @@
                     </div>
                     <div class="form-group col">
                         <label for="max_salary">Maximum Salary <span class="req">*</span></label>
-                        <input class="form-control" name="max_salary" id="max_salary" type="number">
+                        <input class="form-control" name="max_salary" id="max_salary" type="number" min="000" max="10000" step="500">
                         <div class="invalid-feedback">
                             Maximum is Required!
                         </div>
@@ -363,8 +374,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input class="form-control" name="phone" id="phone" type="phone">
+                    <label for="phone">Phone<small>(Input valid Mobile number)</small></label>
+                    <input class="form-control required-input" name="phone" id="phone" type="phone" minlength="11" pattern=".{3,}"   required title="3 characters minimum" placeholder="e.g. 01700000000" pattern="[0]{1}[1]{1}[3-9]{1}[0-9]{8}" maxlength="11" size="11">
                     <div class="invalid-feedback">
                         Phone is Required!
                     </div>
@@ -377,8 +388,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="additional_contact">Additional contact Number</label>
-                    <input class="form-control" name="additional_contact" id="additional_contact" type="phone">
+                    <label for="additional_contact">Additional contact Number <small>(input Valid Mobile Number)</small></label>
+                    <input class="form-control" name="additional_contact" id="additional_contact" type="phone" placeholder="e.g. 01700000000" pattern="[0]{1}[1]{1}[3-9]{1}[0-9]{8}" maxlength="11" size="11">
                     <div class="invalid-feedback">
                         Additional contact Number is Required!
                     </div>
@@ -443,6 +454,7 @@
       <!-- /.tab-content -->
     </div><!-- /.card-body -->
   </div>
+
   <script>
       const resource=JSON.parse(`{!!json_encode($categories_collection)!!}`);
       const courses_resource=JSON.parse(`{!!json_encode($courses_collection)!!}`);
@@ -583,4 +595,14 @@
     $(".select2").select2();
 
 </script>
+
+  <script>
+  $(function () {
+
+    $('[data-mask]').inputmask()
+
+    })
+</script>
+<script src="{{url('/')}}/admin_lte/plugins/inputmask/jquery.inputmask.min.js"></script>
+
 @endpush

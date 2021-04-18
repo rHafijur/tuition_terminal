@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\JobOffer;
 use App\Category;
 use App\Course;
@@ -40,7 +40,14 @@ class JobOfferController extends Controller
         }
         $job_offers= array_merge($alives,$deads);
         // dd($categories);
-        return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
+        //added by Nayan
+        if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
+            return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
+        }
+        else{
+          $tutor=auth()->user()->tutor;
+          return view('job_board',compact('job_offers','city_collection','categories','teaching_methods','tutor')); 
+        }
     }
     public function jobBoardAjax(Request $request){
         // dd($request);
@@ -77,17 +84,37 @@ class JobOfferController extends Controller
             }
         }
         $job_offers= array_merge($alives,$deads);
-        return view('job_board_ajax',compact('job_offers'));
+        //added by Nayan
+        if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
+           return view('job_board_ajax',compact('job_offers'));
+        }
+        else{
+          $tutor=auth()->user()->tutor;
+         return view('job_board_ajax',compact('job_offers','tutor'));
+        }
+        
+        
     }
     public function detail($id){
         $offer = JobOffer::findOrFail($id);
         // dd($job_offers);
-        return view('job_offer_detail',\compact('offer'));
+        //added by Nayan
+        if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
+            return view('job_offer_detail',\compact('offer')); 
+        }
+        else{
+          $tutor=auth()->user()->tutor;
+          return view('job_offer_detail',\compact('offer','tutor')); 
+        }
+        
     }
     public function t_detail($id){
         $offer = JobOffer::findOrFail($id);
         // dd($job_offers);
-        return view('tutor.job_offer_details',\compact('offer'));
+        //return view('tutor.job_offer_details',\compact('offer'));
+        //Added by Nayan
+        $tutor=auth()->user()->tutor;
+        return view('tutor.job_offer_details',\compact('offer','tutor'));
     }
     public function all(){
         $offers=auth()->user()->parents->job_offers()->paginate('10');

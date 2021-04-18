@@ -102,13 +102,32 @@ class TutorController extends Controller
         return redirect(route('tutor_registration_steps')."?tab=pi")->with('success','Tutor Account Created Successfully. Please Complete your profile');
     }
     public function dashboard(){
-        $tutor=auth()->user()->tutor;
+        //$tutor=auth()->user()->tutor;
+        //if($tutor->getProfileComplete() < 70){
+        //    return redirect()->route('tutor_edit_info');
+        //}
+        //$job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        // dd($job_offers);
+        //return view('tutor.dashboard',\compact('job_offers'));
+        //added by nayan
+         $tutor=auth()->user()->tutor;
         if($tutor->getProfileComplete() < 70){
             return redirect()->route('tutor_edit_info');
         }
-        $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+       // $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+       $job_offers=JobOffer::latest()->get();
+       $deads=[];
+        $alives=[];
+        foreach($job_offers as $jo){
+            if($jo->isLive()){
+                $alives[]=$jo;
+            }else{
+                $deads[]=$jo;
+            }
+        }
+        $job_offers= array_merge($alives,$deads);
         // dd($job_offers);
-        return view('tutor.dashboard',\compact('job_offers'));
+        return view('tutor.dashboard',\compact('job_offers','tutor'));
     }
     public function edit_info(){
         $tutor=auth()->user()->tutor;

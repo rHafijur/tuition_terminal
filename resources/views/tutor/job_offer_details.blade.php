@@ -4,23 +4,75 @@
 @endphp
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('admin_lte/plugins/sweetalert2/sweetalert2.min.css')}}">
+<script src="{{asset('admin_lte/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
 @endpush
+@push('js')
+
+<script type:"text/javascipt">
+    
+   
+     $(document).on('click', '#npsucess', function(e) {
+            swal.fire(
+                'You are applied for the job!',
+                'Thanks for applying',
+                'success'
+            )
+        });
+     $(document).on('click', '#nperror', function(e) {
+            swal.fire(
+                'You are already applied!',
+                'Apply For Another Job',
+                'error'
+            )
+        }); 
+    $(document).on('click', '#npcomplete', function(e) {
+            swal.fire(
+                'Profile Incomplete!',
+                'Complete your profile to 80%',
+                'error'
+            )
+        }); 
+     $(document).on('click', '#npgender', function(e) {
+            swal.fire(
+                'Profile Gender Mismatch',
+                'This offer is for specific gender, you cannot apply this offer',
+                'error'
+            )
+        });
+    
+</script>
+
+@endpush
+
 @section('content')
+@php
+$personal_info=$tutor->tutor_personal_information;
+@endphp
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">
             Job Id: {{$offer->id}}
         </h3>
         <div class="card-tools float-right">
+        @if ($tutor->getProfileComplete() >= 80)
             @if (!$offer->already_applied())
             <form action="{{route('apply_to_job_offer')}}" method="post">
               @csrf
               <input type="hidden" name="job_offer_id" value="{{$offer->id}}">
-              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" style="padding: 3px 12px" type="submit">Apply Now</button>
+              @if ( $offer->tutor_gender == $personal_info->gender || $offer->tutor_gender == null)
+             
+              <button class="btn btn-success  applyJobSignInButton" data-job_id="30" id="npsucess" style="padding: 3px 12px" type="submit">Apply Now</button>
+              @else
+              <button class="btn btn-success" id="npgender" style="padding: 3px 12px" type="button">Apply Now</button>
+              @endif
             </form>
             @else
-            <button class="btn btn-success  applyJobSignInButton" disabled data-job_id="30" style="padding: 3px 12px" type="button">Apply Now</button>    
+            <button class="btn btn-warning" id="nperror" style="padding: 3px 12px" type="button">Already Applied</button> 
             @endif
+        @else    
+          <button class="btn btn-success" id="npcomplete" style="padding: 3px 12px" type="button">Apply Now</button>   
+        @endif
         </div>
     </div>
     <div class="card-body">
@@ -171,7 +223,8 @@
                 <tr>
                     <th scope="row">Tutor's Gender</th>
                     <td>
-                        {{$offer->tutor_gender}}
+                        
+                        @if($offer->tutor_gender == null)  Any  @else {{$offer->tutor_gender}} @endif
                     </td>
                 </tr>
                 <tr>

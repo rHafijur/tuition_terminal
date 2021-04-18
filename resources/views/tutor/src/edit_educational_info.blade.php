@@ -97,14 +97,14 @@
                 <div class="form-row">
                   <div class="col">
                     <div  class="form-group">
-                        <label>Passing Year </label>
-                        <input required type="text" value="{{$ssc!=null?$ssc->passing_year:''}}"  class="form-control" name="passing_year[6]">
+                        <label>Passing Year <small>(Type only year)</small></label>
+                        <input required type="number" placeholder="e.g. 1996" value="{{$ssc!=null?$ssc->passing_year:''}}"  class="form-control" name="passing_year[6]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
-                        <label>Result</label>
-                        <input required value="{{$ssc!=null?$ssc->gpa:''}}" type="text"  class="form-control" name="gpa[6]">
+                        <label>Result <small>(Type your GPA)</small></label>
+                        <input required value="{{$ssc!=null?$ssc->gpa:''}}" type="number" min="0.0" max="5.0" placeholder="e.g. 4.97" step="0.01" class="form-control" name="gpa[6]">
                       </div>
                   </div>
                 </div>
@@ -204,14 +204,14 @@
                 <div class="form-row">
                   <div class="col">
                     <div  class="form-group">
-                        <label>Passing Year </label>
-                        <input required type="text" value="{{$hsc!=null?$hsc->passing_year:''}}"  class="form-control" name="passing_year[5]">
+                        <label>Passing Year <small>(Type only year)</small></label>
+                        <input required type="number" placeholder="e.g. 1996" value="{{$hsc!=null?$hsc->passing_year:''}}"  class="form-control" name="passing_year[5]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
-                        <label>Result</label>
-                        <input required value="{{$hsc!=null?$hsc->gpa:''}}" type="text"  class="form-control" name="gpa[5]">
+                        <label>Result <small>(Type your GPA)</small></label>
+                        <input required value="{{$hsc!=null?$hsc->gpa:''}}" type="number" min="0.0" max="5.0" placeholder="e.g. 4.97" step="0.01"  class="form-control" name="gpa[5]">
                       </div>
                   </div>
                 </div>
@@ -303,14 +303,14 @@
                 <div class="form-row">
                   <div class="col">
                     <div  class="form-group">
-                        <label>CGPA / Current CGPA</label>
-                        <input required value="{{$bachelors!=null?$bachelors->gpa:''}}" type="text"  class="form-control" name="gpa[4]">
+                        <label>CGPA / Current CGPA </label>
+                        <input required value="{{$bachelors!=null?$bachelors->gpa:''}}" type="number" min="0.0" max="5.0" placeholder="e.g. 4.97" step="0.01"  class="form-control" name="gpa[4]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Semester / Year</label>
-                        <input required type="text" value="{{$bachelors!=null?$bachelors->year_or_semester:''}}"  class="form-control" name="year_or_semester[4]">
+                        <input required type="text" placeholder="e.g. First Year/1997" value="{{$bachelors!=null?$bachelors->year_or_semester:''}}"  class="form-control" name="year_or_semester[4]">
                       </div>
                   </div>
                 </div>
@@ -324,7 +324,7 @@
                       }
                   @endphp 
                   <input {{$checked}} type="checkbox" name="currently_studing[4]" value="1" class="form-check-input" id="currently_studing">
-                  <label class="form-check-label" for="currently_studing">I'm currently studying here</label>
+                  <label class="form-check-label" for="currently_studing">I'm currently studying here </label>
                 </div>
               </div>
             </div>
@@ -420,13 +420,13 @@
                   <div class="col">
                     <div  class="form-group">
                         <label>CGPA / Current CGPA</label>
-                        <input required value="{{$masters!=null?$masters->gpa:''}}" type="text"  class="form-control" name="gpa[3]">
+                        <input required value="{{$masters!=null?$masters->gpa:''}}" type="number" min="0.0" max="5.0" placeholder="e.g. 4.97" step="0.01"  class="form-control" name="gpa[3]">
                       </div>
                   </div>
                   <div class="col">
                     <div  class="form-group">
                         <label>Semester / Year</label>
-                        <input required type="text" value="{{$masters!=null?$masters->year_or_semester:''}}"  class="form-control" name="year_or_semester[3]">
+                        <input required type="text" placeholder="e.g. First Year/1997" value="{{$masters!=null?$masters->year_or_semester:''}}"  class="form-control" name="year_or_semester[3]">
                       </div>
                   </div>
                 </div>

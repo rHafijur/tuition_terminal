@@ -18,7 +18,7 @@ class Sms extends Model
 
     public static function smsApiRequest($numbers_string,$text){
         $cURLConnection = curl_init();
-        //$text=\urlencode($text);
+        $text=\urlencode($text);
         $url='https://easybulksmsbd.com/sms/api?action=send-sms&api_key=VHVpdGlvbiBUZXJtaW5hbDoxMjM0NTY3&to='.$numbers_string.'&from=SenderID&sms='.$text;
     //    dd($url);
         curl_setopt($cURLConnection, CURLOPT_URL, $url);

@@ -28,7 +28,7 @@
                         {{-- <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> --}}
                       </div>
                 
-                      <h3 class="profile-username text-center">{{$tutor->user->name}}</h3>
+                      <h3 class="profile-username text-center">@if ($tutor->is_active == 1) <i class="fa fa-circle" style="font-size:20px; color:green;"></i> @endif @if ($tutor->is_active == 0) <i class="fa fa-circle" style="font-size:20px; color:red;"></i> @endif {{$tutor->user->name}}</h3>
                       <p class="text-muted text-center">Phone: {{$tutor->user->phone}}</p>
                       <p class="text-muted text-center">ID: {{$tutor->tutor_id}}</p>
                       <p class="text-muted text-center"> Email: {{$tutor->user->email}}</p>
@@ -56,22 +56,24 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                       @php
-                          $t_degree=$tutor->tutor_degree;
+                          $t_degree=$tutor->tutor_degrees;
                           $pi=$tutor->tutor_personal_information;
                           $pi_location=$pi->location;
                           $pi_city=$pi->city;
                       @endphp
                       @if ($t_degree!=null)
                       <strong> Education</strong>
-                  
-                      <p class="text-muted">
-                       <i class="fa fa-graduation-cap" aria-hidden="true"></i> {{$t_degree->degree->title}} <br>&nbsp; ::: {{$t_degree->institute->title}}
-                       
-                      </p>
-                      
-                      <hr>
+                        @foreach($t_degree as $t_show)
+                          <p class="text-muted"> <i class="fa fa-graduation-cap" aria-hidden="true"></i> {{$t_show->degree->title}} 
+                      <br> :::: </i>{{$t_show->institute->title}},{{$t_show->group_or_major}},{{$t_show->education_board}},{{$t_show->passing_year}}
+                      <br> {{$t_show->department}},{{$t_show->university_type}},{{$t_show->year_or_semester}}
+
+                       <hr>
+
+                        
+                        @endforeach
                       @endif
-            
+            </p>
                       @if ($pi_location!=null && $pi_city!=null)
                       <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
             
@@ -329,12 +331,38 @@
                                   <p class="text-muted">{{$tutor->tutoring_experience_details}}</p>
                               
                                 </div>
+                               {{-- <div>
+                                    @foreach($tutor->certificates as $cc)
+                                     <strong>{{$cc->type}}</strong>
+                                    <img src="{{url('/')}}/{{$cc->file_path}}" alt="Girl in a jacket" width="100" height="100">
+                                    @endforeach
+                                </div> --}}
                             <!-- /.tab-content -->
                           </div><!-- /.card-body -->
                         </div>
                     </div>
                 </div>
-                  
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="card">
+                          <div class="card-header p-2">
+                            Certificates
+                          </div><!-- /.card-header -->
+                          <div class="card-body">
+                                <div>
+                                    @foreach($tutor->certificates as $cc)
+                                     <div class="card-body">              
+                                  <strong>{{$cc->type}}</strong>
+                                  <a href="{{url('/')}}/{{$cc->file_path}}" target="_blank"> 
+                                      <img width="180" height="72" border="0" align="center"  src="{{url('/')}}/{{$cc->file_path}}"/> </a>
+                                </div>
+                                     @endforeach
+                                </div> 
+                            <!-- /.tab-content -->
+                          </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
                   <!-- /.nav-tabs-custom -->
                 </div>
                 <!-- /.col -->

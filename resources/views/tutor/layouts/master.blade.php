@@ -18,6 +18,13 @@
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MCX2SQR');</script>
+<!-- End Google Tag Manager -->
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -30,6 +37,10 @@ to get the desired effect
 |---------------------------------------------------------|
 -->
 <body class="hold-transition sidebar-mini">
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MCX2SQR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -312,7 +323,18 @@ to get the desired effect
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        @yield('content')
+       
+        @if (auth()->user()->tutor->is_active == 1)
+            @yield('content')
+        @else
+              <div class="timeline-item">
+                <h3 class="timeline-header"><a href="#">Profile Inactive</a> </h3>
+
+                <div class="timeline-body">
+                  Please contact with administrator to active acount again.
+                </div>
+              </div>
+        @endif
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->

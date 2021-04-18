@@ -336,7 +336,7 @@
                             <td>{{$offer->location->name}}, {{$offer->city->name}}</td>
                             <td>{{$offer->min_salary}} - {{$offer->max_salary}}</td>
                             <td>{{$offer->phone}}</td>
-                            <td>{{$offer->tutor_gender}}</td>
+                            <td>@if($offer->tutor_gender == null)  Any  @else {{$offer->tutor_gender}} @endif</td>
                             <td>
                                 {{-- @if ($offer->tutor_study_type!=null)
                                 {{$offer->tutor_study_type->title}}

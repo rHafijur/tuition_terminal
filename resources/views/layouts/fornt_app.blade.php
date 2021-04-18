@@ -6,7 +6,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tutor</title>
+  <meta name="facebook-domain-verification" content="sailogmvwng1tz2vl26qk63fh8gkbn" />
+  <title>Tuition Terminal</title>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MCX2SQR');</script>
+<!-- End Google Tag Manager -->
   <!-- GOOGLE FONT -->
 
   <!-- CSS FILES -->
@@ -36,6 +44,10 @@
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MCX2SQR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
   <header class="header-area">
       <!-- Navbar Start -->
   <nav class="navbar bg-white navbar-expand-lg fixed-top py-3">
@@ -214,9 +226,8 @@
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
-              <h4 class="text-custom mb-5 text-bold">AVAILABLE NOW SSS</h4>
-              <p class="text-custom-p">With bdtutors official app, Make your profile in minutes. Apply to your preferred
-                tutoring jobs that match your skills</p>
+              <h4 class="text-custom mb-5 text-bold">AVAILABLE NOW</h4>
+              <p class="text-custom-p">With Tuition Terminal official app, Make your profile in minutes. Apply to your preferred tutoring jobs that match your skills</p>
               <img src="{{asset('assets/img/playStore.png')}}" alt="Play Store" class="img img-fluid pt-3">
             </div>
           </div>
@@ -227,7 +238,7 @@
             <div class="col-md-6">
               <ul class="">
                 <li class="d-block mb-3">
-                  <a href="#" class="text-custom-p">Become A Tutor</a>
+                  <a href="http://tuitionterminal.com.bd/tutor/registration" class="text-custom-p">Become A Tutor</a>
                 </li>
                 <li class="d-block mb-3">
                   <a href="#" class="text-custom-p">Our Blog</a>
@@ -269,35 +280,37 @@
                 </li>
                 <li class="d-block mb-3 footer-contact">
                   <i class="fas fa-envelope-square"></i>
-                  <a href="#" class="text-custom-p ml-2">info@iqsasoft.com</a>
+                  <a href="#" class="text-custom-p ml-2">info@tuitionterminal.com.bd</a>
                   <hr>
                 </li>
                 <li class="d-block mb-3 footer-contact">
                   <i class="fas fa-phone-alt"></i>
-                  <a href="#" class="text-custom-p ml-2">+1-646-546-5075</a>
+                  <a href="#" class="text-custom-p ml-2">09678-444477</a>
                   <hr>
                 </li>
                 <li class="d-block mb-3 footer-contact">
                   <i class="fas fa-map-marker"></i>
-                  <a href="#" class="text-custom-p ml-2">1862 E. Belvidere Rd, Suite #108, Grayslake, IL- 60030.
-                    USA.</a>
+                  <a href="#" class="text-custom-p ml-2">F#D-4,H#10/5,R#,Tolarbagh R/A,Section#1,Mirpur,Dhaka-1216</a>
                 </li>
               </ul>
               <div class="social-icon text-custom-p pt-3">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram ml-2"></i></a>
-                <a href="#"><i class="fab fa-twitter ml-2"></i></a>
-                <a href="#"><i class="fab fa-youtube ml-2"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in ml-2"></i></a>
+                <a target="_blank" href="https://www.facebook.com/tuitionterminal.official"><i class="fab fa-facebook"></i></a>
+                <a target="_blank" href="https://www.instagram.com/tuition_terminal/"><i class="fab fa-instagram ml-2"></i></a>
+                <a target="_blank" href="https://twitter.com/TuitionTerminal"><i class="fab fa-twitter ml-2"></i></a>
+                <a target="_blank" href="https://www.youtube.com/channel/UCCwat8rKUi9TQK82j6kdQnQ"><i class="fab fa-youtube ml-2"></i></a>
+                <a target="_blank" href="https://www.linkedin.com/company/tuitionterminal/"><i class="fab fa-linkedin-in ml-2"></i></a>
+                <a target="_blank" href="https://www.pinterest.com/tuitionterminalofficial/_saved/"><i class="fab fa-pinterest ml-2"></i></a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <hr>
+    <hr>be
     <div class="text-center">
-      <p class="">Copyright &copy;2020 <a href="#">iqsasoft.com</a> All Rights Reserved</p>
+        
+      <p class="text-center">Copyright &copy;2021 <a href="http://tuitionterminal.com.bd/">Tuition Terminal</a> All Rights Reserved</p> <p class="text-center"> Developed By <a href="https://iqsasoft.com"> IQSA SOFT </a></p>
+    
     </div>
   </section>
 
@@ -313,6 +326,7 @@
   <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
   <script src="{{asset('assets/js/custom.js')}}"></script>
   @stack('js')
+  <script>var BotStar={appId:"sbb423ad5-d775-4802-b1b7-62156a107577",mode:"livechat"};!function(t,a){var e=function(){(e.q=e.q||[]).push(arguments)};e.q=e.q||[],t.BotStarApi=e;!function(){var t=a.createElement("script");t.type="text/javascript",t.async=1,t.src="https://widget.botstar.com/static/js/widget.js";var e=a.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}();}(window,document)</script>
 </body>
 
 </html><!-- /Include Footer -->

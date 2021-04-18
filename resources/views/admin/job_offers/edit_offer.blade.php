@@ -91,7 +91,20 @@
                 </div>
                 <div class="form-group">
                     <label for="tutoring_duration">Tutoring Duration (Hours)</label>
-                    <input class="form-control" value="{{$offer->tutoring_duration}}" name="tutoring_duration" id="tutoring_duration" type="number">
+                   
+                    <select class="form-control" name="tutoring_duration" id="tutoring_duration">
+                        <option @if($offer->tutoring_duration == !null) selected @endif value="{{$offer->tutoring_duration}}">{{$offer->tutoring_duration}} Hour [Selected]</option>
+                        <option value="1">1 Hour</option>
+                        <option value="1.30">1.30 Hour</option>
+                        <option value="2">2 Hour</option>
+                        <option value="2.30">2.30 Hour</option>
+                        <option value="3">3 Hour</option>
+                        <option value="3.30">3.30 Hour</option>
+                        <option value="4">4 Hour</option>
+                        <option value="5">5 Hour</option>
+                    </select>
+                    
+                    
                     <div class="invalid-feedback">
                         Tutoring Duration is Required!
                     </div>
@@ -415,8 +428,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input class="form-control" value="{{$offer->phone}}" name="phone" id="phone" type="phone">
+                    <label for="phone">Phone <small>(Input Valid Mobile Number) </small></label>
+                    <input class="form-control" value="{{$offer->phone}}" name="phone" id="phone" type="phone" placeholder="e.g. 01700000000" pattern="[0]{1}[1]{1}[3-9]{1}[0-9]{8}" maxlength="11" size="11">
                     <div class="invalid-feedback">
                         Phone is Required!
                     </div>
@@ -429,8 +442,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="additional_contact">Additional contact Number</label>
-                    <input class="form-control" value="{{$offer->additional_contact}}" name="additional_contact" id="additional_contact" type="phone">
+                    <label for="additional_contact">Additional contact Number<small>(Input Valid Mobile Number)</small></label>
+                    <input class="form-control" value="{{$offer->additional_contact}}" name="additional_contact" id="additional_contact" type="phone" placeholder="e.g. 01700000000" pattern="[0]{1}[1]{1}[3-9]{1}[0-9]{8}" maxlength="11" size="11">
                     <div class="invalid-feedback">
                         Additional contact Number is Required!
                     </div>

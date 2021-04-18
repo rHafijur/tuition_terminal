@@ -70,6 +70,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th scope="row">Tutoring Duration</th>
+                                <td>
+                                    {{$offer->tutoring_duration}} hour
+                                </td>
+                            </tr>
+                            <tr>
                                 <th scope="row">Teaching Method</th>
                                 <td>
                                     @if ($offer->teaching_method_id!=null)
@@ -188,7 +194,7 @@
                             <tr>
                                 <th scope="row">Tutor's Gender</th>
                                 <td>
-                                    {{$offer->tutor_gender}}
+                                    @if($offer->tutor_gender == null)  Any  @else {{$offer->tutor_gender}} @endif
                                 </td>
                             </tr>
                             <tr>
