@@ -267,6 +267,7 @@
                      
                      @endif
                      @endforeach
+                     {{$job_offers->links()}}
                 </div>
                 
              </div>
@@ -293,17 +294,27 @@
                       <div style="padding-left: 0px;padding-right: 0px;" class="form-group">
                         <label>City</label>
                         <select name="city" id="s2_city" onchange="cityChanged(this);stateChanged()" class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
-                          @foreach (App\City::OrderBy('name','asc')->get() as $city)
                            <option value="">Select One</option>
-                            <option value="{{$city->id}}" data-select2-id="{{$city->id}}">{{$city->name}}</option>
+                           @foreach (App\City::OrderBy('name','asc')->get() as $city)
+                           
+                            <option value="{{$city->id}}" @if(request()->city_id==$city->id) selected @endif data-select2-id="{{$city->id}}">{{$city->name}}</option>
                           @endforeach
                         </select>
                       </div>
                    </div>
-                   <div id="location_show" class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px; padding-right: 0px;">
+                   <div id="location_show" class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px; padding-right: 0px;@if(request()->city_id==null) display:none @endif">
                      <div style="padding-left: 0px;padding-right: 0px;" class="form-group">
                         <label>Location</label>
                         <select onchange="stateChanged()" name="location" id="s2_location"  class="select2 select2-hidden-accessible" data-placeholder="Select a State" style="width: 100%;" data-select2-id="" tabindex="-1" aria-hidden="true">
+                           @if ($c_id= request()->city_id)
+                               @php
+                                   $city=App\City::find($c_id);
+                               @endphp
+                               <option value="">Select One</option>
+                                 @foreach ($city->locations()->orderBy('name','asc')->get() as $location)
+                                   <option value="{{$location->id}}" @if(request()->location_id==$location->id) selected @endif data-select2-id="{{$location->id}}">{{$location->name}}</option>
+                                 @endforeach
+                           @endif
                         </select>
                       </div>
                    </div>
@@ -312,14 +323,37 @@
                    <h4>Category</h4>
                    <div class="row">
                       <div id="category_show" class="col-md-12">
+                         @php
+                             $cat_ids= request()->category_ids;
+                             if($cat_ids==null){
+                                $cat_ids=[];
+                             }
+                             $cor_ids= request()->course;
+                             if($cor_ids==null){
+                                $cor_ids=[];
+                             }
+                         @endphp
                          @foreach ($categories as $category)
+                         @php
+                             $is_active= in_array($category->id,$cat_ids);
+                         @endphp
                            <div class="cat">
                               <div class="checkbox">
                                  <label for="category_2" style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
-                                 <input onchange="categoryChanged(this);stateChanged();" type="checkbox" class="category styled" name="category[]" value="{{$category->id}}">                                                
+                                 <input onchange="categoryChanged(this);stateChanged();" @if($is_active) checked @endif type="checkbox" class="category styled" name="category[]" value="{{$category->id}}">                                                
                                  {{$category->title}}</label>
                               </div>
                               <div class="courses">
+                                 @if ($is_active)
+                                     @foreach ($category->courses as $course)
+                                       <div class="checkbox">
+                                          <label for="" style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
+                                          <input checked onchange="stateChanged()" @if(in_array($course->id,$cor_ids)) checked @endif  type="checkbox" class="course styled" name="course[]" value="{{$course->title}}">                                                
+                                          {{$course->title}}
+                                       </label>
+                                       </div>
+                                     @endforeach
+                                 @endif
                               </div>
                            </div>
                          @endforeach
@@ -332,10 +366,16 @@
                    <div class="form-group" style="padding-left: 0px;padding-right: 0px;">
                       <div class="col-xs-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
                          <label> Gender </label>
+                         @php
+                             $gens=request()->genders;
+                             if($gens==null){
+                                $gens=[];
+                             }
+                         @endphp
                       </div>
                       <div class="col-xs-6 col-md-6" style="float: left; text-align: left; padding-left: 0px;">
                          <div class="styled-input-single">
-                            <input onchange="stateChanged()" type="checkbox" id="Male" class="gender styled" name="gender[]" value="male" checked="checked">
+                            <input onchange="stateChanged()" @if(in_array('male',$gens)) checked @endif type="checkbox" id="Male" class="gender styled" name="gender[]" value="male"">
                             <label for="Male" class="input-label-checkbox">
                             Male
                             </label>
@@ -343,7 +383,7 @@
                       </div>
                       <div class="col-xs-6 col-md-6" style="float: left; text-align: left; padding-left: 5px;">
                          <div class="styled-input-single">
-                            <input onchange="stateChanged()" type="checkbox" id="Female" class="gender styled" name="gender[]" value="female" checked="checked">
+                            <input onchange="stateChanged()" @if(in_array('female',$gens)) checked @endif  type="checkbox" id="Female" class="gender styled" name="gender[]" value="female">
                             <label for="Female" class="input-label-checkbox">
                             Female
                             </label>
@@ -353,12 +393,18 @@
                 </div>
                 <div class="filter-category-content">
                   <h4>Teaching Methods</h4>
+                  @php
+                      $tms=request()->teaching_method_ids;
+                      if($tms==null){
+                         $tms=[];
+                      }
+                  @endphp
                   <div class="row">
                      <div id="category_show" class="col-md-12">
                         @foreach ($teaching_methods as $teaching_method)
                         <div class="checkbox">
                            <label style="font-size:13px;font-family: 'Poppins', sans-serif;cursor: pointer;">
-                           <input onchange="stateChanged();" type="checkbox" class="teaching_method styled" name="teaching_method[]" value="{{$teaching_method->id}}">                                                
+                           <input onchange="stateChanged();" @if(in_array($teaching_method->id,$tms)) checked @endif type="checkbox" class="teaching_method styled" name="teaching_method[]" value="{{$teaching_method->id}}">                                                
                            {{$teaching_method->title}}</label>
                         </div>
                         @endforeach
@@ -413,7 +459,9 @@
    $("#s2_city").select2();
    const city_resource=JSON.parse(`{!!json_encode($city_collection)!!}`);
    const category_resource=JSON.parse(`{!!json_encode($categories)!!}`);
-   $('#location_show').hide();
+   // $('#location_show').hide();
+   $("#s2_location").select2();
+   $("#s2_location").select2();
    $('#job-board-header').hide();
    function getCity(id){
       for(var cit of city_resource){

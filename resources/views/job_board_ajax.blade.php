@@ -177,6 +177,7 @@
                      @endif
                      
 @endforeach
+{{$job_offers->links()}}
 @else
 <h1>No Results Found!</h1>
 @endif

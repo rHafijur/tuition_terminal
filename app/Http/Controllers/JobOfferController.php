@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\JobOffer;
 use App\Category;
 use App\Course;
@@ -22,38 +26,7 @@ use DB as DB;
 
 class JobOfferController extends Controller
 {
-    public function index(){
-        $teaching_methods=TeachingMethod::all();
-        $city_collection=CityResource::collection(City::all());
-        $categories=CategoryResource::collection(Category::all());
-        // return $categories;
-        // $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
-        $job_offers=JobOffer::latest()->get();
-        $deads=[];
-        $alives=[];
-        foreach($job_offers as $jo){
-            if($jo->isLive()){
-                $alives[]=$jo;
-            }else{
-                $deads[]=$jo;
-            }
-        }
-        $job_offers= array_merge($alives,$deads);
-        // dd($categories);
-        //added by Nayan
-        if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
-            return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
-        }
-        else{
-          $tutor=auth()->user()->tutor;
-          return view('job_board',compact('job_offers','city_collection','categories','teaching_methods','tutor')); 
-        }
-    }
-    public function jobBoardAjax(Request $request){
-        // dd($request);
-        // $job_offers=JobOffer::where(function($q){
-        //     return $q->whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id');
-        // });
+    private function getOffers($request){
         $job_offers=JobOffer::select("*");
         if($request->city_id!=null){
             $job_offers=$job_offers->where('city_id',$request->city_id);
@@ -73,7 +46,22 @@ class JobOfferController extends Controller
         if($request->genders!=null && count($request->genders)>0){
             $job_offers=$job_offers->whereIn('tutor_gender',$request->genders);
         }
-        $job_offers=$job_offers->latest()->get();
+        return $job_offers->latest()->get();
+    }
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+    public function index(Request $request){
+        // dd($request->query());
+        $teaching_methods=TeachingMethod::all();
+        $city_collection=CityResource::collection(City::all());
+        $categories=CategoryResource::collection(Category::all());
+        // return $categories;
+        // $job_offers=JobOffer::whereNull('taken_by_1_id')->orWhereNull('taken_by_2_id')->latest()->get();
+        $job_offers=$this->getOffers($request);
         $deads=[];
         $alives=[];
         foreach($job_offers as $jo){
@@ -84,6 +72,36 @@ class JobOfferController extends Controller
             }
         }
         $job_offers= array_merge($alives,$deads);
+
+        $job_offers = collect($job_offers);
+  
+        $job_offers = $this->paginate($job_offers)->withPath('/job-board')->appends($request->query());
+        // dd($categories);
+        //added by Nayan
+        if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
+            return view('job_board',compact('job_offers','city_collection','categories','teaching_methods'));
+        }
+        else{
+          $tutor=auth()->user()->tutor;
+          return view('job_board',compact('job_offers','city_collection','categories','teaching_methods','tutor')); 
+        }
+    }
+    public function jobBoardAjax(Request $request){
+        
+        $job_offers=$job_offers=$this->getOffers($request);
+        $deads=[];
+        $alives=[];
+        foreach($job_offers as $jo){
+            if($jo->isLive()){
+                $alives[]=$jo;
+            }else{
+                $deads[]=$jo;
+            }
+        }
+        $job_offers= array_merge($alives,$deads);
+        $job_offers = collect($job_offers);
+  
+        $job_offers = $this->paginate($job_offers)->withPath('/job-board')->appends($request->query());
         //added by Nayan
         if(!Auth::check() || in_array(auth()->user()->cb_roles_id, [1, 2])){
            return view('job_board_ajax',compact('job_offers'));

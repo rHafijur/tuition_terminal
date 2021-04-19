@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\User;
 use App\Tutor;
@@ -22,7 +25,12 @@ use App\Http\Resources\CityResource;
 use App\Certificate;
 
 class TutorController extends Controller
-{   
+{   public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     protected function institute_id($institute){
         if(is_numeric($institute)){
             return $institute;
@@ -126,6 +134,9 @@ class TutorController extends Controller
             }
         }
         $job_offers= array_merge($alives,$deads);
+        $job_offers = collect($job_offers);
+  
+        $job_offers = $this->paginate($job_offers)->withPath('/tutor/dashboard');
         // dd($job_offers);
         return view('tutor.dashboard',\compact('job_offers','tutor'));
     }

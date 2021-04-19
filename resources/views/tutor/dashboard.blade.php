@@ -217,6 +217,7 @@ $personal_info=$tutor->tutor_personal_information;
                      
                      @endif
     @endforeach
+    {{$job_offers->links()}}
     {{-- <div class="tutor-post-block">
        <div class="tutor-post-header">
           <div class="d-flex justify-content-between">
