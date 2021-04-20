@@ -113,7 +113,7 @@ class AdminJobOffersController extends CBController {
         }
         // dd($job_offers->get(),$job_offers,$request);
         // $job_offers = JobOffer::all();
-        $job_offers = $job_offers->latest()->get();
+        $job_offers = $job_offers->latest()->paginate(20);
         // dd($categories_collection);
         return view('admin.job_offers.all',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
     }
@@ -195,7 +195,7 @@ class AdminJobOffersController extends CBController {
         }
         // dd($job_offers->get(),$job_offers,$request);
         // $job_offers = JobOffer::all();
-        $job_offers = $job_offers->latest()->get();
+        $job_offers = $job_offers->latest()->paginate(20);
         // dd($categories_collection);
         return view('admin.job_offers.available',\compact('page_title','request','job_offers','courses','categories','categories_collection','courses_collection','city_collection','institutes','all_offer_cnt','available_offer_cnt','pending_offer_cnt','todays_offer_cnt'));
     }
@@ -258,7 +258,7 @@ class AdminJobOffersController extends CBController {
             return $qu->orderBy('created_at','desc');
         });
         // dd($offers->get());
-        $offers=$offers->get();
+        $offers=$offers->paginate(20);
         return view('admin.job_offers.applications',compact('page_title','request','courses','categories','categories_collection','courses_collection','city_collection','institutes','offers','total_cnt','todays_cnt'));
     }
     public function getAdd_new(){

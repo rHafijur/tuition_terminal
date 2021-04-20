@@ -113,6 +113,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{$applications->links()}}
         </div>
     </div>
     @include('admin.taken_offers.src.modals');

@@ -29,7 +29,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers";
 		$stage="";
-		$applications=$query->whereNull('current_stage')->get();
+		$applications=$query->whereNull('current_stage')->latest()->paginate(20);
 		// dd($applications);
 		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
 		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
@@ -49,7 +49,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Waiting";
 		$stage="waiting";
-		$applications=$query->where('current_stage','waiting')->get();
+		$applications=$query->where('current_stage','waiting')->latest()->paginate(20);
 		// dd($applications);
 		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
 		$new_cnt=$query->where("current_stage",'waiting')->whereDate('waiting_stage', Carbon::today())->get()->count();
@@ -71,7 +71,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Meeting";
 		$stage="meet";
-		$applications=$query->where('current_stage','meet')->get();
+		$applications=$query->where('current_stage','meet')->latest()->paginate(20);
 		// dd($applications);
 		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
 		$new_cnt=$query->where("current_stage",'meet')->whereDate('meeting_stage', Carbon::today())->get()->count();
@@ -89,7 +89,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Trial";
 		$stage="trial";
-		$applications=$query->where('current_stage','trial')->get();
+		$applications=$query->where('current_stage','trial')->latest()->paginate(20);
 		// dd($applications);
 		$trial_cnt=$query->where("current_stage",'trial')->get()->count();
 		$new_cnt=$query->where("current_stage",'trial')->whereDate('trial_stage', Carbon::today())->get()->count();
@@ -107,7 +107,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Confirm";
 		$stage="confirm";
-		$applications=$query->where('current_stage','confirm')->get();
+		$applications=$query->where('current_stage','confirm')->latest()->paginate(20);
 		// dd($applications);
 		$confirm_cnt=$query->where("current_stage",'confirm')->get()->count();
 		$new_cnt=$query->where("current_stage",'confirm')->whereDate('confirm_stage', Carbon::today())->get()->count();
@@ -126,7 +126,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Due";
 		$stage="due";
-		$applications=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get();
+		$applications=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->latest()->paginate(20);
 		// dd($applications);
 		$due_cnt=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->get()->count();
 		$new_cnt=$query->where('current_stage','payment')->where('net_receivable_amount','>',DB::raw('received_amount'))->whereDate('confirm_stage', Carbon::today())->get()->count();
@@ -145,7 +145,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers";
 		$stage="payment";
-		$applications=$query->where('current_stage','payment')->get();
+		$applications=$query->where('current_stage','payment')->latest()->paginate(20);
 		// dd($applications);
 		$waiting_cnt=$query->where("current_stage",'waiting')->get()->count();
 		$meeting_cnt=$query->where("current_stage",'meet')->get()->count();
@@ -165,7 +165,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Repost";
 		$stage="repost";
-		$applications=$query->where('current_stage','repost')->get();
+		$applications=$query->where('current_stage','repost')->latest()->paginate(20);
 		return view('admin.taken_offers.repost',\compact('stage','page_title','applications'));
 	}
 	public function getCancel(){
@@ -178,7 +178,7 @@ class AdminJobApplicationsController extends CBController {
 		}
 		$page_title="Taken Offers - Cancel";
 		$stage="cancel";
-		$applications=$query->where('current_stage','cancel')->get();
+		$applications=$query->where('current_stage','cancel')->latest()->paginate(20);
 		return view('admin.taken_offers.cancel',\compact('stage','page_title','applications'));
 	}
 	public function postSetWaiting(Request $request){

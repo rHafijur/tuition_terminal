@@ -375,6 +375,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$job_offers->links()}}
             </div>
         </div>
     </div>

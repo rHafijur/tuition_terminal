@@ -147,6 +147,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{$applications->links()}}
         </div>
     </div>
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
