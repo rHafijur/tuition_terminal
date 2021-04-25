@@ -43,6 +43,7 @@
                 return;
             }
             $("#ids").val(JSON.stringify(ids));
+            $("#job_id_field").val({{$offer->id}});
             $("#bulk_sms_form").submit();
         }
 </script>
