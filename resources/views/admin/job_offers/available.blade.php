@@ -243,6 +243,7 @@
                     <form id="bulk_sms_form" method="POST" action="{{ route('sms_editor') }}" target="_blank">
                         @csrf
                         <input type="hidden" id="ids" name="ids">
+                        <input type="hidden" id="job_id_field" name="job_id">
                     </form>
                     <div class="box-tools pull-right" style="position: relative;margin-top: 5px;margin-right: 10px">
 
